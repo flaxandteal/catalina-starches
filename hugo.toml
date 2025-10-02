@@ -1,0 +1,50 @@
+baseURL = 'https://example.org/'
+languageCode = 'en-us'
+title = 'Queensland Heritage'
+theme = "qld-design-system"
+
+[module]
+  [[module.imports]]
+    path = "github.com/flaxandteal/hugo-theme-qld-design-system"
+
+[[menu.main]]
+  identifier = "home"
+  name = "Home"
+  url = "/"
+  weight = 1
+
+[[menu.main]]
+  identifier = "category-1"
+  name = "Category page 12"
+  url = "/category/page-1/"
+  weight = 2
+
+[[menu.main]]
+  identifier = "category-2"
+  name = "Category page 22"
+  url = "/category/page-2/"
+  weight = 3
+
+[params.header]
+header = "Starches Site New"
+subheader = "This is the dev site"
+
+[params.footer]
+phone = "123 4567"
+email = "test_email@qld.gov.au"
+contact_url = "https://example.com/contact"
+
+[params.footer.custom_links]
+enabled = true
+
+[[params.footer.custom_links.links]]
+name = "This is a Custom Link 1"
+url = "https://example.com/link1"
+
+[[params.footer.custom_links.links]]
+name = "Custom Link 2"
+url = "https://example.com/link2"
+
+[[params.footer.custom_links.links]]
+name = "Custom Link 3"
+url = "https://example.com/link3"
