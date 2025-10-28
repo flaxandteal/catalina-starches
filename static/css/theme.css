@@ -28,8 +28,8 @@
 --QLD-color-dark__action--secondary-hover: #FFEF60; /* Dark secondary action hover */
 
 /* Accent */
---QLD-color-light-designAccent: #6BBE27; /* Light accent */
---QLD-color-dark-designAccent: #6BBE27; /* Dark accent */
+--QLD-color-light-designAccent: #84D3FF; /* Light accent */
+--QLD-color-dark-designAccent: #84D3FF; /* Dark accent */
 
 /* Focus */
 --QLD-color-light__focus: #0085B3; /* Light focus */
@@ -63,7 +63,6 @@
 
   /* Additional Light Theme Tokens */
   --QLD-color-light-siteTitle: #005EB8;
-  --QLD-color-light-designAccent: #84D3FF;
   --QLD-color-light-heading: #000053;
   --QLD-color-light-text: #353535;
   --QLD-color-light-text__muted: #636363;
@@ -91,7 +90,6 @@
 
   /* Additional Dark Theme Tokens */
   --QLD-color-dark-siteTitle: #FFFFFF;
-  --QLD-color-dark-designAccent: #84D3FF;
   --QLD-color-dark-heading: #FFFFFF;
   --QLD-color-dark-text: #FFFFFF;
   --QLD-color-dark-text__muted: #DEEBF9;
