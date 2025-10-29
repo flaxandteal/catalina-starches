@@ -5,12 +5,9 @@ theme = "qld-design-system"
 
 [module]
   [[module.imports]]
-    path = "github.com/flaxandteal/hugo-theme-qld-design-system"
+    path = "qld-design-system"
     disable=false
   
-  [[module.imports]]
-    path="github.com/flaxandteal/coral-starches@cleanup"
-    disable=true
 [[menu.main]]
   identifier = "home"
   name = "Home"
