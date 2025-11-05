@@ -5,28 +5,28 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
 
   it('has header, main and footer in DOM order and visible', () => {
     cy.get('header').should('be.visible');
-    cy.get('main.main').should('be.visible');
+    cy.get('main').should('be.visible');
     cy.get('footer').should('be.visible');
 
     // DOM order checks
     cy.get('header').then($header => {
-      cy.get('main.main').then($main => {
+      cy.get('main').then($main => {
         expect($header[0].compareDocumentPosition($main[0]) & Node.DOCUMENT_POSITION_FOLLOWING).to.be.ok;
       });
     });
-    cy.get('main.main').then($main => {
+    cy.get('main').then($main => {
       cy.get('footer').then($footer => {
         expect($main[0].compareDocumentPosition($footer[0]) & Node.DOCUMENT_POSITION_FOLLOWING).to.be.ok;
       });
     });
   });
 
-  it('has QLD utility classes and footer uses qld__footer', () => {
-    cy.get('body').should('have.class', 'qld__body');
-    cy.get('main.main').invoke('attr', 'class').then(classes => {
-      expect(classes.includes('qld__flex-lg-fill') || classes.includes('landing') || classes.length > 0).to.equal(true);
+  it('has QLD utility classes and footer uses qld-footer', () => {
+    cy.get('body').should('have.class', 'min-vh-100');
+    cy.get('main').invoke('attr', 'class').then(classes => {
+      expect(classes.includes('flex-fill') || classes.includes('qld-body') || classes.length > 0).to.equal(true);
     });
-    cy.get('footer').should('have.class', 'qld__footer');
+    cy.get('footer').should('have.class', 'qld-footer');
   });
 
   it('footer is not absolute/fixed and sits after main', () => {
@@ -36,7 +36,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
       expect(pos).to.not.equal('fixed');
     });
 
-    cy.get('main.main').then($main => {
+    cy.get('main').then($main => {
       const mainRect = $main[0].getBoundingClientRect();
       cy.get('footer').then($footer => {
         const footerRect = $footer[0].getBoundingClientRect();
