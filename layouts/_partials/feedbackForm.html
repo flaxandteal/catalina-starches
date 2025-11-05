@@ -1,0 +1,73 @@
+{{- $feedbackForm := cond (isset .Site.Params.footer "feedbackForm") .Site.Params.footer.feedbackForm (dict) -}}
+{{- if $feedbackForm.show }}
+<div class="qld-feedback-form">
+  <h3 class="footer-heading">{{ default "Feedback" $feedbackForm.title }}</h3>
+  
+  {{- if $feedbackForm.description }}
+  <p>{{ $feedbackForm.description | safeHTML }}</p>
+  {{- end }}
+  
+  <form action="{{ $feedbackForm.action }}" method="{{ default "POST" $feedbackForm.method }}" class="qld-form">
+    
+    {{- range $feedbackForm.fields }}
+    <div class="form-group mb-3">
+      {{- if eq .type "textarea" }}
+      <label for="{{ .id }}" class="form-label">{{ .label }}{{ if .required }}<span class="text-danger">*</span>{{ end }}</label>
+      <textarea 
+        class="form-control" 
+        id="{{ .id }}" 
+        name="{{ default .id .name }}" 
+        rows="{{ default 4 .rows }}"
+        {{ if .placeholder }}placeholder="{{ .placeholder }}"{{ end }}
+        {{ if .required }}required{{ end }}
+      ></textarea>
+      
+      {{- else if eq .type "select" }}
+      <label for="{{ .id }}" class="form-label">{{ .label }}{{ if .required }}<span class="text-danger">*</span>{{ end }}</label>
+      <select 
+        class="form-select" 
+        id="{{ .id }}" 
+        name="{{ default .id .name }}"
+        {{ if .required }}required{{ end }}
+      >
+        <option value="">{{ default "Please select" .placeholder }}</option>
+        {{- range .options }}
+        <option value="{{ .value }}">{{ .text }}</option>
+        {{- end }}
+      </select>
+      
+      {{- else if eq .type "checkbox" }}
+      <div class="form-check">
+        <input 
+          class="form-check-input" 
+          type="checkbox" 
+          id="{{ .id }}" 
+          name="{{ default .id .name }}" 
+          value="{{ default "true" .value }}"
+          {{ if .required }}required{{ end }}
+        >
+        <label class="form-check-label" for="{{ .id }}">
+          {{ .label | safeHTML }}{{ if .required }}<span class="text-danger">*</span>{{ end }}
+        </label>
+      </div>
+      
+      {{- else }}
+      <label for="{{ .id }}" class="form-label">{{ .label }}{{ if .required }}<span class="text-danger">*</span>{{ end }}</label>
+      <input 
+        type="{{ default "text" .type }}" 
+        class="form-control" 
+        id="{{ .id }}" 
+        name="{{ default .id .name }}"
+        {{ if .placeholder }}placeholder="{{ .placeholder }}"{{ end }}
+        {{ if .required }}required{{ end }}
+      >
+      {{- end }}
+    </div>
+    {{- end }}
+    
+    <button type="submit" class="btn btn-primary">
+      {{ default "Submit" $feedbackForm.submitLabel }}
+    </button>
+  </form>
+</div>
+{{- end }}

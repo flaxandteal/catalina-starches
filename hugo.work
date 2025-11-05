@@ -1,0 +1,6 @@
+go 1.24.6
+
+use .
+use ./themes/hugo-theme-qld-design-system
+use ../starches
+use ../hugo-cookies

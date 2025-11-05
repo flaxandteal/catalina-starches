@@ -1,0 +1,85 @@
+<!-- QGDS Partial: Primary navigation (direct Handlebars→Hugo conversion) -->
+
+{{- $meta := .Site.Params.navbar -}}
+{{- $nav := $meta.navigation -}}
+
+<nav id="main-nav" class="navbar navbar-expand-lg{{ if $meta.alternativecolor }} dark{{ end }}{{ if $meta.verticalorientation }} vertical{{ end }}" aria-label="Website navigation" role="navigation">
+    <div id="navbarNav" class="container">
+        <div class="nav-header">
+            <span class="navbar-brand">{{ $meta.navbarbrandname }}</span>
+            <button id="burgerCloseBtn" type="button" class="navbar-btn" data-bs-toggle="collapse"
+                aria-label="Close" data-bs-target="#main-nav" aria-expanded="false"
+                aria-controls="collapseExample">Close</button>
+        </div>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav">
+                {{ range $nav }}
+                    {{ if .navigationitems }}
+                        <li class="nav-item dropdown{{ if .alternativecolor }} alt{{ end }}{{ if .mobileonly }} mobile-only{{ end }}"> 
+                            <a class="nav-link{{ if not $meta.verticalorientation }} dropdown-toggle{{ end }}{{ if .currentpage }} active{{ end }}{{ if .dropdownoptions.hasNoLink }} hasNoLink{{ end }}" {{ if .currentpage }}aria-current="page"{{ end }}{{ if .dropdownoptions.hasNoLink }} href="#"{{ else }} href="{{ .url }}"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }} role="button" data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                                {{ if .iconname }}
+                                    <span class="qld-icon qld-icon-md {{ .iconname }}" aria-hidden="true"></span>
+                                    {{ if .hidelabel }}
+                                        <span class="visually-hidden-lg">{{ .text }}</span>
+                                    {{ else }}
+                                        {{ .text }}
+                                    {{ end }}
+                                {{ else }}
+                                    {{ .text }}
+                                {{ end }}
+                            </a>
+                            <button class="nav-link dropdown-toggle"{{ if .currentpage }} aria-current="page"{{ end }}  data-bs-toggle="dropdown" aria-expanded="false" aria-selected="false" aria-label="Toggle navigation">                                
+                                <span class="visually-hidden">Expand</span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                {{ if not .dropdownoptions.hasNoLink }}
+                                    <li>
+                                        <a class="dropdown-item parent-link" role="button"{{ if .currentpage }} aria-current="page"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>{{ if .dropdownoptions.alternativeText }}{{ .dropdownoptions.alternativeText }}{{ else }}{{ .text }}{{ end }}</a>
+                                        {{ if .dropdownoptions.description }}
+                                            <p>{{ .dropdownoptions.description }}</p>
+                                        {{ end }}
+                                    </li>
+                                {{ end }}
+                                {{ range .navigationitems }}
+                                    <li{{ if .mobileonly }} class="mobile-only"{{ end }}>
+                                        {{ if .isHTML }}
+                                            {{ .htmlContent | safeHTML }}
+                                        {{ end }}
+                                        {{ if not .isHTML }}
+                                            <a class="dropdown-item" href="{{ .url }}"{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>{{ .text }}</a>
+                                            {{ if .description }}
+                                                <p>{{ .description }}</p>
+                                            {{ end }}
+                                        {{ end }}
+                                    </li>
+                                {{ end }}
+                                {{ if .dropdownoptions.viewAllHref }}
+                                    <li>
+                                        <a class="dropdown-item view-all" href="{{ .dropdownoptions.viewAllHref }}">View all</a>
+                                    </li>
+                                {{ end }}
+                            </ul>
+                        </li>
+                    {{ else }}
+                        <li class="nav-item{{ if .alternativecolor }} alt{{ end }}{{ if .mobileonly }} mobile-only{{ end }}">
+                            <a class="nav-link{{ if .currentpage }} active{{ end }}"{{ if .currentpage }} aria-current="page"{{ end }} href="{{ .url }}"{{ if .target }}  target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>
+                            {{ if .iconname }}
+                                <span class="qld-icon qld-icon-md {{ .iconname }}" aria-hidden="true"></span>
+                                {{ if .hidelabel }}
+                                    <span class="visually-hidden-lg">{{ .text }}</span>
+                                {{ else }}
+                                    {{ .text }}
+                                {{ end }}
+                            {{ else }}
+                                {{ .text }}
+                            {{ end }}
+                            </a>
+                        </li>
+                    {{ end }}
+                {{ end }}
+            </ul>
+        </div>
+    </div>
+    <div id="overlay"></div>
+</nav>

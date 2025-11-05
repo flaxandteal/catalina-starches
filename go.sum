@@ -1,3 +1,7 @@
+github.com/flaxandteal/govukhugo v0.0.0-20250913133815-13c0691a1ac9 h1:7RhBaGT9pUeDIpYLPjUlK7Dbzc3QNznTItcvK7Utcmg=
+github.com/flaxandteal/govukhugo v0.0.0-20250913133815-13c0691a1ac9/go.mod h1:bFk/uvSh+oWzrQeoniHec8xDJymnWZqtgqgteKLi8yE=
+github.com/flaxandteal/hugo-cookies v0.0.0-20250912234728-faf4561ea831 h1:EU1BqocmsCi2SMfcVHrkE+XBjM6NG5kzkhIKhRkFLNA=
+github.com/flaxandteal/hugo-cookies v0.0.0-20250912234728-faf4561ea831/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
 github.com/flaxandteal/hugo-mod-qld-design-system v0.0.0-20250929135830-ab27aed1568e h1:hCS4/mOCYdX7wriy1moqq9aK4ufBglmmx8+LbsG5ATk=
 github.com/flaxandteal/hugo-mod-qld-design-system v0.0.0-20250929135830-ab27aed1568e/go.mod h1:yp0A0w9y85TTepsT2/7d1tCgnwvfIIHW6pd9/rOAXUo=
 github.com/flaxandteal/hugo-mod-qld-design-system v0.0.0-20250929144452-43212bac0fc5 h1:L9Scj5x+l5MKEyzmK3azmkpjMXyW0V7p7XqEvMz+RyM=
@@ -26,3 +30,7 @@ github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20250929141344-ad0778
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20250929141344-ad07784ed7fb/go.mod h1:fkK2138+K4jdGkf8J6YiRvu5Nz7XsB7wZMtkrLbn7fQ=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20250929141725-936acd4e9026 h1:xbqi7tS0z7mo5snWj6BOglIR0IswoCe8+UexlW4+2hY=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20250929141725-936acd4e9026/go.mod h1:fkK2138+K4jdGkf8J6YiRvu5Nz7XsB7wZMtkrLbn7fQ=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20251028145645-05a1d3096c72 h1:Ybav+U7emx84Rp3jMrhckvqohXX4BA7bMB1csEW36Yc=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20251028145645-05a1d3096c72/go.mod h1:fkK2138+K4jdGkf8J6YiRvu5Nz7XsB7wZMtkrLbn7fQ=
+github.com/flaxandteal/starches v0.1.2-0.20250913135045-9656729593b2 h1:T0VJPqPELaBsMKpyrTNS+Yf93qbolWP5IrGuA/3n4O4=
+github.com/flaxandteal/starches v0.1.2-0.20250913135045-9656729593b2/go.mod h1:nY/B6Y+aCYyhXJumslBKyk8OZrI/LfSYBgvHSM+p46E=

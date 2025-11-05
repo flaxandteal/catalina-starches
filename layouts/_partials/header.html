@@ -1,0 +1,113 @@
+<header class="qld-header" role="banner">
+    {{- $hdr := .Site.Params.header -}}
+
+    {{- $pre := cond (isset $hdr "preheader") $hdr.preheader (dict) -}}
+    {{- $prePal := cond (isset $pre "palette") (lower $pre.palette) "default" -}}
+    <div class="qld-header-pre-header {{ if eq $prePal "auto" }}auto{{ else if eq $prePal "dark" }}dark{{ else if eq $prePal "dark-alt" }}dark-alt{{ else }}default{{ end }}" data-palette="{{ $prePal }}">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+
+                <a class="qld-header-link align-self-center" href="{{ with $pre.globallink.url }}{{ . }}{{ else }}https://qld.gov.au{{ end }}">
+                    <span class="d-none d-lg-inline">{{ with $pre.globallink.text }}{{ . }}{{ end }}</span>
+
+                    {{ if $hdr.hasdeliveringforqldlogo }}
+                        <img class="qld-header-logo is-delivering-for-qld" alt="Queensland Government" src="{{ with $pre.logo }}{{ . | relURL }}{{ else }}{{ "img/header-logo-qgov--light.svg" | relURL }}{{ end }}">
+                    {{ else }}
+                        <img class="qld-header-logo" alt="Queensland Government" src="{{ with $pre.logo }}{{ . | relURL }}{{ else }}{{ "img/header-logo-qgov--light.svg" | relURL }}{{ end }}">
+                    {{ end }}
+                </a>
+
+                {{ with $pre.actions }}
+                    <div class="d-none d-lg-flex align-items-baseline">
+                        {{ range . }}
+                            {{ if .dropdown }}
+                                <div class="dropdown">
+                                    <a id="dropdown{{ .id }}" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="qld-header-link dropdown-toggle" href="#">{{ .text | safeHTML }}</a>
+
+                                    {{ if eq .dropdown.type "list" }}
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            {{ range .dropdown.items }}
+                                                <li>
+                                                    <a class="qld-header-link dropdown-item" href="{{ .url }}"{{ if .target }} target="{{ .target }}"{{ end }}>{{ .text }}</a>
+                                                </li>
+                                            {{ end }}
+
+                                            {{ with .dropdown.viewMore }}
+                                                <li>
+                                                    <a href="{{ .url }}"{{ if .target }} target="{{ .target }}"{{ end }} class="qld-header-link dropdown-item border-bottom-0">{{ .text }}</a>
+                                                </li>
+                                            {{ end }}
+                                        </ul>
+                                    {{ else if or (eq .dropdown.type "html") (eq .dropdown.type "form") }}
+                                        <div class="dropdown-menu dropdown-menu-end">{{ .dropdown.HTMLContent | safeHTML }}</div>
+                                    {{ end }}
+                                </div>
+                            {{ else }}
+                                <a class="qld-header-link ms-16" href="{{ .url }}">{{ if .icon }}<span class="qld-icon qld-icon-{{ .icon }} qld-icon-sm qld-header-link-icon" aria-hidden="true"></span>{{ end }}{{ .text | safeHTML }}</a>
+                            {{ end }}
+                        {{ end }}
+                    </div>
+                {{ end }}
+
+                <div class="qld-header-mobile-controls">
+                    {{ if and (isset $hdr "assets") (isset $hdr.assets "sitesearch") (isset $hdr.assets.sitesearch "value") }}
+                        {{ if $hdr.assets.sitesearch.value }}
+                            <button id="qld-header-toggle-search-button" aria-controls="qld-header-search" class="qld-header-mobile-button is-search-toggle" aria-expanded="false" aria-label="Open search">Search</button>
+                        {{ end }}
+                    {{ end }}
+
+                    <button id="burgerBtn" class="qld-header-mobile-button is-menu-toggle" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu">Menu</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{- $main := cond (isset $hdr "maincontent") $hdr.maincontent (dict) -}}
+    {{- $mainPal := cond (isset $main "palette") (lower $main.palette) "default" -}}
+    <div class="qld-header-main {{ if eq $mainPal "auto" }}auto{{ else if eq $mainPal "dark" }}dark{{ else if eq $mainPal "dark-alt" }}dark-alt{{ else }}default{{ end }}" data-palette="{{ $mainPal }}">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    {{ partial "headerBrand.html" . }}
+                </div>
+
+                {{ if and (isset $hdr "assets") (isset $hdr.assets "sitesearch") (isset $hdr.assets.sitesearch "value") $hdr.assets.sitesearch.value }}
+                    <div class="col-lg-4">
+                        <div id="qld-header-search" class="qld-header-site-search is-closed">
+                            <form class="site-search" role="search" action="{{ with $hdr.assets.sitesearch.formaction.url }}{{ . }}{{ else }}https://www.qld.gov.au/search{{ end }}">
+                                {{ with $hdr.searchinput }}{{ . | safeHTML }}{{ end }}
+                            </form>
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</header>
+
+{{/* If any header section uses palette = "auto" then apply the user's system preference */}}
+<script>
+(function(){
+    function applyPref(el){
+        try{
+            var pref = el.getAttribute('data-palette');
+            if(pref !== 'auto') return;
+            var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var chosen = isDark ? 'dark' : 'default';
+            el.classList.remove('auto','default','dark','dark-alt');
+            el.classList.add(chosen);
+        }catch(e){/* ignore in old browsers */}
+    }
+    function init(){
+        var nodes = document.querySelectorAll('[data-palette="auto"]');
+        nodes.forEach(applyPref);
+        if(window.matchMedia){
+            var mq = window.matchMedia('(prefers-color-scheme: dark)');
+            var listener = function(){ nodes.forEach(applyPref); };
+            if(mq.addEventListener) mq.addEventListener('change', listener);
+            else if(mq.addListener) mq.addListener(listener);
+        }
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script>

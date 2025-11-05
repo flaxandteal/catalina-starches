@@ -1,0 +1,164 @@
+{{- $prm := .Site.Params -}}
+{{- $ftr := cond (isset $prm "footer") $prm.footer (dict) -}}
+{{- $contact := cond (isset $ftr "contact") $ftr.contact (dict) -}}
+{{- $opt1 := cond (isset $ftr "optionalcolumn1") $ftr.optionalcolumn1 (dict) -}}
+{{- $opt2 := cond (isset $ftr "optionalcolumn2") $ftr.optionalcolumn2 (dict) -}}
+{{- $footerLinks := cond (isset $ftr "footerlinks") $ftr.footerlinks (dict) -}}
+{{- $footerLogo := cond (isset $ftr "footerlogo") $ftr.footerlogo (dict) -}}
+{{- $acks := cond (isset $ftr "acknowledgements") $ftr.acknowledgements (slice) -}}
+{{- $org := cond (isset $ftr "organisationlink") $ftr.organisationlink (dict) -}}
+{{- $copyright := cond (isset $ftr "copyright") $ftr.copyright (dict) -}}
+
+<footer class="qld-footer {{ $prm.variantClass }}" role="contentinfo">
+  <div class="container">
+    {{ if $prm.sitename }}
+    <div class="row">
+      <div class="col title">
+        <h2 class="footer-site-name">{{ $prm.sitename }}</h2>
+      </div>
+    </div>
+    {{ end }}
+
+    <div class="row">
+
+      <!-- Contact us Column -->
+      <div class="col-12 col-lg-3 py-24 py-lg-0 footer-contact {{ if $contact.hasBorderColumn }}border-column{{ end }}">
+        <div class="row">
+          <div class="col col-lg-12">
+            <h3 class="footer-heading">{{ default "Contact us" $contact.title }}</h3>
+
+            <div>
+              {{ $contactContent := default "<p>Get in touch for enquiries, feedback, complaints and compliments.</p>" $contact.content }}
+              {{ $contactContent | safeHTML }}
+            </div>
+          </div>
+
+          <div class="col col-lg-12 contact-btn order-lg-last d-flex d-lg-block mt-lg-32">
+            <a href="{{ default "https://www.qld.gov.au/contact-us" $contact.buttonLink }}" class="btn btn-outline-secondary">
+              {{ default "Contact us" $contact.buttonLabel }}
+            </a>
+          </div>
+
+          <div class="col-12">
+            {{- /* Custom contact list: if showList is not explicitly false and list exists, render it */ -}}
+            {{- if and (or (not (isset $contact "showList")) (ne $contact.showList false)) (isset $contact "list") (gt (len $contact.list) 0) -}}
+              {{- range $k, $it := $contact.list }}
+                <div class="footer-contact-item footer-contact-{{ $k }}">
+                  <span class="qld-icon {{ $it.icon }}" aria-hidden="true"></span> {{ $it.label | safeHTML }}
+                </div>
+              {{- end }}
+            {{- else }}
+              <div class="footer-contact-item footer-contact-phone">
+                <span class="qld-icon qld-icon-phone" aria-hidden="true"></span>
+                <b>Phone:</b>
+                <a href="tel:137468" rel="noopener">13 123 456 789</a>
+              </div>
+
+              <div class="footer-contact-item footer-contact-email">
+                <span class="qld-icon qld-icon-email" aria-hidden="true"></span>
+                <b>Email:</b>
+                <a href="mailto:" rel="noopener"><span class="user-select-all">email@example.com</span></a>
+              </div>
+            {{- end }}
+          </div>
+        </div>
+      </div>
+
+      {{- /* Optional Column 1 */ -}}
+      {{- if or (isset $opt1 "content") (isset $opt1 "showFollowLinks") (isset $opt1 "showCustomLinks") }}
+      <div class="col-12 col-lg-2 optional-column-1 {{ if $opt1.hasBorderColumn }}border-column{{ end }}" aria-label="{{ default "Footer links" $opt1.title }}">
+        <div class="footer-column pe-16">
+          {{ if $opt1.title }}<h3 class="footer-heading">{{ $opt1.title }}</h3>{{ end }}
+          <div class="footer-content">
+            {{ if $opt1.content }}{{ $opt1.content | safeHTML }}{{ end }}
+            {{ if $opt1.showFollowLinks }}
+              {{/* follow links: implement if you have params.followLinks */}}
+            {{ end }}
+            {{ if $opt1.showCustomLinks }}
+              {{/* custom links: implement if you have opt1.customLinks */}}
+            {{ end }}
+          </div>
+        </div>
+      </div>
+      {{- end }}
+
+      <!-- WoG links -->
+      <div class="col-12 col-lg-2 {{ if $footerLinks.hasBorderColumn }}border-column{{ end }}" aria-label="footer-navigation">
+        <div class="footer-column pe-lg-16">
+          {{ if and (isset $footerLinks "list") (gt (len $footerLinks.list) 0) }}
+            {{ if $footerLinks.title }}<h3 class="footer-heading">{{ $footerLinks.title }}</h3>{{ end }}
+            <ul class="nav footer-link-list flex-column pt-lg-2">
+              {{- range $footerLinks.list }}
+                <li><a class="nav-link" href="{{ .link }}" {{ if .target }} target="{{ .target }}"{{ end }}>{{ .label }}</a></li>
+              {{- end }}
+            </ul>
+          {{ end }}
+        </div>
+      </div>
+
+      {{- /* Optional Column 2 */ -}}
+      {{- if or (isset $opt2 "content") (isset $opt2 "showFollowLinks") (isset $opt2 "showCustomLinks") }}
+      <div class="col-12 col-lg-2 optional-column-2 {{ if $opt2.hasBorderColumn }}border-column{{ end }}" aria-label="{{ default "Footer links" $opt2.title }}">
+        <div class="footer-column pe-lg-16">
+          {{ if $opt2.title }}<h3 class="footer-heading">{{ $opt2.title }}</h3>{{ end }}
+          <div class="footer-content">
+            {{ if $opt2.content }}{{ $opt2.content | safeHTML }}{{ end }}
+            {{ if $opt2.showFollowLinks }}{{/* follow links */}}{{ end }}
+            {{ if $opt2.showCustomLinks }}{{/* custom links */}}{{ end }}
+          </div>
+        </div>
+      </div>
+      {{- end }}
+
+      <!-- Acknowledgement of Country -->
+      <div class="col crest">
+        <div class="footer-column">
+          <div class="footer-content">
+            <div class="footer-acknowledgements">
+              {{ if gt (len $acks) 0 }}
+                {{ range $acks }}
+                  {{ if .title }}<h3 class="footer-heading">{{ .title }}</h3>{{ end }}
+                  {{ if .content }}{{ .content | safeHTML }}{{ end }}
+                {{ end }}
+              {{ else }}
+                <p>We pay our respects to the Aboriginal and Torres Strait Islander ancestors of this land, their
+                spirits and their legacy. The foundations laid by these ancestors—our First Nations peoples—give
+                strength, inspiration and courage to current and future generations towards creating a better
+                Queensland.</p>
+              {{ end }}
+            </div>
+
+            {{- /* Footer Logo */ -}}
+            {{ if $footerLogo.src }}
+              <div class="footer-logo">
+                <img src="{{ $footerLogo.src }}" alt="{{ $footerLogo.alt }}" class="img-fluid" />
+              </div>
+            {{ else if $footerLogo.show }}
+              <div class="footer-crest">
+                {{/* Logo partial could go here if available */}}
+              </div>
+            {{ end }}
+
+            {{- /* Footer Copyright */ -}}
+            {{ if isset $copyright "content" }}
+              <p class="copyright">{{ $copyright.content | safeHTML }}{{ if $copyright.showYearFrom }} {{ $copyright.yearFrom }} -{{ end }} {{ now.Format "2006" }}</p>
+            {{ else }}
+              <p class="copyright">© The State of Queensland {{ now.Format "2006" }}</p>
+            {{ end }}
+
+            {{- /* Organisation Link */ -}}
+            {{ if isset $org "show" }}
+              <p>
+                <a class="fw-semibold" href="{{ default "https://www.qld.gov.au" $org.URL }}" rel="external">
+                  {{ default "Queensland Government" $org.text }}
+                </a>
+              </p>
+            {{ end }}
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</footer>

@@ -1,0 +1,4 @@
+{{ define "main" }}
+  {{- partial "banner-hero.html" . -}}
+  {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
+{{ end }}

@@ -1,0 +1,23 @@
+{{/* Card Grid Partial
+     Usage:
+       {{ partial "card-grid.html" (dict "cards" .Params.cards "title" "Get Started") }}
+       {{ partial "card-grid.html" (dict "cards" .Params.features "title" "Our Services") }}
+*/}}
+
+{{ with .cards }}
+<section class="container-fluid py-64">
+    <div class="qld-card-grid">
+    <div class="container">
+        {{ with $.title }}
+        <h2 class="section-title">{{ . }}</h2>
+        {{ end }}
+    <div class="row g-4 mb-32 mb-lg-0">
+        {{ range . }}
+            {{ partial "single-action-card.html" . }}
+        {{ end }}
+        </div>
+    </div>
+    </div>
+</section>
+{{ end }}
+

@@ -1,0 +1,36 @@
+{{- $hdr := .Site.Params.header -}}
+{{- $main := cond (isset $hdr "maincontent") $hdr.maincontent (dict) -}}
+
+<div class="qld-header-brand">
+    <a class="qld-header-link d-lg-inline-flex align-middle" href="{{ with $main.url }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}">
+        <div class="qld-header-brand-image align-self-center">
+            {{- if $main.logo -}}
+            <img src="{{ $main.logo.src | relURL }}" height="56" alt="{{ with $main.logo.alttext }}{{ . }}{{ else }}Starches{{ end }}" />
+            {{- else if $main.sitetitle -}}
+            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            {{- else if $hdr.hasdeliveringforqldlogo -}}
+            <img class="qld-header-logo is-delivering-for-qld" height="56" alt="Queensland Government - Delivering for Queensland" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            {{- else -}}
+            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            {{- end -}}
+        </div>
+        {{- if $main.secondarylogo -}}
+        <div class="qld-header-secondary-content">
+            <img src="{{ $main.secondarylogo.src | relURL }}" class="qld-header-secondary-image qld-header-logo" height="56" alt="{{ with $main.secondarylogo.alttext }}{{ . }}{{ else }}{{ $main.sitetitle }}{{ with $main.subline }}{{ . }}{{ end }}{{ end }}" />
+        </div>
+        {{- else -}}
+        {{- if $main.sitetitle -}}
+        <div class="qld-header-secondary-content">
+            <span class="qld-header-site-title">
+                {{ $main.sitetitle }}
+            </span>
+            {{- with $main.subline -}}
+            <span class="qld-header-subline">
+                {{ . }}
+            </span>
+            {{- end -}}
+        </div>
+        {{- end -}}
+        {{- end -}}
+    </a>
+</div>

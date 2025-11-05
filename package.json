@@ -1,6 +1,12 @@
 
 {
   "name": "quartz-starches",
+  "version": "0.0.1",
+  "description": "Static Asset Viewer",
+  "main": "reindex.js",
+  "directories": {
+    "doc": "docs"
+  },
    "dependencies": {
     "@drustack/leaflet.resetview": "^1.9.2",
     "@maplibre/maplibre-gl-geocoder": "^1.8.0",

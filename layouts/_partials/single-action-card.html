@@ -1,0 +1,29 @@
+{{/* Single Action Card Partial
+     Usage:
+       {{ partial "single-action-card.html" (dict "title" "..." "icon" "..." "url" "..." "text" "...") }}
+*/}}
+
+{{ $title := .title }}
+{{ $icon := .icon | default "design" }}
+{{ $url := .url | default "#" }}
+{{ $text := .text }}
+{{ $showText := .showText }}
+
+<div class="col-12 col-md-6 col-lg-4 mb-32">
+    <div class="card card-default default icon-top card-single-action h-100">
+        <div class="card-icon-background">
+            <span class="qld-icon qld-icon-xxl qld-icon-{{ $icon }} icon-top" aria-hidden="true"></span>
+        </div>
+        
+        <div class="card-body">
+            <h3 class="card-title">
+                <a href="{{ $url }}" class="stretched-link">{{ $title }}</a>
+            </h3>
+            {{ if $showText }}
+            <div class="card-text">
+                {{ $text | markdownify }}
+            </div>
+            {{ end }}
+        </div>
+    </div>
+</div>

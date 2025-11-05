@@ -1,0 +1,27 @@
+<!-- QGDS Banner Component -->
+<div class="qld-banner qld-banner-grid banner-default dark none" >
+  <div class="container-fluid">
+    <div class="banner-inner">
+      <div class="banner-content">
+        <h1 class="banner-title-wrap ">
+          <span class="banner-title">{{ .Params.hero.title }}</span>
+        </h1>
+        <div class="banner-abstract">
+          {{ .Params.hero.abstract }}
+        </div>
+        <div class="banner-cta" role="group" aria-label="Available options">
+          <div class="cta-buttons">
+            
+            
+              <a class="btn btn-primary "   href="https://google.com" target="_blank"  data-progress-label="Loading" >
+                
+                <span class="btn-label-default">{{ .Params.hero.buttonText }}</span>
+                <span class="btn-label-progress">Loading</span>
+            
+                </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
