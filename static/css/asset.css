@@ -16,6 +16,7 @@
 #map {
   height: 40vh
 }
+
 #demo-warning {
   display: none;
 }
@@ -28,9 +29,6 @@
   margin: 20px 0;
   padding: 10px 0;
   border-bottom: 1px solid #ccc;
-}
-
-.nav-back {
 }
 
 .nav-position {
@@ -94,42 +92,53 @@ dialog img {
 .node-alias {
   color: #999;
 }
+
 .node-value {
   color: #050;
 }
+
 .node-empty {
   color: #500;
 }
+
 .node-name {
   line-height: 2.3rem;
   color: #444;
 }
+
 .node-name details {
   margin-bottom: 0;
 }
+
 .node-type {
   background-color: #efe;
 }
+
 .node-description {
   background-color: #eee;
   border-right: thick black solid;
   padding-right: 3rem;
 }
+
 article {
   font-size: 1.4rem;
 }
+
 article ul {
   list-style: none;
 }
+
 hr {
   color: rgba(127, 86, 197, 0.8);
 }
+
 hr:after {
   content: '';
   display: block;
   height: 1rem;
   background: rgba(127, 86, 197, 0.04);
 }
+
 article h2 {
   font-size: 130%;
   background-color: #f8f8f8;
@@ -140,6 +149,7 @@ article h2 {
   padding-bottom: 0.3rem;
   font-weight: normal;
 }
+
 article h3, article h4 {
   font-size: 100%;
   font-weight: normal;
@@ -150,11 +160,13 @@ article details.govuk-details {
   display: inline-block;
   margin-bottom: 0;
 }
+
 article details.govuk-details .govuk-details__text {
   background-color: #eee;
   border-right: thick #ddd solid;
   padding-right: 3rem;
 }
+
 article table.govuk-table {
   font-size: 80%;
 }

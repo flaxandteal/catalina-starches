@@ -18,7 +18,8 @@ module.exports = {
     'no-duplicate-selectors': null,
     'declaration-block-no-redundant-longhand-properties': null,
     'color-hex-length': null,
-    'selector-not-notation': null
+    'selector-not-notation': null,
+    'selector-id-pattern': '^[a-z][a-z0-9]*(?:-[a-z0-9]+)*(?:__(?:[a-z0-9]+(?:-[a-z0-9]+)*))*(?:--(?:[a-z0-9]+(?:-[a-z0-9]+)*))?$' 
   },
   ignoreFiles: [
     '**/node_modules/**',
