@@ -1,4 +1,24 @@
 {{ define "main" }}
   {{- partial "banner-hero.html" . -}}
   {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
+  {{ partial "promo-panel-video.html" }}
+  <section class="py-64 bg-light">
+    {{ partial "text-input.html" (dict "title" (.Params.historicalRecords.title) "text" (.Params.historicalRecords.text) "showImage" true)}}
+  </section>
+  <section class="py-64">
+    {{partial "text-input.html" (dict "title" (.Params.search.title) "text" (.Params.search.text) "showImage" false)}}
+    <div class="container">
+      <div class="row justify-content-center row-gap-5">
+        {{ range .Params.search.cards }}
+        <div class="col-10">
+          {{partial "multi-action-card.html" .}}
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+  <section class="bg-light py-64">
+    {{ partial "link-list.html" .Params.usefulLinks }}
+  </section>
+  
 {{ end }}
