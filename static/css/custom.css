@@ -74,19 +74,19 @@
 }
 
 .background-image::before {
-    background-image: url(/img/promo-image.jpg);
-    animation: slideShow1 15s ease-in-out infinite;
+    background-image: url("/img/promo-image.jpg");
+    animation: slide-show-1 15s ease-in-out infinite;
 }
 
 .background-image::after {
-    background-image: url(/img/peanut-silo.jpg);
-    animation: slideShow2 15s ease-in-out infinite;
+    background-image: url("/img/peanut-silo.jpg");
+    animation: slide-show-2 15s ease-in-out infinite;
 }
 
 /* For third image, we'll use a child element approach in HTML */
 .background-image .bg-slide-3 {
-    background-image: url(/img/promo-image.jpg);
-    animation: slideShow3 15s ease-in-out infinite;
+    background-image: url("/img/promo-image.jpg");
+    animation: slide-show-3 15s ease-in-out infinite;
 }
 
 .background-image > *:not(.bg-slide-3) {
@@ -95,18 +95,18 @@
 }
 
 /* Crossfade animations */
-@keyframes slideShow1 {
+@keyframes slide-show-1 {
     0%, 33% { opacity: 1; }
     36%, 100% { opacity: 0; }
 }
 
-@keyframes slideShow2 {
+@keyframes slide-show-2 {
     0%, 30% { opacity: 0; }
     33%, 66% { opacity: 1; }
     69%, 100% { opacity: 0; }
 }
 
-@keyframes slideShow3 {
+@keyframes slide-show-3 {
     0%, 63% { opacity: 0; }
     66%, 99% { opacity: 1; }
     100% { opacity: 0; }
