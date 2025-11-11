@@ -1,5 +1,11 @@
 {{ define "main" }}
-  {{- partial "banner-hero.html" . -}}
+  <section class="container radius">
+    <div class="background-image py-64">
+      <div class="bg-slide-3"></div>
+      {{- partial "banner-hero.html" . -}}
+    </div>
+    
+  </section>
   {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
   {{ partial "promo-panel-video.html" }}
   <section class="py-64 bg-light">

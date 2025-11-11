@@ -1,4 +1,3 @@
-
 /* custom icons */
 
 .qld-icon-archive {
@@ -30,4 +29,89 @@
     height: 100%;
     object-fit: cover;
     object-position: left center;
+}
+
+.radius .qld-banner {
+    border-radius: 1rem 1rem 3rem 1rem
+}
+
+.radius .navbar {
+    border-top-left-radius: 2rem;
+    border-top-right-radius: 2rem;
+}
+
+.radius .background-image {
+    border-bottom-left-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+}
+
+.background-image {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 400px;
+}
+
+.background-image::before,
+.background-image::after,
+.background-image .bg-slide-3 {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 0;
+}
+
+.background-image::before {
+    background-image: url(/img/promo-image.jpg);
+    animation: slideShow1 15s ease-in-out infinite;
+}
+
+.background-image::after {
+    background-image: url(/img/peanut-silo.jpg);
+    animation: slideShow2 15s ease-in-out infinite;
+}
+
+/* For third image, we'll use a child element approach in HTML */
+.background-image .bg-slide-3 {
+    background-image: url(/img/promo-image.jpg);
+    animation: slideShow3 15s ease-in-out infinite;
+}
+
+.background-image > *:not(.bg-slide-3) {
+    position: relative;
+    z-index: 1;
+}
+
+/* Crossfade animations */
+@keyframes slideShow1 {
+    0%, 33% { opacity: 1; }
+    36%, 100% { opacity: 0; }
+}
+
+@keyframes slideShow2 {
+    0%, 30% { opacity: 0; }
+    33%, 66% { opacity: 1; }
+    69%, 100% { opacity: 0; }
+}
+
+@keyframes slideShow3 {
+    0%, 63% { opacity: 0; }
+    66%, 99% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.banner-content-full {
+    grid-column: none !important
 }

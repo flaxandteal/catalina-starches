@@ -4,7 +4,10 @@
 <body class="d-flex flex-column min-vh-100">
 
   {{- partial "header.html" . -}}
-  {{- partial "navbar.html" . -}}
+  <div class="container radius">
+    {{- partial "navbar.html" . -}}
+  </div>
+  
 
   <main class="qld-body flex-fill" role="main">
     {{- block "main" . }}{{- end }}
