@@ -36,7 +36,7 @@ Be aware that restricting cookies using browser settings can prevent websites wo
 
 ## Current Settings
 
-{{< consent-list >}}
+{{< hugo-cookies/consent-list >}}
 
 ## Measuring website performance and usage
 
