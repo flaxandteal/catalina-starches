@@ -1,0 +1,14 @@
+<section class="container py-64" data-cy="useful-links">
+    <div class="row">
+        <h2 data-cy="useful-links-heading">{{ .title }}</h2>
+        <section class="link-column bg-light">
+            <ul class="nav col-vert-6" data-cy="links-list">
+                {{ range .links }}
+                <li class="nav-item" data-cy="link-item">
+                    <a class="nav-link" href="{{ .url | default "#" }}">{{ .title }}</a>
+                </li>
+                {{ end }}
+            </ul>
+        </section>
+    </div>
+</section>
