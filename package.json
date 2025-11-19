@@ -29,7 +29,7 @@
     "mapbox-gl-arcgis-featureserver": "^0.0.8",
     "marked": "^15.0.7",
     "marked-plaintify": "^1.1.1",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.0",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.1",
     "toml": "^3.0.0"
   },
   "private": true,
