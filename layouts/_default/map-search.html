@@ -1,6 +1,7 @@
 {{ define "main" }}
 
-<div class="govuk-body">
+<div class="container radius">
+    {{ partial "banner.html" }}
     {{ partial "starches/map-filters" }}
     {{ partial "starches/map"
     (dict
