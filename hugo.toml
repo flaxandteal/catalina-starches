@@ -20,10 +20,6 @@ cookies = "/cookies/"
 sitename = "Starches"
 variantClass = "dark"
 
-[[module.mounts]]
-source = "content"
-target = "content"
-
 [module]
   [[module.imports]]
     path = 'github.com/flaxandteal/hugo-theme-qld-design-system'
