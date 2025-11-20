@@ -37,24 +37,16 @@
     <div class="search-column col-lg-5 col-sm-12 pe-3 position-relative">
         {{ partial "search-map.html" }}
         <div id="filter-warning" class="filter-warning-hidden">Filtering geographically, <a href="javascript:resetView()">reset</a> view to see all results</div>
-        <button id="helpToggle" class="position-absolute btn btn-link p-2" aria-expanded="true" aria-label="Toggle help">
-            <i class="qld-icon qld-icon-md qld-icon-help" aria-hidden="true"></i>
-        </button>
-        <div id="helpContent" class="qld-content-body py-32">
-            <h2>How to Search</h2>
-            <p>Search for heritage assets by typing 4 or more characters in the search box below and by using the map. Search will happen automatically, without pressing enter.</p>
-            <p>If you have GPS, you can use the ⌖ button on the map to show nearby assets. <a href="#">More explanation</a> about the map search is available.</p>
-            <h2>Filtering</h2>
-            <p>Use the drop down below the search to apply different filters and search across different values of an asset</p>
-        </div>
-        <div id="results" class="container py-32">            
-        </div>
-        <div class="qld-content-body py-32 hidden">
-            <h2>How to Search</h2>
-            <p>Search for heritage assets by typing 4 or more characters in the search box below and by using the map. Search will happen automatically, without pressing enter.</p>
-            <p>If you have GPS, you can use the ⌖ button on the map to show nearby assets. <a href="#">More explanation</a> about the map search is available.</p>
-            <h2>Filtering</h2>
-            <p>Use the drop down below the search to apply different filters and search across different values of an asset</p>
+        <div id="scrollable-content" class="overflow-auto flex-fill">
+            <div id="helpContent" class="qld-content-body py-32">
+                <h2>How to Search</h2>
+                <p>Search for heritage assets by typing 4 or more characters in the search box below and by using the map. Search will happen automatically, without pressing enter.</p>
+                <p>If you have GPS, you can use the ⌖ button on the map to show nearby assets. <a href="#">More explanation</a> about the map search is available.</p>
+                <h2>Filtering</h2>
+                <p>Use the drop down below the search to apply different filters and search across different values of an asset</p>
+            </div>
+            <div id="results" class="container py-32 d-flex flex-column gap-4">           
+            </div>
         </div>
     </div>
 

@@ -225,8 +225,8 @@
 }
 
 #helpToggle {
-    top: 12rem;
-    right: -2rem;
+    min-height: 0;
+    min-width: 0;
 }
 
 .filter-options-wrap {

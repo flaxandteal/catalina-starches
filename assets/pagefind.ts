@@ -1,7 +1,23 @@
 import * as PagefindModularUI from "@pagefind/modular-ui";
+import Handlebars from 'handlebars';
 
 import { makeSearchQuery } from "./searchContext";
 import { getConfig } from './managers';
+
+/**
+ * Get and compile a Handlebars template from a script tag
+ * @param templateId - The ID of the script tag containing the template
+ * @returns Compiled Handlebars template function
+ */
+async function loadTemplate(templatePath: string): Promise<HandlebarsTemplateDelegate> {
+    const response = await fetch(templatePath);
+    if (!response.ok) {
+        throw new Error(`Failed to load template: ${response.statusText}`)
+    } 
+    const templateText = await response.text();
+
+    return Handlebars.compile(templateText);
+}
 
 export async function buildPagefind(searchAction: (term: string, settings: object, pagefind: any) => Promise<any>) {
     const instance = new PagefindModularUI.Instance({
@@ -54,6 +70,9 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         rc.append(p);
     });
     const config = await getConfig();
+    
+    // Get the result card template and populate it with data from the results
+    const resultCardTemplate = await loadTemplate('/templates/result-card-template.html');
     const resultTemplate = async function (result) {
         let [indexOnly, description] = result.excerpt.split('$$$');
         if (description && description.trim().length > 0) {
@@ -61,27 +80,28 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         } else {
             result.excerpt = indexOnly;
         }
-        const el = resultList.defaultResultTemplate(result);
-        let p = document.createElement("p");
-        p.classList = "result-links"
-        let location = result.meta.location;
-        let pInner = "<div class='govuk-button-group'>";
+
+        // Decode HTML entities in excerpt
+        const excerptDiv = document.createElement('div');
+        excerptDiv.innerHTML = result.excerpt;
+        const decodedExcerpt = excerptDiv.textContent || excerptDiv.innerText || '';
 
         const url = await makeSearchQuery(result.url);
-        pInner += `<a href='${url}' role="button" draggable="false" class="govuk-button" data-module="govuk-button">View</a>`;
-        // Use window.open with a JavaScript event instead of target='_blank' to ensure localStorage is properly shared
-        pInner += `<a href='${url}' role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button" onclick="window.open('${url}', '_blank'); return false;">Open tab</a></li>`;
-        if (location) {
-            location = JSON.parse(location);
-            if (location) {
-              const call = `window.__starchesManagers.primaryMap.then(map => map.flyTo({center: [${location[0]}, ${location[1]}], zoom: ${config.minSearchZoom + 1}}))`;
-              pInner += `<button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" onClick='${call}'>Zoom</button>`;
-            }
-        }
-        p.innerHTML = pInner;
-        el.children[1].append(p);
-        return el;
+        const location = result.meta.location ? JSON.parse(result.meta.location) : null;
+
+        const templateData = {
+            title: result.meta.title || 'Untitled',
+            excerpt: decodedExcerpt,
+            url: url,
+            location: location
+        };
+
+        // Render the Handlebars template
+        const rawHtml = resultCardTemplate(templateData);
+        return rawHtml;
     };
+
+    // build the results list with the supplied template
     const resultList = new PagefindModularUI.ResultList({
         containerElement: "#results",
         resultTemplate
