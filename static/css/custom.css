@@ -244,3 +244,16 @@
 .hidden {
     display: none;
 } 
+
+.filter-options-wrap .pagefind-modular-filter-pills {
+    overflow-x: auto;
+    flex-direction: column;
+    flex-wrap: wrap;
+    max-height: 300px;
+}
+
+.filter-options-wrap .pagefind-modular-filter-pills-wrapper {
+    overflow-x: unset;
+    padding: 0;
+    flex: 1;
+}

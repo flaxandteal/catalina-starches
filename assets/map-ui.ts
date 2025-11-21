@@ -12,6 +12,7 @@ function updateActiveFiltersList(): void {
     if (!filterList) return;
 
     const existingFilters = filterList.querySelectorAll('li');
+    console.log("existing filters", existingFilters)
     existingFilters.forEach(filter => filter.remove());
 
     activeFilters.forEach((filter) => {
@@ -58,8 +59,9 @@ function removeFilter(category: string): void {
 }
 
 function handleRadioChange(category: string, input: HTMLInputElement): void {
+    console.log("I'm running 0")
     const label = input.nextElementSibling?.textContent?.trim();
-    
+    console.log("I'm running 1")
     if (input.value === '1' || label === 'All') {
         // "All" selected, remove filter
         activeFilters.delete(category);
@@ -73,7 +75,7 @@ function handleRadioChange(category: string, input: HTMLInputElement): void {
             });
         }
     }
-    
+    console.log("I'm running")
     updateActiveFiltersList();
 }
 
@@ -174,14 +176,16 @@ document.addEventListener('DOMContentLoaded', (): void => {
         });
     }
 
-    // Radio button change listeners for filters
-    document.querySelectorAll<HTMLInputElement>('input[type="radio"][name$="Option"]').forEach((radio: HTMLInputElement): void => {
-        radio.addEventListener('change', (): void => {
-            const name = radio.name;
-            // Extract category name (e.g., "recordType" from "recordTypeOption")
+    // Radio button change listeners for filters - using event delegation to handle dynamically added elements
+    document.addEventListener('change', (event: Event): void => {
+        const target = event.target as HTMLInputElement;
+        // Check if the changed element is a radio button with name ending in "Option"
+        if (target && target.type === 'radio' && target.name && target.name.endsWith('Option')) {
+            const name = target.name;
+            // Extract category name (e.g., "recordType" or "category" from "recordTypeOption" or "categoryOption")
             const category = name.replace('Option', '');
-            handleRadioChange(category, radio);
-        });
+            handleRadioChange(category, target);
+        }
     });
 
     // Initialize: hide the filter label if no filters are active

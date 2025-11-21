@@ -39,27 +39,42 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         containerElement: "#filter",
         filter: "tags",
         alwaysShow: true,
-        makeFilterElement: () => (new PagefindModularUI.ElementBuilder.default("div")).class("govuk-radios__item"),
+        makeFilterElement: () => (new PagefindModularUI.ElementBuilder.default("div"))
+        .class("form-check")
+        .class("col-6"),
         pillInner: function(val, count) {
-            const ariaChecked = this.selected.includes(val);
-            console.log(this.defaultPillInner(val, count));
+            const filterName = this.filter || 'category';
+            const sanitizedVal = val.replace(/[^a-zA-Z0-9]/g, '');
+            const radioId = `radio${filterName}${sanitizedVal}`;
+            const isChecked = this.selected.includes(val);
+            
             return `
-                <input class="govuk-radios__input" ${ariaChecked ? 'checked' : ''} aria-checked="${ariaChecked}" id="chosenRecord" name="chosenRecord" type="radio" value="${val}">
-                <label class="govuk-label govuk-radios__label" for="chosenRecord">
-                    ${this.defaultPillInner(val, count)}
+                <input class="form-check-input" type="radio" name="${filterName}Option" id="${radioId}"
+                    value="${val}" ${isChecked ? 'checked' : ''}>
+                <label class="form-check-label" for="${radioId}">
+                    ${val} (${count})
                 </label>
             `;
         }
     });
-    const pillContainer = document.createElement("div");
-    pillContainer.classList.add("govuk-radios");
-    pillContainer.classList.add("govuk-radios--inline");
-    pillContainer.setAttribute("data-module", "govuk-radios");
-    filters.wrapper = document.getElementById("filter");
-    filters.pillContainer = pillContainer;
-    filters.wrapper.appendChild(pillContainer);
+    
+    // Add hardcoded filter pills data
+    // const hardcodedFilters = [
+    //     ["Heritage SSite", 15],
+    //     ["Historic Building", 23],
+    //     ["Archaeological Site", 8],
+    //     ["Monument", 12],
+    //     ["Conservation Area", 19]
+    // ];
+    
+    // filters.available = hardcodedFilters;
+    // filters.filterMemo = "";
+    
     instance.add(filters);
-
+    
+    // Trigger initial render with hardcoded data
+    filters.update();
+    
     instance.add(input);
     instance.on("loading", () => {
         let rc = document.getElementById("result-count");
