@@ -31,6 +31,10 @@
     object-position: left center;
 }
 
+.radius .qld-banner {
+    border-radius: 1rem 1rem 3rem 1rem
+}
+
 .radius .banner-floating {
     border-radius: 1rem 1rem 3rem 1rem
 }
@@ -43,6 +47,12 @@
 .radius .background-image, .radius .banner-radius {
     border-bottom-left-radius: 2rem;
     border-bottom-right-radius: 2rem;
+}
+
+@media (max-width: 699) {
+    .background-image {
+        display: none;
+    }
 }
 
 .background-image {
@@ -224,7 +234,7 @@
     color: var(--QLD-color-dark__link--on-action) !important;
 }
 
-#helpToggle {
+#help-toggle {
     min-height: 0;
     min-width: 0;
 }
