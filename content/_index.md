@@ -4,7 +4,7 @@ govuk: false
 hero:
     title: "Welcome to the Starches Historic Register!"
     abstract: "The official register of historic places for Starches. Begin searching the register below"
-    buttonText: "Search the Starches Register"
+    buttonText: "Search the Register"
 
 getStarted:
   - title: "What are the Historic Records?"

@@ -213,7 +213,7 @@ div.govuk-header__container {
     max-width: 100%;
     border: 10px solid #fff;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 991.98px) {
   .map {
       height: 90vh;
       max-width: 75vw;

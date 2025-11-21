@@ -31,7 +31,7 @@
     object-position: left center;
 }
 
-.radius .qld-banner {
+.radius .hero-banner {
     border-radius: 1rem 1rem 3rem 1rem
 }
 
@@ -44,10 +44,85 @@
     border-top-right-radius: 2rem;
 }
 
-.radius .background-image, .radius .banner-radius {
+.radius .banner-container-with-image-slide, .radius .banner-radius {
     border-bottom-left-radius: 2rem;
     border-bottom-right-radius: 2rem;
 }
+
+@media (max-width: 991.98px) {
+    .radius .banner-container-with-image-slide, .radius .banner-radius, .radius .container-md {
+        border-bottom-left-radius: 0rem;
+        border-bottom-right-radius: 0rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .container-sm {
+        padding: 0;
+    }
+}
+
+.banner-title {
+    font-size: 2rem;
+}
+
+.banner-abstract.banner-hero-abstract {
+    font-size: 1.25rem;
+}
+
+.banner-container-with-image-slide {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-wrap: nowrap;
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    box-sizing: border-box;
+
+    --banner-image-url: url("/img/promo-image.jpg");
+    --banner-top-gap: 10rem;
+    background-image: var(--banner-image-url);
+}
+
+@media (max-width: 991.98px) {
+    .banner-container-with-image-slide {
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 699px) {
+    .banner-container-with-image-slide {
+        padding-top: var(--banner-top-gap);
+        background-image: none;
+        background-color: var(--qld-dark-background);
+        border-radius: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+.banner-container-with-image-slide .mobile-banner {
+    display: none;
+}
+
+@media (max-width: 699px) {
+    .banner-container-with-image-slide .mobile-banner {
+        background-image: var(--banner-image-url);
+        background-size: cover;
+        background-position: center center;
+        height: var(--banner-top-gap);
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        display: block;
+        }
+}
+
+
 
 @media (max-width: 699) {
     .background-image {
