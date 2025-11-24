@@ -45,10 +45,11 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npm start
-          wait-on: 'http://127.0.0.1:1313'
+          start: hugo server -D --bind=127.0.0.1 --port=1314
+          wait-on: 'http://127.0.0.1:1314'
           wait-on-timeout: 60
           browser: chrome
+          config: baseUrl=http://127.0.0.1:1314
       
       - name: Upload Cypress screenshots on failure
         uses: actions/upload-artifact@v4
