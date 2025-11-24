@@ -36,6 +36,8 @@ jobs:
         run: npm ci
       - name: Get Hugo modules
         run: hugo mod get -u && hugo mod tidy
+      - name: Clean docs folder
+        run: rm -rf docs/*
       - name: Build Hugo site
         run: hugo --minify
       
