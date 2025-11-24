@@ -7,10 +7,10 @@
   {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
   {{ partial "promo-panel-video.html" }}
   <section class="py-64 bg-light">
-    {{ partial "text-input.html" (dict "title" (.Params.historicalRecords.title) "text" (.Params.historicalRecords.text) "showImage" true)}}
+    {{ partial "text-input.html" .Params.historicalRecords }}
   </section>
   <section class="py-64">
-    {{partial "text-input.html" (dict "title" (.Params.search.title) "text" (.Params.search.text) "showImage" false)}}
+    {{partial "text-input.html" .Params.search }}
     <div class="container">
       <div class="row justify-content-center row-gap-5">
         {{ range .Params.search.cards }}
