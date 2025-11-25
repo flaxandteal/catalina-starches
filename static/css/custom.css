@@ -343,3 +343,17 @@
     padding: 0;
     flex: 1;
 }
+
+.full-width-content {
+    position: relative;
+    left: 50%;
+    margin-left: -50vw;
+    width: 100vw;
+    padding: 0;
+    min-height: 18rem;
+    background: var(--qld-light-background);
+}
+
+.full-width-content .tab-content {
+    border: none;
+}
