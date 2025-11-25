@@ -44,31 +44,50 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
 
     const filterTemplate = await loadTemplate('/templates/filter-list-template.html', false);
 
-    console.log("templare", filterTemplate)
+    const filterLists = [
+        {
+            "container": "filter-category", 
+            "filter": "Category",
+            "hardcodedFilters": [
+                ["All", 77],
+                ["Heritage Site", 15],
+                ["Historic Building", 23],
+                ["Archaeological Site", 8],
+                ["Monument", 12],
+                ["Conservation Area", 19]
+            ]
+        },
+        {
+            "container": "filter-record-type", 
+            "filter": "RecordType",
+            "hardcodedFilters": [
+                ["All", 77],
+                ["Option 1", 15],
+                ["Option 2", 23],
+                ["Option 3", 8],
+                ["Option 4", 12],
+                ["Option 5", 19]
+            ]
+        },
+    ]
 
-    const filters = new customFilterPills({
-        containerElement: "#filter",
-        filter: "tags",
-        alwaysShow: true,
-        customTemplate: filterTemplate as string
-    });
-    
-    // Add hardcoded filter pills data
-    const hardcodedFilters = [
-        ["Heritage SSite", 15],
-        ["Historic Building", 23],
-        ["Archaeological Site", 8],
-        ["Monument", 12],
-        ["Conservation Area", 19]
-    ];
-    
-    filters.available = hardcodedFilters;
-    filters.filterMemo = "";
-    
-    instance.add(filters);
-    
-    // Trigger initial render with hardcoded data
-    filters.update();
+    for (let list of filterLists) {
+        const filters = new customFilterPills({
+            containerElement: `#${list.container}`,
+            filter: list.filter,
+            alwaysShow: true,
+            customTemplate: filterTemplate as string
+        });
+
+        // REMOVE just used for testing before we preindex filters
+        if (list.hardcodedFilters) {
+            filters.available = list.hardcodedFilters
+        }
+
+        instance.add(filters);
+        // Trigger initial render with hardcoded data
+        filters.update();
+    }
     
     instance.add(input);
     instance.on("loading", () => {
@@ -83,6 +102,11 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     
     // Get the result card template and populate it with data from the results
     const resultCardTemplate = await loadTemplate('/templates/result-card-template.html');
+
+    if (typeof resultCardTemplate !== 'function') {
+        throw new Error('The loaded resultCardTemplate is not a valid Handlebars template function.');
+    }
+    
     const resultTemplate = async function (result) {
         let [indexOnly, description] = result.excerpt.split('$$$');
         if (description && description.trim().length > 0) {
