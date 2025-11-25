@@ -2,7 +2,6 @@ baseURL = 'https://green-bay-084176900.5.azurestaticapps.net/'
 languageCode = 'en-gb'
 title = 'Queensland Heritage'
 publishDir = "docs"
-canonifyurls = true
 
 [markup.goldmark.renderer]
 unsafe = true
@@ -23,8 +22,20 @@ variantClass = "dark"
 [module]
   [[module.imports]]
     path = 'github.com/flaxandteal/hugo-theme-qld-design-system'
+    [[module.imports.mounts]]
+      source = "static"
+      target = "static"
+    [[module.imports.mounts]]
+      source = "layouts"
+      target = "layouts"  
   [[module.imports]]
     path = 'github.com/flaxandteal/starches'
+    [[module.imports.mounts]]
+      source = "static"
+      target = "static"
+    [[module.imports.mounts]]
+      source = "layouts"
+      target = "layouts"
   [[module.imports]]
     path = 'github.com/flaxandteal/hugo-cookies'
 

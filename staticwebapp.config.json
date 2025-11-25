@@ -1,0 +1,12 @@
+{
+  "trailingSlash": "auto",
+  "navigationFallback": {
+    "exclude": ["/img/*", "/css/*", "/js/*", "/assets/*", "*.{png,jpg,gif,svg,css,js,ico,json,xml}"]
+  },
+  "globalHeaders": {
+    "content-security-policy": "default-src object-src 'none'"
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  }
+}
