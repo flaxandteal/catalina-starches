@@ -2,7 +2,7 @@
   "trailingSlash": "auto",
   "navigationFallback": {
     "rewrite": "/index.html",
-    "exclude": ["pagefind/*, /img/*", "/css/*", "/js/*", "/assets/*", "*.{png,jpg,gif,svg,css,js,ico,json,xml}"]
+    "exclude": ["/img/*", "/css/*", "/js/*", "/assets/*", "*.{png,jpg,gif,svg,css,js,ico,json,xml}"]
   },
   "mimeTypes": {
     ".json": "application/json"
