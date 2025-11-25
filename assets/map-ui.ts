@@ -49,7 +49,7 @@ function removeFilter(category: string): void {
     
     // Reset to "All" option for this category
     const allRadio = document.querySelector<HTMLInputElement>(
-        `input[name="${category}Option"][value="1"]`
+        `input[name="${category}Option"][value="All"]`
     );
     if (allRadio) {
         allRadio.checked = true;
@@ -59,10 +59,8 @@ function removeFilter(category: string): void {
 }
 
 function handleRadioChange(category: string, input: HTMLInputElement): void {
-    console.log("I'm running 0")
     const label = input.nextElementSibling?.textContent?.trim();
-    console.log("I'm running 1")
-    if (input.value === '1' || label === 'All') {
+    if (input.value === 'All' || label === 'All') {
         // "All" selected, remove filter
         activeFilters.delete(category);
     } else {
@@ -75,7 +73,6 @@ function handleRadioChange(category: string, input: HTMLInputElement): void {
             });
         }
     }
-    console.log("I'm running")
     updateActiveFiltersList();
 }
 
