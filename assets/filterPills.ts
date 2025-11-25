@@ -18,61 +18,45 @@ export class customFilterPills extends FilterPills {
     constructor(opts: CustomFilterPillsOptions = {}) {
         super(opts);
         this.customTemplate = opts.customTemplate || null;
-        console.log("CCC", this.customTemplate)
+
         if (this.customTemplate) {
-            console.log("running 1")
             this.processTemplate(this.customTemplate);
-            console.log("running 2")
             this.initContainer(opts.containerElement)
-            console.log("running 3")
         }
     }
 
     processTemplate(template: string) {
-        console.log("PT", template)
         if (!template) {
             return;
         }
-        console.log("pt 1")
         const tempContainer = document.createElement("div")
         tempContainer.innerHTML = template
-        console.log("pt 2")
         const pillContainer = tempContainer.querySelector('[data-pagefind-filters="pill-container"]');
         let pillInnerTemplate = null
         const wrapper = tempContainer.querySelector('[data-pagefind-filters="wrapper"]');
-        console.log("pt 3")
         if (wrapper) {
-            console.log("pt 45")
             wrapper.innerHTML = "";
-            console.log("pt 46")
             this.wrapper = wrapper;
         }
-        console.log("pt 4")
         if (pillContainer) {
             this.pillContainer = pillContainer;
             pillInnerTemplate = pillContainer.innerHTML;
         }
-        console.log("pt 5")
         if (pillInnerTemplate) {
             // Convert the template element into a function that generates HTML
             const templateHTML = pillInnerTemplate;
-            console.log("pillinner", templateHTML)
             this.pillInner = (val: string, count: number) => {
                 const template = templateHTML
                     .replace(/\{\{value\}\}/g, val)
                     .replace(/\{\{count\}\}/g, count.toString());
 
-                console.log("TTTT", template)
                 return template
             };
         }
-        console.log("pt 6")
     }
 
     initContainer(selector) {
-        console.log("I'm using extended")
         if (!this.customTemplate) {
-            console.log("returned first run")
             return
         }
         const container = document.querySelector(selector);
@@ -84,7 +68,6 @@ export class customFilterPills extends FilterPills {
         container.innerHTML = "";
 
         const id = `pagefind_modular_filter_pills_${this.filter}`;
-        console.log("check", this.customTemplate)
         if (this.customTemplate) {
             this.wrapper.setAttribute("role", "group")
             this.wrapper.setAttribute("aria-labelledby", id)
@@ -144,6 +127,7 @@ export class customFilterPills extends FilterPills {
             const input = newPillContainer.querySelector("input");
             if (input) {
                 input.value = val;
+                input.name = `${this.filter}Option`
                 input.id = `radio_${val}_${this.filter}`;
                 input.checked = this.selected.includes(val);
             }
