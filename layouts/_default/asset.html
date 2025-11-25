@@ -6,26 +6,26 @@
     <div class="row">
         {{ partial "asset-banner.html" (dict "title" "Asset AAI-10") }}
     </div>
+    <div class="row mt-5 justify-content-between align-items-center">
+        <a class="col-auto" href="/map">
+            <div class="d-flex align-items-center">
+                <span class="qld-icon qld-icon-xxl qld-icon-arrow-left"></span>
+                <span class="ms-4">Return to Search</span>
+            </div>
+        </a>
+        
+        <div class="col-auto">
+            <a class="btn btn-primary " href="#" target="_blank"   >
+                <span class="qld-icon qld-icon-md qld-icon-download leading" aria-hidden="true"></span>    
+                <span class="btn-label-default">Download</span>
+                <span class="btn-label-progress"></span>
+            </a>
+        </div>
+    </div>
     <div class="row">
         {{ partial "tabs-content.html" }}
     </div>
 
-    <!-- Bottom navigation bar -->
-    <div class="modern-navigation" id="bottom-nav-container">
-      <div class="nav-back">
-        <a href="/" class="govuk-back-link back-link">Return to Search</a>
-      </div>
-      <div class="nav-position" id="position-counter-bottom">
-        <!-- Populated by JS -->
-      </div>
-      <div class="nav-buttons" id="bottom-navigation">
-        <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-bottom" style="display: none;">Previous</a>
-        <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-bottom" style="display: none;">Next</a>
-      </div>
-    </div>
-    <!-- <h3><a href="{{ site.Params.archesurl }}" data-arches-root="{{ site.Params.archesurl }}" class="govuk-back-link" id="arches-link">View Reference Record</a></h3> -->
-    <article id="asset">
-    </article>
   </div>
   <link rel="stylesheet" href="{{ "css/asset.css" | absURL }}">
   <link rel="stylesheet" href="{{ "css/breadcrumbs.css" | absURL }}">
@@ -57,15 +57,5 @@
 {{ if hugo.IsProduction }}
   <!-- {{ $js = $js | fingerprint }} -->
 {{ end }}
-<script
-  
-  {{ if hugo.IsProduction }}integrity="{{ $js.Data.Integrity }}"{{ end }}
-  type="module"></script>
 
-<div id="legacy-record-container">
-<h2>Legacy Record</h2>
-
-<pre id="legacy-record">
-</pre>
-</div>
 {{ end }}
