@@ -1,4 +1,5 @@
 import * as PagefindModularUI from "@pagefind/modular-ui";
+import { customFilterPills } from "filterPills";
 import Handlebars from 'handlebars';
 
 import { makeSearchQuery } from "./searchContext";
@@ -9,14 +10,19 @@ import { getConfig } from './managers';
  * @param templateId - The ID of the script tag containing the template
  * @returns Compiled Handlebars template function
  */
-async function loadTemplate(templatePath: string): Promise<HandlebarsTemplateDelegate> {
+async function loadTemplate(templatePath: string, compile: boolean = true): Promise<HandlebarsTemplateDelegate | string> {
     const response = await fetch(templatePath);
     if (!response.ok) {
         throw new Error(`Failed to load template: ${response.statusText}`)
     } 
     const templateText = await response.text();
 
-    return Handlebars.compile(templateText);
+    if (compile){
+        return Handlebars.compile(templateText);
+    } else {
+        return templateText
+    }
+    
 }
 
 export async function buildPagefind(searchAction: (term: string, settings: object, pagefind: any) => Promise<any>) {
@@ -35,40 +41,29 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     //     filter: "designations",
     //     alwaysShow: true
     // });
-    const filters = new PagefindModularUI.FilterPills({
+
+    const filterTemplate = await loadTemplate('/templates/filter-list-template.html', false);
+
+    console.log("templare", filterTemplate)
+
+    const filters = new customFilterPills({
         containerElement: "#filter",
         filter: "tags",
         alwaysShow: true,
-        makeFilterElement: () => (new PagefindModularUI.ElementBuilder.default("div"))
-        .class("form-check")
-        .class("col-6"),
-        pillInner: function(val, count) {
-            const filterName = this.filter || 'category';
-            const sanitizedVal = val.replace(/[^a-zA-Z0-9]/g, '');
-            const radioId = `radio${filterName}${sanitizedVal}`;
-            const isChecked = this.selected.includes(val);
-            
-            return `
-                <input class="form-check-input" type="radio" name="${filterName}Option" id="${radioId}"
-                    value="${val}" ${isChecked ? 'checked' : ''}>
-                <label class="form-check-label" for="${radioId}">
-                    ${val} (${count})
-                </label>
-            `;
-        }
+        customTemplate: filterTemplate as string
     });
     
     // Add hardcoded filter pills data
-    // const hardcodedFilters = [
-    //     ["Heritage SSite", 15],
-    //     ["Historic Building", 23],
-    //     ["Archaeological Site", 8],
-    //     ["Monument", 12],
-    //     ["Conservation Area", 19]
-    // ];
+    const hardcodedFilters = [
+        ["Heritage SSite", 15],
+        ["Historic Building", 23],
+        ["Archaeological Site", 8],
+        ["Monument", 12],
+        ["Conservation Area", 19]
+    ];
     
-    // filters.available = hardcodedFilters;
-    // filters.filterMemo = "";
+    filters.available = hardcodedFilters;
+    filters.filterMemo = "";
     
     instance.add(filters);
     
