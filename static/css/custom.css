@@ -83,6 +83,7 @@
 
     --banner-image-url: url("/img/promo-image.jpg");
     --banner-top-gap: 10rem;
+    
     background-image: var(--banner-image-url);
 }
 
