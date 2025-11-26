@@ -3,10 +3,7 @@ name: Build and Test
 on:
   push:
     branches:
-      - '**'  # Run on all branches
-  pull_request:
-    branches:
-      - '**'  # Run on PRs to all branches
+      - '**' 
 
 jobs:
   build_image_job:
