@@ -22,52 +22,36 @@ jobs:
         with:
           submodules: false
           lfs: false
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-            go-version: '1.25.4'
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.152.2'
-          extended: true
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: 'npm'
-      - name: Install dependencies
-        run: npm ci
-      - name: Get Hugo modules
-        run: hugo mod get -u && hugo mod tidy
-      - name: Clean docs folder
-        run: rm -rf docs/*
-      - name: Build Hugo site
-        run: hugo --minify
-        env:
-          HUGO_ENVIRONMENT: production
 
-      - name: Run ETL with starches-builder
-        run: npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
-      - name: Run Index with starches-builder
-        run: npx starches-builder index --site docs
-      - name: Copy Azure SWA config
-        run: cp staticwebapp.config.json docs/
-        
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+
+      - name: Run Docker Container
+        run: |
+          docker run -d \
+            --name quartz-starches \
+            ghcr.io/flaxandteal/quartz-starches:latest
+
+      - name: Extract docs Directory
+        run: |
+          docker cp quartz-starches:/usr/share/nginx/html/docs ./docs
+
       - name: Run CSS linter
         run: npm run test:lint:css
-      
+
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
-          wait-on: 'http://127.0.0.1:1314'
+          start: '' # No need to start a server, the Docker container is running
+          wait-on: 'http://127.0.0.1:8080'
           wait-on-timeout: 60
           browser: chrome
-          config: baseUrl=http://127.0.0.1:1314
+          config: baseUrl=http://127.0.0.1:8080
           install: false
-      
+
       - name: Upload Cypress screenshots on failure
         uses: actions/upload-artifact@v4
         if: failure()
@@ -75,7 +59,7 @@ jobs:
           name: cypress-screenshots
           path: cypress/screenshots
           if-no-files-found: ignore
-      
+
       - name: Upload Cypress videos
         uses: actions/upload-artifact@v4
         if: always()
@@ -83,18 +67,8 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
-      
-      - name: Install OIDC Client from Core Package
-        run: npm install @actions/core@1.6.0 @actions/http-client
-      - name: Get Id Token
-        uses: actions/github-script@v6
-        id: idtoken
-        with:
-           script: |
-               const coredemo = require('@actions/core')
-               return await coredemo.getIDToken()
-           result-encoding: string
-      - name: Build And Deploy
+
+      - name: Deploy to Azure Static Web Apps
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
         with:
