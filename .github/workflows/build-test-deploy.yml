@@ -48,10 +48,7 @@ jobs:
           HUGO_ENVIRONMENT: production
       - name: Copy Azure SWA config
         run: cp staticwebapp.config.json docs/
-      - name: Run Pagefind preindex
-        run: npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_
-      - name: Run Pagefind index
-        run: npx starches-builder index --site docs      
+        
       - name: Run CSS linter
         run: npm run test:lint:css
       
