@@ -136,8 +136,8 @@ jobs:
       
       - name: Copy flatbush files to docs
         run: |
-          if [ -f "flatbush.json" ] && [ -f "flatbush.bin" ]; then
-            cp flatbush.json flatbush.bin ./docs/
+          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
+            cp blob-data/flatbush.json blob-data/flatbush.bin ./docs/
             echo "Copied flatbush files to docs"
           else
             echo "Error: flatbush files not found"
