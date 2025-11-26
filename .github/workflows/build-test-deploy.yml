@@ -37,7 +37,8 @@ jobs:
 
       - name: Extract docs Directory
         run: |
-          docker cp quartz-starches:/usr/share/nginx/html/docs ./docs
+          mkdir -p docs
+          docker cp quartz-starches:/usr/share/nginx/html ./docs/
 
       - name: Run CSS linter
         run: npm run test:lint:css
