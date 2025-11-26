@@ -1,4 +1,4 @@
-name: Azure Static Web Apps CI/CD
+name: Build, Test, and Deploy
 
 on:
   push:
@@ -10,64 +10,51 @@ on:
       - dev
 
 jobs:
-  build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+  build_and_test:
+    name: Build Docker Image and Run Tests
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    permissions:
-       id-token: write
-       contents: read
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: false
           lfs: false
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Build Docker Image
+        run: |
+          docker build -t ghcr.io/flaxandteal/quartz-starches:latest .
+          echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker push ghcr.io/flaxandteal/quartz-starches:latest
+
+      - name: Pull Docker Image for Testing
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+
+      - name: Run Tests in Docker Container
+        run: |
+          docker run --rm ghcr.io/flaxandteal/quartz-starches:latest sh -c "npm ci && npm run test:lint:css && npx cypress run"
+
+  deploy:
+    name: Deploy
+    needs: build_and_test
+    runs-on: ubuntu-latest
+    steps:
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
 
       - name: Pull Docker Image
         run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
 
-      - name: Run Docker Container
-        run: |
-          docker run -d \
-            --name quartz-starches \
-            ghcr.io/flaxandteal/quartz-starches:latest
-
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker cp quartz-starches:/usr/share/nginx/html ./docs/
-
-      - name: Run CSS linter
-        run: npm run test:lint:css
-
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: '' # No need to start a server, the Docker container is running
-          wait-on: 'http://127.0.0.1:8080'
-          wait-on-timeout: 60
-          browser: chrome
-          config: baseUrl=http://127.0.0.1:8080
-          install: false
-
-      - name: Upload Cypress screenshots on failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-          if-no-files-found: ignore
-
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-          if-no-files-found: ignore
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:latest
+          docker cp temp-container:/usr/share/nginx/html ./docs
+          docker rm temp-container
 
       - name: Deploy to Azure Static Web Apps
         id: builddeploy
@@ -81,8 +68,7 @@ jobs:
           app_location: "docs" # Point to the built output folder
           api_location: "" # Api source code path - optional
           output_location: "" # Empty since app_location already points to the output
-          skip_app_build: true # Skip Oryx build since we already built with Hugo
-          ###### End of Repository/Build Configurations ######
+          skip_app_build: true # Skip Oryx build since we already have the HTML files
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
