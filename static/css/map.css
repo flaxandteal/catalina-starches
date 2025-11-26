@@ -17,52 +17,6 @@ time[pubdate=""]:before {
     content: "Updated"
 }
 
-h1, h1.govuk-heading-xl {
-    font-weight: normal;
-    font-size: 2rem;
-    line-height: 3rem;
-    margin: 3rem 0 1.5rem;
-    color: #19315a;
-}
-
-h3, h3.govuk-heading-l {
-    font-weight: normal;
-    font-size: 1.6rem;
-    line-height: 2.5rem;
-    margin: 2rem 0 1.2rem;
-    color: #19315a;
-}
-
-h2.govuk-heading-l {
-    font-weight: normal;
-    font-size: 1.7rem;
-    line-height: 2rem;
-    margin: 1.8rem 0 1rem;
-}
-
-h3.govuk-heading-m {
-    font-weight: normal;
-    font-size: 1.5rem;
-    line-height: 1.5rem;
-    margin: 1.5rem 0 0.8rem;
-}
-
-.govuk-hint p.govuk-body {
-    font-size: 1.2rem;
-    color: #444;
-}
-
-p.govuk-body {
-    font-size: 1.4rem;
-    line-height: 2.2rem;
-    margin: 0 0 2rem;
-}
-
-body {
-    width: calc(100vw - 0.1rem);
-    padding: 1em 0;
-    padding-bottom: 0;
-}
 
 .alizarin-domain-value {
     font-weight: bold;
@@ -87,23 +41,6 @@ body {
 
 #logo.nihed-logo svg {
     max-height: 86px;
-}
-@media screen and (max-width: 1024px) {
-    html {
-        font-size: 70%;
-    }
-
-    #mobile-nav-control.govuk-button {
-        display: none !important; /* TODO: once there are entries, reopen this */
-    }
-
-    #logo.nihed-logo svg {
-        max-width: 90vw;
-    }
-
-    #logo.nihed-logo {
-        margin: 0 0.5rem 0 0.5rem;
-    }
 }
 
 .govuk-header__logotype {
@@ -174,19 +111,29 @@ div.govuk-header__container {
 
 #map-instructions {
     position: absolute;
-    top: 40%;
+    top: 50%;
     left: 50%;
-    transform: translateY(-40%);
-    transform: translateX(-50%);
+    transform: translate(-50%, -50%);
     display: block;
     text-align: center;
-    margin: 0 0 0 0;
-    padding: 2rem;
-    max-width: 50%;
+    margin: 0;
+    padding: 1rem;
+    max-width: 85%;
+    max-height: 80%;
+    overflow-y: auto;
     color: white;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
+    line-height: 1.4;
     background: rgba(0.3, 0.3, 0.3, 0.6);
     border-radius: 0.3rem;
+}
+
+@media screen and (min-width: 800px) {
+  #map-instructions {
+    max-width: 50%;
+    font-size: 1.4rem;
+    padding: 2rem;
+  }
 }
 
 #map-cover {
@@ -220,15 +167,20 @@ div.govuk-header__container {
   width: 100%;
 }
 
-#search-column {
+.search-column {
     display: flex;
     flex-direction: column;
-    flex-basis: 100%;
-    padding: 10px;
-    max-height: 100vh;
+    height: 90vh;
+}
+
+.search-column > *:not(#results) {
+    flex-shrink: 0;
 }
 
 #results {
+    flex: 1;
+    min-height: 0;
+    flex-direction: column;
     overflow-y: auto;
 }
 
@@ -256,13 +208,15 @@ div.govuk-header__container {
 }
 
 .map {
-    height: 70vh;
-    max-width: 75vw;
+    height: 50vh;
+    width: 100%;
+    max-width: 100%;
     border: 10px solid #fff;
 }
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 991.98px) {
   .map {
-      height: 100vh;
+      height: 90vh;
+      max-width: 75vw;
   }
 
   #search-column {

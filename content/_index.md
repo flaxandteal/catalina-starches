@@ -4,33 +4,36 @@ govuk: false
 hero:
     title: "Welcome to the Starches Historic Register!"
     abstract: "The official register of historic places for Starches. Begin searching the register below"
-    buttonText: "Search the Starches Register"
+    buttonText: "Search the Register"
 
 getStarted:
   - title: "What are the Historic Records?"
     icon: "archive" 
-    url: "/search"
+    url: "#archive"
     showText: false
     text: ""
   
   - title: "How to Search"
     icon: "search"
-    url: "/categories"
+    url: "#search"
     showText: false
     text: ""
 
   - title: "Useful Information"
     icon: "alert-information" 
-    url: "/categories"
+    url: "#useful-information"
     showText: false
     text: ""
 
 historicalRecords:
   title: "What are the Historical Records"
+  id: "archive"
+  showImage: true
   text: "Lorem ipsum dolor sit amet consectetur. Viverra eu pulvinar a eu mauris ac at ultricies est. Tincidunt ultrices commodo vestibulum non netus. Mauris maecenas lacus hendrerit urna ultricies auctor. Sed tristique nascetur sapien condimentum adipiscing augue quisque eu. Facilisi ligula quam faucibus feugiat. Sapien at at eget malesuada senectus donec pellentesque pellentesque odio."
 
 search:
   title: "How to Search"
+  id: "search"
   text: "Lorem ipsum dolor sit amet consectetur. Viverra eu pulvinar a eu mauris ac at ultricies est. Tincidunt ultrices commodo vestibulum non netus. Mauris maecenas lacus hendrerit urna ultricies auctor. Sed tristique nascetur sapien condimentum adipiscing augue quisque eu. Facilisi ligula quam faucibus feugiat. Sapien at at eget malesuada senectus donec pellentesque pellentesque odio."
 
   cards:
@@ -55,6 +58,7 @@ search:
 
 usefulLinks:
   title: "Useful Links"
+  id: "useful-information"
   links:
     - title: "test"
       url: "test"
