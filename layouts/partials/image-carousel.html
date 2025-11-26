@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
+{{- $swiper := resources.Get "swiper.ts" | js.Build -}}
+
+<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
+<script src="{{ $swiper.RelPermalink }}" {{ if hugo.IsProduction }}integrity="{{ $swiper.Data.Integrity }}" {{ end
+    }}></script>
+
+<!-- Slider main container -->
+<div class="swiper assetSwiper">
+    <div class="swiper-wrapper">
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-prev"></div>
+    <div class="swiper-button-next"></div>
+</div>
+
+<div id="image-modal" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.9); justify-content:center; align-items:center; z-index:999;">
+  <img id="modal-img" src="" style="max-width:90vw; max-height:90vh; box-shadow:0 0 20px #000; position:fixed; z-index:999;">
+  <button id="close-modal" style="position:fixed; top:2rem; right:2rem; font-size:2rem; color:#fff; background:none; border:none; cursor:pointer; z-index:999;">&times;</button>
+</div>
+
