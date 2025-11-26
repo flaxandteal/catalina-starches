@@ -10,8 +10,45 @@ on:
       - dev
 
 jobs:
-  test_job:
+  build_image_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
+    runs-on: ubuntu-latest
+    name: Build Docker Image
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          lfs: false
+      
+      - name: Download data from Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          mkdir -p blob-data
+          az storage blob download-batch \
+            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+            --destination ./blob-data
+          echo "Downloaded files:"
+          ls -la ./blob-data/
+
+      - name: Extract prebuild tarball
+        run: |
+          tar -xzf ./blob-data/prebuild.tar.gz -C .
+          echo "Extracted files:"
+          ls -la
+      
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} \
+                       -t ghcr.io/flaxandteal/quartz-starches:latest .
+          docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker push ghcr.io/flaxandteal/quartz-starches:latest
+
+  test_job:
+    needs: build_image_job
     runs-on: ubuntu-latest
     name: Test Job
     steps:
@@ -21,13 +58,13 @@ jobs:
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       
       - name: Pull Docker Image
-        run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
       
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:latest
-          docker cp temp-container:/usr/share/nginx/html/. ./docs
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
       
       - name: Setup Node.js
@@ -73,18 +110,42 @@ jobs:
     needs: test_job
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download data from Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          mkdir -p blob-data
+          az storage blob download-batch \
+            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+            --destination ./blob-data
+      
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       
       - name: Pull Docker Image
-        run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
       
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:latest
-          docker cp temp-container:/usr/share/nginx/html/. ./docs
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
+      
+      - name: Copy flatbush files to docs
+        run: |
+          if [ -f "flatbush.json" ] && [ -f "flatbush.bin" ]; then
+            cp flatbush.json flatbush.bin ./docs/
+            echo "Copied flatbush files to docs"
+          else
+            echo "Error: flatbush files not found"
+            ls -la
+            exit 1
+          fi
+          echo "Final docs contents:"
+          ls -la ./docs/
       
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
@@ -94,3 +155,15 @@ jobs:
           action: "upload"
           app_location: "docs"
           skip_app_build: true
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_BAY_084176900 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "close"
