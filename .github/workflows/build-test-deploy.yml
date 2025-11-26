@@ -133,7 +133,24 @@ jobs:
           docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
           docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
+
+      - name: Copy Static Web App Config
+        run: cp staticwebapp.config.json docs/
       
+      - name: Download flatbush files
+        run: |
+          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
+            echo "Flatbush files already exist, skipping download."
+          else
+            echo "Flatbush files not found, downloading from Blob Storage..."
+            az storage blob download-batch \
+              --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+              --destination ./blob-data \
+              --pattern "flatbush.json flatbush.bin"
+          fi
+          echo "Listing contents of blob-data directory after download:"
+          ls -la blob-data/
+
       - name: Copy flatbush files to docs
         run: |
           if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
@@ -141,7 +158,7 @@ jobs:
             echo "Copied flatbush files to docs"
           else
             echo "Error: flatbush files not found"
-            ls -la
+            ls -la blob-data/
             exit 1
           fi
           echo "Final docs contents:"
