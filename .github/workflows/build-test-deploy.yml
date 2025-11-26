@@ -10,45 +10,35 @@ on:
       - dev
 
 jobs:
-  build_and_deploy_job:
+  test_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
-    name: Build and Deploy Job
-    permissions:
-       id-token: write
-       contents: read
+    name: Test Job
     steps:
       - uses: actions/checkout@v3
-        with:
-          submodules: false
-          lfs: false
-      - name: Setup Go
-        uses: actions/setup-go@v5
-        with:
-            go-version: '1.25.4'
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v2
-        with:
-          hugo-version: '0.152.2'
-          extended: true
+      
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+      
+      - name: Extract docs Directory
+        run: |
+          mkdir -p docs
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:latest
+          docker cp temp-container:/usr/share/nginx/html/. ./docs
+          docker rm temp-container
+      
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
+      
       - name: Install dependencies
         run: npm ci
-      - name: Get Hugo modules
-        run: hugo mod get -u && hugo mod tidy
-      - name: Clean docs folder
-        run: rm -rf docs/*
-      - name: Build Hugo site
-        run: hugo --minify
-        env:
-          HUGO_ENVIRONMENT: production
-      - name: Copy Azure SWA config
-        run: cp staticwebapp.config.json docs/
-        
+      
       - name: Run CSS linter
         run: npm run test:lint:css
       
@@ -77,22 +67,25 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
-      
-  deploy:
+
+  deploy_job:
     name: Deploy
-    needs: build_and_deploy_job
+    needs: test_job
     runs-on: ubuntu-latest
     steps:
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
       - name: Pull Docker Image
         run: docker pull ghcr.io/flaxandteal/quartz-starches:latest
+      
       - name: Extract docs Directory
         run: |
           mkdir -p docs
           docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:latest
-          docker cp temp-container:/usr/share/nginx/html ./docs
+          docker cp temp-container:/usr/share/nginx/html/. ./docs
           docker rm temp-container
+      
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
@@ -100,18 +93,4 @@ jobs:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           action: "upload"
           app_location: "docs"
-          api_location: ""
-          output_location: ""
           skip_app_build: true
-      
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        id: closepullrequest
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          action: "close"
