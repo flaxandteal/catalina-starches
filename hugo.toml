@@ -1,4 +1,4 @@
-baseURL = 'https://green-bay-084176900.5.azurestaticapps.net/'
+baseURL = '/'
 languageCode = 'en-gb'
 title = 'Queensland Heritage'
 publishDir = "docs"
