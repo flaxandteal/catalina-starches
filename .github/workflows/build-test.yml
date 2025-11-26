@@ -1,0 +1,102 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - '**'  # Run on all branches
+  pull_request:
+    branches:
+      - '**'  # Run on PRs to all branches
+
+jobs:
+  build_image_job:
+    runs-on: ubuntu-latest
+    name: Build Docker Image
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: false
+          lfs: false
+      
+      - name: Download data from Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          mkdir -p blob-data
+          az storage blob download-batch \
+            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+            --destination ./blob-data
+          echo "Downloaded files:"
+          ls -la ./blob-data/
+
+      - name: Extract prebuild tarball
+        run: |
+          tar -xzf ./blob-data/prebuild.tar.gz -C .
+          echo "Extracted files:"
+          ls -la
+      
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
+          docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+
+  test_job:
+    needs: build_image_job
+    runs-on: ubuntu-latest
+    name: Test Job
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+      
+      - name: Extract docs Directory
+        run: |
+          mkdir -p docs
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker cp temp-container:/usr/share/nginx/html/. ./docs/
+          docker rm temp-container
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run CSS linter
+        run: npm run test:lint:css
+      
+      - name: Run Cypress tests
+        uses: cypress-io/github-action@v6
+        with:
+          start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
+          wait-on: 'http://127.0.0.1:1314'
+          wait-on-timeout: 60
+          browser: chrome
+          config: baseUrl=http://127.0.0.1:1314
+          install: false
+      
+      - name: Upload Cypress screenshots on failure
+        uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+          if-no-files-found: ignore
+      
+      - name: Upload Cypress videos
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+          if-no-files-found: ignore

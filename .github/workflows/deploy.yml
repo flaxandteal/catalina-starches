@@ -1,0 +1,91 @@
+name: Deploy to Azure
+
+on:
+  push:
+    branches:
+      - dev
+  pull_request:
+    types: [closed]
+    branches:
+      - dev
+
+jobs:
+  deploy_job:
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Download data from Blob Storage
+        env:
+          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+        run: |
+          mkdir -p blob-data
+          az storage blob download-batch \
+            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+            --destination ./blob-data
+      
+      - name: Log in to Docker Registry
+        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+      
+      - name: Pull Docker Image
+        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+      
+      - name: Extract docs Directory
+        run: |
+          mkdir -p docs
+          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker cp temp-container:/usr/share/nginx/html/. ./docs/
+          docker rm temp-container
+
+      - name: Copy Static Web App Config
+        run: cp staticwebapp.config.json docs/
+      
+      - name: Download flatbush files
+        run: |
+          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
+            echo "Flatbush files already exist, skipping download."
+          else
+            echo "Flatbush files not found, downloading from Blob Storage..."
+            az storage blob download-batch \
+              --source ${{ secrets.BLOB_CONTAINER_NAME }} \
+              --destination ./blob-data \
+              --pattern "flatbush.json flatbush.bin"
+          fi
+          echo "Listing contents of blob-data directory after download:"
+          ls -la blob-data/
+
+      - name: Copy flatbush files to docs
+        run: |
+          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
+            cp blob-data/flatbush.json blob-data/flatbush.bin ./docs/
+            echo "Copied flatbush files to docs"
+          else
+            echo "Error: flatbush files not found"
+            ls -la blob-data/
+            exit 1
+          fi
+          echo "Final docs contents:"
+          ls -la ./docs/
+      
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_BAY_084176900 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "docs"
+          skip_app_build: true
+
+  close_pull_request_job:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    name: Close Pull Request Job
+    steps:
+      - name: Close Pull Request
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_GREEN_BAY_084176900 }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "close"
