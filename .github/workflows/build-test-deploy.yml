@@ -46,6 +46,12 @@ jobs:
         run: hugo --minify
         env:
           HUGO_ENVIRONMENT: production
+
+      - name: Run ETL with starches-builder
+        run: npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_
+
+      - name: Run Index with starches-builder
+        run: npx starches-builder index --site docs
       - name: Copy Azure SWA config
         run: cp staticwebapp.config.json docs/
         
