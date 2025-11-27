@@ -1,4 +1,5 @@
 import * as PagefindModularUI from "@pagefind/modular-ui";
+import { customFilterPills } from "filterPills";
 import Handlebars from 'handlebars';
 
 import { makeSearchQuery } from "./searchContext";
@@ -9,14 +10,19 @@ import { getConfig } from './managers';
  * @param templateId - The ID of the script tag containing the template
  * @returns Compiled Handlebars template function
  */
-async function loadTemplate(templatePath: string): Promise<HandlebarsTemplateDelegate> {
+async function loadTemplate(templatePath: string, compile: boolean = true): Promise<HandlebarsTemplateDelegate | string> {
     const response = await fetch(templatePath);
     if (!response.ok) {
         throw new Error(`Failed to load template: ${response.statusText}`)
     } 
     const templateText = await response.text();
 
-    return Handlebars.compile(templateText);
+    if (compile){
+        return Handlebars.compile(templateText);
+    } else {
+        return templateText
+    }
+    
 }
 
 export async function buildPagefind(searchAction: (term: string, settings: object, pagefind: any) => Promise<any>) {
@@ -35,45 +41,53 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     //     filter: "designations",
     //     alwaysShow: true
     // });
-    const filters = new PagefindModularUI.FilterPills({
-        containerElement: "#filter",
-        filter: "tags",
-        alwaysShow: true,
-        makeFilterElement: () => (new PagefindModularUI.ElementBuilder.default("div"))
-        .class("form-check")
-        .class("col-6"),
-        pillInner: function(val, count) {
-            const filterName = this.filter || 'category';
-            const sanitizedVal = val.replace(/[^a-zA-Z0-9]/g, '');
-            const radioId = `radio${filterName}${sanitizedVal}`;
-            const isChecked = this.selected.includes(val);
-            
-            return `
-                <input class="form-check-input" type="radio" name="${filterName}Option" id="${radioId}"
-                    value="${val}" ${isChecked ? 'checked' : ''}>
-                <label class="form-check-label" for="${radioId}">
-                    ${val} (${count})
-                </label>
-            `;
+
+    const filterTemplate = await loadTemplate('/templates/filter-list-template.html', false);
+
+    const filterLists = [
+        {
+            "container": "filter-category", 
+            "filter": "Category",
+            "hardcodedFilters": [
+                ["All", 77],
+                ["Heritage Site", 15],
+                ["Historic Building", 23],
+                ["Archaeological Site", 8],
+                ["Monument", 12],
+                ["Conservation Area", 19]
+            ]
+        },
+        {
+            "container": "filter-record-type", 
+            "filter": "RecordType",
+            "hardcodedFilters": [
+                ["All", 77],
+                ["Option 1", 15],
+                ["Option 2", 23],
+                ["Option 3", 8],
+                ["Option 4", 12],
+                ["Option 5", 19]
+            ]
+        },
+    ]
+
+    for (let list of filterLists) {
+        const filters = new customFilterPills({
+            containerElement: `#${list.container}`,
+            filter: list.filter,
+            alwaysShow: true,
+            customTemplate: filterTemplate as string
+        });
+
+        // REMOVE just used for testing before we preindex filters
+        if (list.hardcodedFilters) {
+            filters.available = list.hardcodedFilters
         }
-    });
-    
-    // Add hardcoded filter pills data
-    // const hardcodedFilters = [
-    //     ["Heritage SSite", 15],
-    //     ["Historic Building", 23],
-    //     ["Archaeological Site", 8],
-    //     ["Monument", 12],
-    //     ["Conservation Area", 19]
-    // ];
-    
-    // filters.available = hardcodedFilters;
-    // filters.filterMemo = "";
-    
-    instance.add(filters);
-    
-    // Trigger initial render with hardcoded data
-    filters.update();
+
+        instance.add(filters);
+        // Trigger initial render with hardcoded data
+        filters.update();
+    }
     
     instance.add(input);
     instance.on("loading", () => {
@@ -88,6 +102,11 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     
     // Get the result card template and populate it with data from the results
     const resultCardTemplate = await loadTemplate('/templates/result-card-template.html');
+
+    if (typeof resultCardTemplate !== 'function') {
+        throw new Error('The loaded resultCardTemplate is not a valid Handlebars template function.');
+    }
+    
     const resultTemplate = async function (result) {
         let [indexOnly, description] = result.excerpt.split('$$$');
         if (description && description.trim().length > 0) {
