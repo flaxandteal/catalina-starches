@@ -126,10 +126,12 @@ export class customFilterPills extends FilterPills {
             // Update the input element
             const input = newPillContainer.querySelector("input");
             if (input) {
+                console.log("VALUE", val)
                 input.value = val;
                 input.name = `${this.filter}Option`
                 input.id = `radio_${val}_${this.filter}`;
                 input.checked = this.selected.includes(val);
+                console.log("INPUT", input)
             }
 
             // Update the label element
@@ -161,8 +163,29 @@ export class customFilterPills extends FilterPills {
                 });
             }
 
-            // Append the new pillContainer to the wrapper
+            // Append the new pill to the wrapper
             this.wrapper.appendChild(newPillContainer);
+
+            console.log("WRAPPER", this.wrapper)
+        });
+    }
+
+    updateExisting() {
+        const pills = [...this.wrapper.querySelectorAll('[data-pagefind-filters="pill-container"]')];
+        this.available.forEach(([val, count], i) => {
+            if (!pills[i]) return;
+
+            const isSelected = this.selected.includes(val);
+            const input = pills[i].querySelector("input") as HTMLInputElement;
+            if (input) {
+                input.checked = isSelected;
+                input.setAttribute("aria-pressed", String(isSelected));
+            }
+
+            const label = pills[i].querySelector("label");
+            if (label) {
+                label.textContent = `${val} (${count})`;
+            }
         });
     }
 }
