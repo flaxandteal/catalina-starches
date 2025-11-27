@@ -88,7 +88,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
       cy.get('a').should('have.attr', 'href').and('include', '/map'); // Check href contains /map
     });
 
-    cy.get('@nav-home').find('a').should('have.attr', 'href').and('include', `${Cypress.config('baseUrl')}/`);
+    cy.get('@nav-home').find('a').invoke('prop', 'href').should('include', `${Cypress.config('baseUrl')}/`);
   });
 
   it('has the hero banner present with the buttons', () => {
@@ -99,7 +99,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
         .should('be.visible')
         .should('have.length', 1);
 
-      cy.contains('span', 'Search the Starches Register')
+      cy.contains('span', 'Search the Register')
         .should('be.visible')
 
       cy.get('a.btn')
