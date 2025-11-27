@@ -1,8 +1,6 @@
 {{ define "main" }}  
   <div class="container radius">
-    <div class="row">
-        {{ partial "banner.html" }}
-    </div>
+      {{ partial "banner.html" .Params }}
     <div class="row">
         {{ partial "asset-banner.html" (dict "title" "Asset AAI-10") }}
     </div>
