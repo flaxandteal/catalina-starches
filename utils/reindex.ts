@@ -328,7 +328,7 @@ async function reindex(files: string[] | null) {
             // library and so filtering out visible tiles from loaded data does not add security,
             // but makes issues invisible.
         } else {
-            const ngs = assetFunctions.getPermittedNodegroups(wkrm.modelClassName);
+            const ngs = assetFunctions.permissionManager.getPermittedNodegroups(wkrm.modelClassName);
             if (!ngs) {
                 console.warn("Not exporting", wkrm.modelClassName, "as no nodes available");
                 // Do not export a graph with no available nodegroups
