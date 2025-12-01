@@ -8,3 +8,5 @@ github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20251126150916-c2ee37
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20251126150916-c2ee37707abd/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
 github.com/flaxandteal/starches v0.2.0 h1:U1GrIHkZHiIVMkmTTo1QFW7nRVNAxj7BRehmDd5uggA=
 github.com/flaxandteal/starches v0.2.0/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
+github.com/flaxandteal/starches v0.2.1-alpha.2 h1:rnAAy8F+sOx4rnG8UbzdAcqcLmeuS6zpOzti3k7Ive4=
+github.com/flaxandteal/starches v0.2.1-alpha.2/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
