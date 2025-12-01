@@ -345,6 +345,8 @@
 }
 
 .full-width-content {
+    display: flex;
+    flex-direction: column;
     position: relative;
     left: 50%;
     margin-left: -50vw;
@@ -356,6 +358,10 @@
 
 .full-width-content .tab-content {
     border: none;
+}
+
+.full-width-content #map {
+    flex: 1
 }
 
 .swiper {
@@ -377,3 +383,4 @@
     height: 100%;
     object-fit: cover;
 }
+
