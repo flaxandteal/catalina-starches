@@ -384,3 +384,8 @@
     object-fit: cover;
 }
 
+/*override*/
+.qld-tabs .tabs-area{
+    z-index: 5;
+}
+
