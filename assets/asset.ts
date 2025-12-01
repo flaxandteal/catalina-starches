@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { marked, Token, Tokens } from 'marked';
 import dompurify from 'dompurify';
 import * as Handlebars from 'handlebars';
 import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin';
@@ -12,6 +12,7 @@ import {
 } from './searchContext';
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
+import { loadTemplate } from 'handlebar-utils';
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -298,11 +299,164 @@ function createGovukMarkedRenderer(
   };
 }
 
-async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeDetails = false): Promise<string> {
+// Return type for sectioned HTML output
+interface SectionedHtml {
+  [sectionId: string]: string;
+}
+
+async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeDetails = false): Promise<SectionedHtml> {
+  const nodeTemplate = await loadTemplate('/templates/asset-nodegroup-template.html', true) as HandlebarsTemplateDelegate;
+
+  // Custom token type for nodeBlock
+  interface NodeBlockField {
+    alias: string;      // The node alias (from @alias)
+    label: string;      // Display label
+    value: string;      // The value after the colon
+    node?: any;         // Looked up node data
+  }
+
+  interface NodeBlockToken {
+    type: 'nodeBlock';
+    raw: string;
+    title: string;
+    body: string;
+    fields: NodeBlockField[];
+    tokens: Token[];
+  }
+
+  // Track sections and their content
+  const sections: SectionedHtml = {};
+  let currentSectionId: string = 'default';
+  sections[currentSectionId] = '';
+
+  // Register extensions for sections and nodeBlocks
+  marked.use({
+    extensions: [
+      // NodeBlock extension
+      {
+        name: 'nodeBlock',
+        level: 'block',
+        start(src: string) {
+          return src.match(/^::/)?.index;
+        },
+        tokenizer(src: string): NodeBlockToken | undefined {
+          // Match ::Title::\n...content...\n::end::
+          const match = src.match(/^::([^:]+)::\n([\s\S]*?)::end::/);
+          if (match) {
+            const body = match[2].trim();
+
+            // Parse each line for @alias : value pattern
+            const fields: NodeBlockField[] = [];
+            const lines = body.split('\n');
+
+            for (const line of lines) {
+              // Match [@alias] value  OR  [Plain Text] value
+              const fieldMatch = line.match(/^\[([^\]]+)\]\s+(.*)$/);
+              if (fieldMatch) {
+                const label = fieldMatch[1].trim();
+                const value = fieldMatch[2].trim();
+
+                // Check if it's a node reference (starts with @)
+                const isNodeRef = label.startsWith('@');
+                const alias = isNodeRef ? label.substring(1) : null;
+                const node = alias ? nodes.get(alias) : null;
+
+                fields.push({
+                  alias: alias || '',
+                  label: isNodeRef ? (node?.name || alias) : label,
+                  value,
+                  node
+                });
+              }
+            }
+
+            const token: NodeBlockToken = {
+              type: 'nodeBlock',
+              raw: match[0],
+              title: match[1].trim(),
+              body,
+              fields,
+              tokens: []
+            };
+
+            return token;
+          }
+        },
+        renderer(token) {
+          const nodeToken = token as NodeBlockToken;
+          //build syntax safe id related to the node title
+          console.log("NODE TOKEN", nodeToken.title)
+          const id = nodeToken.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+
+          return nodeTemplate({
+            title: nodeToken.title,
+            fields: nodeToken.fields,
+            body: nodeToken.body,
+            id: id
+          });
+        }
+      }
+    ]
+  });
+
   const renderer = createGovukMarkedRenderer(nodes, { showNodeDetails }) as Parameters<typeof marked.use>[0]['renderer'];
   marked.use({ renderer });
+
   const parsed = await marked.parse(markdown);
-  return dompurify.sanitize(parsed);
+
+  // Split the parsed output by section markers and collect into sections object
+  const sectionPattern = /<!--section:([\w-]+)-->/g;
+  let lastIndex = 0;
+  let match: RegExpExecArray | null;
+  let activeSectionId = 'default';
+
+  while ((match = sectionPattern.exec(parsed)) !== null) {
+    // Add content before this marker to the active section
+    const content = parsed.slice(lastIndex, match.index);
+    if (content.trim()) {
+      sections[activeSectionId] = (sections[activeSectionId] || '') + content;
+    }
+    // Switch to new section
+    activeSectionId = match[1];
+    if (!sections[activeSectionId]) {
+      sections[activeSectionId] = '';
+    }
+    lastIndex = match.index + match[0].length;
+  }
+
+  // Add remaining content to the last active section
+  const remainingContent = parsed.slice(lastIndex);
+  if (remainingContent.trim()) {
+    sections[activeSectionId] = (sections[activeSectionId] || '') + remainingContent;
+  }
+
+  // Sanitize each section
+  for (const sectionId of Object.keys(sections)) {
+    sections[sectionId] = dompurify.sanitize(sections[sectionId]);
+  }
+
+  // Remove empty default section if other sections exist
+  if (sections['default']?.trim() === '' && Object.keys(sections).length > 1) {
+    delete sections['default'];
+  }
+
+  return sections;
+}
+
+// Helper to inject sectioned HTML into the DOM
+function injectSections(sections: SectionedHtml): void {
+  for (const [sectionId, html] of Object.entries(sections)) {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.innerHTML = html;
+    } else {
+      // Fallback: if no matching element, append to 'asset' element
+      const assetElement = document.getElementById('asset');
+      if (assetElement) {
+        assetElement.innerHTML += html;
+      }
+    }
+  }
 }
 
 // Rendering functions
@@ -318,12 +472,9 @@ async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>
   }
 
   const nodes = asset.asset.__.getNodeObjectsByAlias();
-  const html = await renderToHtml(markdown, nodes, true);
+  const sections = await renderToHtml(markdown, nodes, true);
 
-  const assetElement = document.getElementById('asset');
-  if (assetElement) {
-    assetElement.innerHTML = html;
-  }
+  injectSections(sections);
 
   return {};
 }
@@ -355,18 +506,11 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
     }
   );
 
-  console.log("THE HA DATA", nonstaticAsset)
-  console.log("MARKDOWN OUTPUT", markdown)
-
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
-  console.log("NODES", nodes)
-  const html = await renderToHtml(markdown, nodes, false);
+  const sections = await renderToHtml(markdown, nodes, false);
 
-  const assetElement = document.getElementById('asset');
-  if (assetElement) {
-    assetElement.innerHTML = html;
-  }
+  injectSections(sections);
 
   setupDialogLinks();
 

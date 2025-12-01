@@ -45,38 +45,4 @@
     <div class="row">
         {{ partial "tabs-content.html" }}
     </div>
-    <article id="asset">
-    </article>
-</div>
-
-<div class="modern-navigation" id="bottom-nav-container">
-    <div class="nav-back">
-        <a href="{{ site.BaseURL }}" class="govuk-back-link back-link">Return to Search</a>
-    </div>
-    <div class="nav-position" id="position-counter-bottom">
-        {{/* Populated by JavaScript */}}
-    </div>
-    <div class="nav-buttons" id="bottom-navigation">
-        <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-bottom"
-            style="display: none;">Previous</a>
-        <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-bottom" style="display: none;">Next</a>
-    </div>
-</div>
-
-
-
-<dialog id="asset-dialog" aria-labelledby="asset-dialog__heading">
-    <div id="asset-dialog__heading"></div>
-
-    <div id="asset-dialog__content"></div>
-
-    <button class="govuk-button dialog-cancel" type="button" id="asset-dialog__cancel"
-        onclick="document.getElementById('asset-dialog').close()">Cancel</button>
-</dialog>
-
-<div id="legacy-record-container">
-    <h2>Legacy Record</h2>
-
-    <pre id="legacy-record">
-</pre>
 </div>
