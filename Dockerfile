@@ -1,4 +1,4 @@
-FROM node:23.10.0 as node
+FROM node:23.10.0 AS node
 ARG STARCHES_INCLUDE_PRIVATE=0
 
 WORKDIR /app
@@ -18,9 +18,9 @@ RUN ./hugo
 
 ENV STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE
 RUN echo STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE && \
-    npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_
+    npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private
 
-RUN npx starches-builder index --site docs
+RUN npx starches-builder index --site docs --include-private
 RUN tar -cf /app/docs.tar -C docs .
 
 FROM nginxinc/nginx-unprivileged:1.21.5-alpine
