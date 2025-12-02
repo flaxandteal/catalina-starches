@@ -190,15 +190,17 @@
 <!--section:asset-related-->
 
 ::Places{location}::
-[Related] {{ ha.associated_actors }}
+[Related] Brisbane
 ::end::
 
 ::People{profile}::
-[Related] {{ ha.associated_actors }}
+[Related] John Smith
+[Related] Jane Doe
+[Related] Anna Smythe
 ::end::
 
 ::Organisation{building}::
-[Related] {{ ha.associated_actors }}
+[Related] Council
 ::end::
 
 {{#if ecrs }}
