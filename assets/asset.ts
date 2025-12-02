@@ -321,8 +321,17 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
     type: 'nodeBlock';
     raw: string;
     title: string;
+    icon?: string;
     body: string;
     fields: NodeBlockField[];
+    tokens: Token[];
+    sectionId?: string;
+  }
+
+  interface SectionToken {
+    type: 'section';
+    raw: string;
+    sectionId: string;
     tokens: Token[];
   }
 
@@ -334,6 +343,42 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
   // Register extensions for sections and nodeBlocks
   marked.use({
     extensions: [
+      // Section extension - captures content between section markers
+      {
+        name: 'section',
+        level: 'block',
+        start(src: string) {
+          return src.match(/^<!--section:/)?.index;
+        },
+        tokenizer(this: any, src: string): SectionToken | undefined {
+          // Match <!--section:id--> followed by content until next section or end
+          const match = src.match(/^<!--section:([\w-]+)-->\n?([\s\S]*?)(?=<!--section:|\s*$)/);
+          if (match) {
+            const sectionId = match[1];
+            const content = match[2];
+
+            // Update current section ID for nested nodeBlocks
+            currentSectionId = sectionId;
+
+            const token: SectionToken = {
+              type: 'section',
+              raw: match[0],
+              sectionId: sectionId,
+              tokens: []
+            };
+
+            // Tokenize the inner content
+            this.lexer.blockTokens(content, token.tokens);
+
+            return token;
+          }
+        },
+        renderer(this: any, token: SectionToken) {
+          const innerHtml = this.parser.parse(token.tokens);
+          // Store in sections map and return with marker for later extraction
+          return `<!--section:${token.sectionId}-->${innerHtml}`;
+        }
+      },
       // NodeBlock extension
       {
         name: 'nodeBlock',
@@ -342,10 +387,12 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
           return src.match(/^::/)?.index;
         },
         tokenizer(src: string): NodeBlockToken | undefined {
-          // Match ::Title::\n...content...\n::end::
-          const match = src.match(/^::([^:]+)::\n([\s\S]*?)::end::/);
+          // Match ::Title{icon}::\n...content...\n::end:: (icon is optional)
+          const match = src.match(/^::([^:{]+)(?:\{([^}]+)\})?::\n([\s\S]*?)::end::/);
           if (match) {
-            const body = match[2].trim();
+            const title = match[1].trim();
+            const icon = match[2]?.trim();
+            const body = match[3].trim();
 
             // Parse each line for @alias : value pattern
             const fields: NodeBlockField[] = [];
@@ -375,10 +422,12 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const token: NodeBlockToken = {
               type: 'nodeBlock',
               raw: match[0],
-              title: match[1].trim(),
+              title,
+              icon,
               body,
               fields,
-              tokens: []
+              tokens: [],
+              sectionId: currentSectionId
             };
 
             return token;
@@ -386,15 +435,17 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
         },
         renderer(token) {
           const nodeToken = token as NodeBlockToken;
-          //build syntax safe id related to the node title
-          console.log("NODE TOKEN", nodeToken.title)
-          const id = nodeToken.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+          const titleId = nodeToken.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+          const sectionId = nodeToken.sectionId || 'default';
+          const id = `${titleId}-${sectionId}`;
 
           return nodeTemplate({
             title: nodeToken.title,
+            icon: nodeToken.icon,
             fields: nodeToken.fields,
             body: nodeToken.body,
-            id: id
+            id: id,
+            sectionId: sectionId
           });
         }
       }
