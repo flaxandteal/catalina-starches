@@ -1,8 +1,4 @@
 {{- if not (.Page.Store.Get "asset-style-loaded-flag") -}}
-<link href="https://unpkg.com/maplibre-gl@^5.3.1/dist/maplibre-gl.css" rel="stylesheet" />
-<link rel="stylesheet" href="{{ " css/map.css" | absURL }}">
-<link rel="stylesheet" href="{{ " css/cleangov.css" | absURL }}">
-<link rel="stylesheet" href="{{ " pagefind/pagefind-modular-ui.css" | absURL }}" />
 
 {{ $baseAssets := (slice "asset.ts" "search.ts") }}
 {{ range $baseAssets }}
