@@ -47,11 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
       const modal = document.getElementById('image-modal') as HTMLElement;
       const modalImg = document.getElementById('modal-img') as HTMLImageElement;
       const closeModal = document.getElementById('close-modal') as HTMLElement;
+      
 
       // Add click event to all images
       document.querySelectorAll('.swiper-slide img').forEach(img => {
         img.addEventListener('click', function() {
           modalImg.src = (this as HTMLImageElement).src;
+          modalImg.alt = img.getAttribute('alt')
+          console.log("ALT TEXT", modalImg.alt)
           modal.style.display = 'flex';
         });
       });
