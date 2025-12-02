@@ -36,10 +36,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
       const wrapper = document.querySelector('.swiper-wrapper');
       wrapper.innerHTML = '';
-      images.forEach(imgUrl => {
+      images.forEach((imgUrl, index) => {
         const slide = document.createElement('div');
         slide.className = 'swiper-slide';
-        slide.innerHTML = `<img src="${imgUrl}" style="cursor:pointer;" />`;
+        slide.innerHTML = `<img src="${imgUrl}" alt="Gallery image ${index + 1}" style="cursor:pointer;" />`;
         wrapper.appendChild(slide);
       });
 
