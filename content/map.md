@@ -6,4 +6,12 @@ text = 'This is some information about the search register'
 type = '_default'
 layout = 'map-search'
 location = '[54,-6]'
+
+[[breadcrumbs]]
+name = 'Home'
+url = '/'
+
+[[breadcrumbs]]
+name = 'Search'
+active = 'true'
 +++
