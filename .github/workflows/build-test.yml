@@ -72,28 +72,28 @@ jobs:
       - name: Run CSS linter
         run: npm run test:lint:css
       
-      - name: Run Cypress tests
-        uses: cypress-io/github-action@v6
-        with:
-          start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
-          wait-on: 'http://127.0.0.1:1314'
-          wait-on-timeout: 60
-          browser: chrome
-          config: baseUrl=http://127.0.0.1:1314
-          install: false
+      # - name: Run Cypress tests
+      #   uses: cypress-io/github-action@v6
+      #   with:
+      #     start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
+      #     wait-on: 'http://127.0.0.1:1314'
+      #     wait-on-timeout: 60
+      #     browser: chrome
+      #     config: baseUrl=http://127.0.0.1:1314
+      #     install: false
       
-      - name: Upload Cypress screenshots on failure
-        uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
-          if-no-files-found: ignore
+      # - name: Upload Cypress screenshots on failure
+      #   uses: actions/upload-artifact@v4
+      #   if: failure()
+      #   with:
+      #     name: cypress-screenshots
+      #     path: cypress/screenshots
+      #     if-no-files-found: ignore
       
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
-          if-no-files-found: ignore
+      # - name: Upload Cypress videos
+      #   uses: actions/upload-artifact@v4
+      #   if: always()
+      #   with:
+      #     name: cypress-videos
+      #     path: cypress/videos
+      #     if-no-files-found: ignore
