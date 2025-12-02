@@ -1,9 +1,9 @@
 <!--section:asset-overview-->
 
 ::Names::
-[@display_name] {{ ha.display_name }} 
+[@display_name] {{{ ha.display_name }}} 
 {{#each ha.monument_names }}
-[@monument_name] {{ monument_name }}
+[@monument_name] {{{ monument_name }}}
 {{/each}}
 ::end::
 
@@ -189,7 +189,15 @@
 
 <!--section:asset-related-->
 
-::People::
+::Places{location}::
+[Related] {{ ha.associated_actors }}
+::end::
+
+::People{profile}::
+[Related] {{ ha.associated_actors }}
+::end::
+
+::Organisation{building}::
 [Related] {{ ha.associated_actors }}
 ::end::
 
