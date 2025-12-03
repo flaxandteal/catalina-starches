@@ -293,3 +293,7 @@ url = "/map"
 # [[params.navbar.navigation]]
 # text = "About"
 # url = "/about/"
+
+[security]
+  [security.funcs]
+    getenv = ['^BLOB_']

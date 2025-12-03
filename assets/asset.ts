@@ -15,6 +15,7 @@ import {
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate } from 'handlebar-utils';
+import { initSwiper } from 'swiper';
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -562,6 +563,8 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
   const sections = await renderToHtml(markdown, nodes, false);
+
+  initSwiper(asset.meta.resourceinstanceid)
 
   injectSections(sections);
 

@@ -60,7 +60,7 @@
   },
   "scripts": {
     "test:lint:css": "stylelint \"{static,themes}/**/*.css\" --allow-empty-input",
-    "start": "hugo server -D --bind=127.0.0.1 --port=1313",
+    "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "cy:open": "cypress open",
     "cy:run": "cypress run --config baseUrl=http://127.0.0.1:1313",
     "test:cy:dev": "start-server-and-test start http://127.0.0.1:1313 cy:run",
