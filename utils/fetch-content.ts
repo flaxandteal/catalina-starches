@@ -2,17 +2,16 @@
 /**
  * Fetch content files from blob storage.
  *
- * This script:
- * 1. Downloads markdown content files from blob storage
- * 2. Falls back to content-defaults/ if blob file is missing
- * 3. Writes to content/ directory
+ * This script downloads markdown content files from blob storage
+ * and overwrites the local content/ files. If a file is not found
+ * in blob storage, the existing local file is kept as-is.
  *
  * Usage: npx ts-node utils/fetch-content.ts
  *
  * Environment variables:
  *   BLOB_BASE_URL     - Base URL for blob storage (required)
  *   BLOB_CONTENT_PATH - Path to content in blob (default: content/)
- *   SKIP_BLOB_FETCH   - Set to 'true' to skip fetching (use defaults)
+ *   SKIP_BLOB_FETCH   - Set to 'true' to skip fetching (keep local files)
  */
 
 import * as fs from 'fs';
@@ -23,7 +22,6 @@ import * as http from 'http';
 // Paths
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const CONTENT_DIR = path.join(PROJECT_ROOT, 'content');
-const DEFAULTS_DIR = path.join(PROJECT_ROOT, 'content-defaults');
 
 // Environment
 const BLOB_BASE_URL = process.env.BLOB_BASE_URL;
@@ -55,7 +53,7 @@ async function fetchUrl(url: string): Promise<string | null> {
         }
       }
 
-      // Not found - return null to use default
+      // Not found - return null to keep existing file
       if (res.statusCode === 404) {
         resolve(null);
         return;
@@ -76,53 +74,23 @@ async function fetchUrl(url: string): Promise<string | null> {
 }
 
 /**
- * Read a default content file if it exists
- */
-function readDefault(filename: string): string | null {
-  const defaultPath = path.join(DEFAULTS_DIR, filename);
-  if (fs.existsSync(defaultPath)) {
-    return fs.readFileSync(defaultPath, 'utf-8');
-  }
-  return null;
-}
-
-/**
- * Fetch a single content file
+ * Fetch a single content file from blob
  */
 async function fetchContentFile(filename: string): Promise<void> {
   const blobUrl = `${BLOB_BASE_URL}/${BLOB_CONTENT_PATH}${filename}`;
   const localPath = path.join(CONTENT_DIR, filename);
 
   console.log(`\nProcessing: ${filename}`);
+  console.log(`  Fetching from: ${blobUrl}`);
 
-  let content: string | null = null;
+  const content = await fetchUrl(blobUrl);
 
-  // Try to fetch from blob
-  if (!SKIP_BLOB_FETCH && BLOB_BASE_URL) {
-    console.log(`  Fetching from: ${blobUrl}`);
-    content = await fetchUrl(blobUrl);
-
-    if (content) {
-      console.log(`  Downloaded from blob`);
-    } else {
-      console.log(`  Not found in blob, checking defaults...`);
-    }
+  if (content) {
+    fs.writeFileSync(localPath, content);
+    console.log(`  ✓ Downloaded and saved`);
+  } else {
+    console.log(`  - Not found in blob, keeping existing local file`);
   }
-
-  // Fall back to defaults if not in blob
-  if (!content) {
-    content = readDefault(filename);
-    if (content) {
-      console.log(`  Using default from content-defaults/`);
-    } else {
-      console.log(`  No default found, skipping`);
-      return;
-    }
-  }
-
-  // Write to content directory
-  fs.writeFileSync(localPath, content);
-  console.log(`  Wrote: ${localPath}`);
 }
 
 /**
@@ -132,9 +100,13 @@ async function main(): Promise<void> {
   console.log('=== Fetch Content ===');
 
   if (SKIP_BLOB_FETCH) {
-    console.log('\nSKIP_BLOB_FETCH is set - using default content files');
-  } else if (!BLOB_BASE_URL) {
-    console.log('\nBLOB_BASE_URL not set - using default content files');
+    console.log('\nSKIP_BLOB_FETCH is set - keeping local content files');
+    return;
+  }
+
+  if (!BLOB_BASE_URL) {
+    console.log('\nBLOB_BASE_URL not set - keeping local content files');
+    return;
   }
 
   // Ensure content directory exists
