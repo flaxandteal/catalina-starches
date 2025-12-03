@@ -19,7 +19,7 @@ jobs:
         env:
           AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
         run: |
-          mkdir -p blob-data
+          mkdir -p blob-data/prebuild
           az storage blob download-batch \
             --source ${{ secrets.BLOB_CONTAINER_NAME }}/prebuild \
             --destination ./blob-data/prebuild
