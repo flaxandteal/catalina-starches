@@ -511,7 +511,7 @@ describe('Asset Page — accessibility + functionality', () => {
   });
 
   describe('Responsive Design', () => {
-    it.only('displays correctly on mobile viewport', () => {
+    it('displays correctly on mobile viewport', () => {
       cy.viewport('iphone-x');
 
       cy.get('#asset-title').should('be.visible');
