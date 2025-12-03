@@ -22,8 +22,8 @@ jobs:
           mkdir -p blob-data/prebuild
           az storage blob download-batch \
             --source ${{ secrets.BLOB_CONTAINER_NAME }} \
-            --destination ./blob-data/prebuild
-            --pattern "prebuild/"
+            --destination ./blob-data/prebuild \
+            --pattern "prebuild/*"
           echo "Downloaded files:"
           ls -la ./blob-data/prebuild
 
