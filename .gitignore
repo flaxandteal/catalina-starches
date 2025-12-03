@@ -13,3 +13,14 @@ pagefind-bin
 copilot-instructions.md
 assets/jsconfig.json
 assets/jsconfig.json
+.vscode
+# Config generated from site-config.yaml
+config/_default/params.yaml
+
+# Data file for template access
+data/siteConfig.yaml
+
+# Content fetched from blob (optional - uncomment if using blob content)
+# content/_index.md
+# content/faq.md
+# content/feedback.md
