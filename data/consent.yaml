@@ -1,0 +1,13 @@
+items:
+  - name: "essential"
+    is_functional: true
+    description: "Essential cookies keep your information secure while you use this service."
+    required: true
+  - name: "analytics"
+    is_functional: false
+    description: "We use analytics cookies to measure how you use the website so we can improve it based on user needs."
+    required: false
+  - name: "marketing"
+    is_functional: false
+    description: "We use marketing cookies to help us improve our marketing campaigns."
+    required: false

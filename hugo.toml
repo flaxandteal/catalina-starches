@@ -1,0 +1,33 @@
+baseURL = "/"
+languageCode = "en-gb"
+title = "Historic Environment Quicksearch"
+theme = "govukhugo"
+publishDir = "docs"
+canonifyurls = true
+
+[markup.goldmark.renderer]
+unsafe = true
+
+
+[module]
+  [[module.imports]]
+    path = 'github.com/flaxandteal/govukhugo'
+  [[module.imports]]
+    path = 'github.com/flaxandteal/starches'
+  [[module.imports]]
+    path = 'github.com/flaxandteal/hugo-cookies'
+
+[params]
+govuk = false
+logotext = "ABC"
+product = "Public Asset Quickview"
+phase = "alpha"
+feedbackurl = "/feedback/"
+archesurl = "http://localhost:8000/"
+ga4token = "GTM-K3B6FBDS"
+ga4gtag = "G-HJZQETB39E"
+cookies = "cookies.md"
+
+[[module.mounts]]
+source = "content"
+target = "content"
