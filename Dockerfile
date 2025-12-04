@@ -1,10 +1,8 @@
 FROM node:23.10.0 AS build
 
 ARG DATA_FILE="CA_BS_data_output_df.json"
-ARG BLOB_BASE_URL
 
 ENV DATA_FILE=$DATA_FILE
-ENV BLOB_BASE_URL=$BLOB_BASE_URL
 
 WORKDIR /app
 
@@ -12,7 +10,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy source
+# Copy source 
 COPY . .
 
 # Install Go (required for Hugo modules)
