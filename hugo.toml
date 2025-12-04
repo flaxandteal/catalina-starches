@@ -3,6 +3,7 @@ languageCode = "en-gb"
 title = "Historic Environment Quicksearch"
 theme = "govukhugo"
 publishDir = "docs"
+staticDir = ["static", "docs"]
 canonifyurls = true
 
 [markup.goldmark.renderer]
