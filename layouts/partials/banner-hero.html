@@ -2,14 +2,16 @@
   <div class="mobile-banner"></div>
   <div class="qld-banner qld-banner-grid banner-default hero-banner dark none col-lg-7 offset-lg-0">
     <div class="container-fluid" data-cy='hero-banner'>
-      <div class="banner-inner">
+      <div class="banner-inner px-0 py-4">
         <div class="banner-content banner-content-full">
           <h1 class="banner-title-wrap">
             <span class="banner-title">{{ .Params.hero.title }}</span>
           </h1>
+          {{ if .Params.hero.abstract }}
           <div class="banner-abstract banner-hero-abstract">
             {{ .Params.hero.abstract }}
           </div>
+          {{ end }}
           <div class="banner-cta" role="group" aria-label="Available options">
             <div class="cta-buttons">
 
