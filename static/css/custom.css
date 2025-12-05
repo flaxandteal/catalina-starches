@@ -444,3 +444,9 @@
     cursor:pointer; 
     z-index:999;
 }
+
+/* Overrides */
+.qld-search-input .form-control {
+    border-radius: 0.25rem;
+    border-right-width: 0.125rem;
+}
