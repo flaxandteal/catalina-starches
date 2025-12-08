@@ -2,19 +2,16 @@ import * as params from '@params';
 declare const Swiper: any;
 
 const BLOB_BASE_URL = params.blob_base_url;
-const SAS_TOKEN = params.blob_sas_token || '';
 
 async function fetchImages(resourceId: string): Promise<string[]> {
-  const sasParam = SAS_TOKEN ? `&${SAS_TOKEN.replace(/^\?/, '')}` : '';
-  const listUrl = `${BLOB_BASE_URL}?restype=container&comp=list&prefix=images/${resourceId}/${sasParam}`;
+  const listUrl = `${BLOB_BASE_URL}?restype=container&comp=list&prefix=images/${resourceId}`;
   const response = await fetch(listUrl);
   const xml = await response.text();
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'application/xml');
   const blobs = doc.querySelectorAll('Blob > Name');
-  const sasQuery = SAS_TOKEN ? `?${SAS_TOKEN.replace(/^\?/, '')}` : '';
-  return Array.from(blobs).map(b => `${BLOB_BASE_URL}/${b.textContent}${sasQuery}`);
+  return Array.from(blobs).map(b => `${BLOB_BASE_URL}/${b.textContent}`);
 }
 
 function createSwiper(): any {
