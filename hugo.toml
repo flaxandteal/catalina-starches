@@ -26,6 +26,8 @@ variantClass = "dark"
     path = 'github.com/flaxandteal/starches'
   [[module.imports]]
     path = 'github.com/flaxandteal/hugo-cookies'
+  # [[module.imports]]
+  #   path = 'github.com/flaxandteal/starches/debug'
 
 [params.header]
   # Enable the "Delivering for Queensland" logo variant

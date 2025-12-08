@@ -14,6 +14,15 @@ RUN curl -O -L https://go.dev/dl/go1.25.4.linux-amd64.tar.gz && \
     ln -s /usr/local/go/bin/go /usr/bin/go
 
 RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.147.7/hugo_0.147.7_linux-amd64.tar.gz && tar -xzf hugo_0.147.7_linux-amd64.tar.gz
+
+RUN apk add --no-cache git make musl-dev go
+
+# Configure Go
+ENV GOROOT /usr/lib/go
+ENV GOPATH /go
+ENV PATH /go/bin:$PATH
+
+RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin
 RUN ./hugo
 
 ENV STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE
