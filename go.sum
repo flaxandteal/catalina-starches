@@ -14,3 +14,5 @@ github.com/flaxandteal/starches v0.2.0 h1:U1GrIHkZHiIVMkmTTo1QFW7nRVNAxj7BRehmDd
 github.com/flaxandteal/starches v0.2.0/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
 github.com/flaxandteal/starches v0.2.1-alpha.2 h1:rnAAy8F+sOx4rnG8UbzdAcqcLmeuS6zpOzti3k7Ive4=
 github.com/flaxandteal/starches v0.2.1-alpha.2/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
+github.com/flaxandteal/starches v0.2.1-alpha.3 h1:SHcX3YO1PrSWTmyEgwV3l1256Jw0Pk63I32aW7NHHVU=
+github.com/flaxandteal/starches v0.2.1-alpha.3/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
