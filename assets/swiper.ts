@@ -1,26 +1,23 @@
-import * as params from '@params';
 declare const Swiper: any;
 
-const BLOB_BASE_URL = params.blob_base_url;
-
-async function fetchImages(resourceId: string): Promise<string[]> {
-  const listUrl = `${BLOB_BASE_URL}?restype=container&comp=list&prefix=images/${resourceId}`;
+async function fetchImages(resourceId: string, blobBaseUrl: string): Promise<string[]> {
+  const listUrl = `${blobBaseUrl}?restype=container&comp=list&prefix=images/${resourceId}`;
   const response = await fetch(listUrl);
   const xml = await response.text();
 
   const parser = new DOMParser();
   const doc = parser.parseFromString(xml, 'application/xml');
   const blobs = doc.querySelectorAll('Blob > Name');
-  return Array.from(blobs).map(b => `${BLOB_BASE_URL}/${b.textContent}`);
+  return Array.from(blobs).map(b => `${blobBaseUrl}/${b.textContent}`);
 }
 
-function createSwiper(): any {
-  if (typeof Swiper === 'undefined') {
-    console.error('Swiper is not loaded. Make sure the Swiper CDN script is included before this script.');
-    return null;
-  }
+function getRandomImages(images: string[], amount: number) {
+  const sortedImages = images.sort(() => Math.random() - 0.5);
+  return sortedImages.slice(0, amount)
+}
 
-  return new Swiper('.swiper', {
+const swiperConfigs = {
+  coverflow: {
     effect: 'coverflow',
     grabCursor: true,
     direction: 'horizontal',
@@ -43,16 +40,61 @@ function createSwiper(): any {
     },
     watchSlidesProgress: true,
     slideToClickedSlide: true,
-  });
+  },
+  hero: {
+    autoplay: {
+      delay: 4000,
+      disableOnInteraction: false,
+    },
+    pagination: {
+      clickable: true,
+      el: ".swiper-pagination",
+    },
+  }
 }
 
-function populateSlides(wrapper: Element, images: string[]): void {
+function createSwiper(config: string): any {
+  if (typeof Swiper === 'undefined') {
+    console.error('Swiper is not loaded. Make sure the Swiper CDN script is included before this script.');
+    return null;
+  }
+  if (!config){
+    console.error('No config has been set for Swiper')
+  }
+
+  const carouselConfig = swiperConfigs[config]
+
+  return new Swiper('.swiper', carouselConfig);
+}
+
+function populateSlides(wrapper: Element, images: string[], config: string): Promise<void> {
   wrapper.innerHTML = '';
-  images.forEach((imgUrl, index) => {
-    const slide = document.createElement('div');
-    slide.className = 'swiper-slide';
-    slide.innerHTML = `<img src="${imgUrl}" alt="Gallery image ${index + 1}" style="cursor:pointer;" />`;
-    wrapper.appendChild(slide);
+  return new Promise((resolve) => {
+    images.forEach((imgUrl, index) => {
+      const slide = document.createElement('div');
+      slide.className = `swiper-slide ${config}`;
+      const img = document.createElement('img');
+      img.src = imgUrl;
+      img.alt = `Gallery image ${index + 1}`;
+      img.style.cursor = 'pointer';
+
+      // Lazy load all images except the first one
+      if (index > 0) {
+        img.loading = 'lazy';
+      }
+
+      if (index === 0) {
+        if (img.complete) {
+          resolve();
+        } else {
+          img.addEventListener('load', () => resolve());
+          img.addEventListener('error', () => resolve());
+        }
+      }
+
+      slide.appendChild(img);
+      wrapper.appendChild(slide);
+    });
   });
 }
 
@@ -85,18 +127,26 @@ function setupModal(): void {
   });
 }
 
-export async function initSwiper(resourceId: string): Promise<void> {
+export async function initSwiper(resourceId: string, blobBaseUrl: string, config: string = 'hero', count: number= null): Promise<void> {
+
   const wrapper = document.querySelector('.swiper-wrapper');
   if (!wrapper) {
-    console.error('Swiper wrapper not found');
+    console.error('[Swiper] Swiper wrapper not found');
     return;
   }
 
-  const swiper = createSwiper();
+  const swiper = createSwiper(config);
   if (!swiper) return;
 
-  const images = await fetchImages(resourceId);
-  populateSlides(wrapper, images);
+  let images = await fetchImages(resourceId, blobBaseUrl);
+  if(count){
+    images = getRandomImages(images, count)
+  }
+
+  await populateSlides(wrapper, images, config);
   swiper.update();
-  setupModal();
+
+  if(config !== 'hero') {
+    setupModal();
+  } 
 }

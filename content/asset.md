@@ -16,4 +16,9 @@ url = '/map'
 [[breadcrumbs]]
 name = 'Asset'
 active = true
+
+[carousel]
+includeButtons = true
+showModal = true
+config = 'coverflow'
 +++

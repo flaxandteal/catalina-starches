@@ -61,4 +61,8 @@ usefulLinks:
   links:
     - title: "test"
       url: "test"
+
+carousel:
+  includeButtons: false
+  config: "hero"
 ---
