@@ -18,6 +18,11 @@ import * as fs from 'fs';
 import * as path from 'path';
 import * as https from 'https';
 import * as http from 'http';
+import { fileURLToPath } from 'url';
+
+// ESM equivalent of __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Paths
 const PROJECT_ROOT = path.resolve(__dirname, '..');
@@ -120,6 +125,7 @@ async function main(): Promise<void> {
   }
 
   console.log('\n=== Content fetch complete ===');
+  process.exit(0);
 }
 
 // Run
