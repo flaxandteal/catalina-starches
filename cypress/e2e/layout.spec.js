@@ -1,6 +1,22 @@
 describe('Main layout (header, main, footer) — accessibility + CSS', () => {
   beforeEach(() => {
+    // Intercept blob storage image list requests (use regex to catch any blob URL)
+    cy.intercept('GET', /restype=container.*comp=list/, {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/xml' },
+      body: `<?xml version="1.0" encoding="utf-8"?>
+        <EnumerationResults>
+          <Blobs>
+            <Blob><Name>img/tests/image_01.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_02.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_01.jpeg</Name></Blob>
+          </Blobs>
+        </EnumerationResults>`
+    }).as('blobList');
+
     cy.visit('/');
+    // Wait for asset JavaScript to initialize and render content
+    cy.get('#hero-banner', { timeout: 10000 }).should('not.be.empty');
   });
 
   it('has header, main and footer in DOM order and visible', () => {
