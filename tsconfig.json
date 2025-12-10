@@ -1,9 +1,16 @@
 {
   "compilerOptions": {
+<<<<<<< HEAD
     "target": "ES2022",
     "useDefineForClassFields": true,
     "module": "ESNext",
     "lib": ["ES2022", "DOM", "DOM.Iterable", "ES2021.String"],
+=======
+    "target": "ES2020",
+    "useDefineForClassFields": true,
+    "module": "ESNext",
+    "lib": ["ES2020", "DOM", "DOM.Iterable", "ES2021.String"],
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "skipLibCheck": true,
 
     /* Bundler mode */
@@ -20,6 +27,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
+<<<<<<< HEAD
   "include": ["assets/**/*.ts", "static/js/**/*.ts", "node_modules/starches/assets/**/*.ts"],
   "exclude": ["utils"]
+=======
+  "include": ["static/js", "utils"]
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
 }

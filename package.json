@@ -1,7 +1,8 @@
 {
-  "name": "quartz-starches",
+  "name": "catalina-starches",
   "version": "0.0.3",
   "description": "Static Asset Viewer",
+  "type": "module",
   "main": "reindex.js",
   "directories": {
     "doc": "docs"
@@ -14,14 +15,22 @@
     "@mapbox/mapbox-gl-draw": "^1.5.1",
     "@maplibre/maplibre-gl-geocoder": "^1.8.0",
     "@maplibre/maplibre-gl-leaflet": "^0.1.0",
+<<<<<<< HEAD
     "@pagefind/modular-ui": "https://github.com/flaxandteal/pagefind/releases/download/v1.3.0-map-compatibility.5/pagefind-modular-ui-v1.3.0-map-compatibility.5.tar.gz",
+=======
+    "@pagefind/modular-ui": "^1.3.0",
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "@turf/helpers": "^7.2.0",
     "@turf/nearest-point": "^7.2.0",
     "@turf/points-within-polygon": "^7.2.0",
     "@types/geojson": "^7946.0.16",
     "@types/leaflet": "^1.9.17",
     "@types/leaflet.markercluster": "^1.5.5",
+<<<<<<< HEAD
     "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.31/alizarin-0.2.1-alpha.31.tgz",
+=======
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.2",
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "dompurify": "^3.2.5",
     "flatbush": "^4.4.0",
     "flatgeobuf": "^4.0.1",
@@ -34,6 +43,7 @@
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "mapbox-gl-arcgis-featureserver": "^0.0.8",
+<<<<<<< HEAD
     "maplibre-gl": "^5.11.0",
     "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
@@ -42,6 +52,11 @@
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
+=======
+    "marked": "^15.0.7",
+    "marked-plaintify": "^1.1.1",
+    "toml": "^3.0.0"
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
   },
   "private": true,
   "devDependencies": {
@@ -63,6 +78,11 @@
     "stylelint-config-standard": "^34.0.0",
     "three": "^0.175.0",
     "ts-node": "^10.9.2",
+<<<<<<< HEAD
+=======
+    "tsc": "^2.0.4",
+    "tsx": "^4.21.0",
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "typescript": "^5.8.3",
     "vite": "^6.3.5",
     "vite-hugo-plugin": "^5.1.0",
@@ -73,6 +93,7 @@
     "fetch:content": "dotenv -e .env -- npx ts-node utils/fetch-content.ts",
     "fetch:prebuild": "dotenv -e .env -- npx ts-node utils/fetch-prebuild.ts",
     "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
+<<<<<<< HEAD
     "start:local": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:prod": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server --environment production --bind=127.0.0.1 --port=1313",
     "start:fetch": "npm run fetch:all && npm run start",
@@ -84,8 +105,12 @@
     "precompile:templates": "npx starches-builder precompileTemplates",
     "build": "npm run precompile:templates",
     "build:full": "npm run fetch:all && npm run build && hugo --minify",
+=======
+    "dev": "dotenv vite",
+    "build": "dotenv -- tsc && vite build",
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "preview": "dotenv vite preview",
-    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --loader ts-node/esm/transpile-only utils/preindex.ts $data; done && dotenv -- node --loader ts-node/esm/transpile-only utils/reindex.ts'",
+    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --import tsx utils/preindex.ts $data; done && dotenv -- node --import tsx utils/reindex.ts'",
     "vite-test": "vitest",
     "test:ui": "vitest --ui",
     "test:coverage": "vitest --coverage"

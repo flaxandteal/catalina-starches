@@ -1,5 +1,6 @@
 github.com/flaxandteal/govukhugo v0.0.0-20250913133815-13c0691a1ac9 h1:7RhBaGT9pUeDIpYLPjUlK7Dbzc3QNznTItcvK7Utcmg=
 github.com/flaxandteal/govukhugo v0.0.0-20250913133815-13c0691a1ac9/go.mod h1:bFk/uvSh+oWzrQeoniHec8xDJymnWZqtgqgteKLi8yE=
+<<<<<<< HEAD
 github.com/flaxandteal/govukhugo v0.0.0-20260218155722-bcba81f1558d h1:gL3o9ajChgj3PzSXaZ2+kcNHJuSLRrQiPEizIM1mMHM=
 github.com/flaxandteal/govukhugo v0.0.0-20260218155722-bcba81f1558d/go.mod h1:bFk/uvSh+oWzrQeoniHec8xDJymnWZqtgqgteKLi8yE=
 github.com/flaxandteal/govukhugo v0.0.0-20260219155106-4dc4eae90ed1 h1:+YM2MSWD6qwZhCqICj2ddf/ErjsG7VrTccMhyqPvKiI=
@@ -12,3 +13,19 @@ github.com/flaxandteal/starches v0.2.1-alpha.31 h1:LPq7rEOwqjmdsG/uBZ4Mk89OwBvut
 github.com/flaxandteal/starches v0.2.1-alpha.31/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
 github.com/flaxandteal/starches v0.2.1-alpha.32 h1:/XUCLRoBIXzrt9qam9NiRg5QpxKNJK7x6KSZMskun0A=
 github.com/flaxandteal/starches v0.2.1-alpha.32/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+=======
+github.com/flaxandteal/hugo-cookies v0.0.0-20250912234728-faf4561ea831 h1:EU1BqocmsCi2SMfcVHrkE+XBjM6NG5kzkhIKhRkFLNA=
+github.com/flaxandteal/hugo-cookies v0.0.0-20250912234728-faf4561ea831/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
+github.com/flaxandteal/hugo-cookies v0.1.0 h1:cJZhApUisRUc6nC6kI0ecCV3Shc0I5PQKv1ryaeJQ3U=
+github.com/flaxandteal/hugo-cookies v0.1.0/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
+github.com/flaxandteal/starches v0.1.2-0.20250912235932-a4a53f6fe537 h1:bxdHvr/blklbNM801C8xYNtwy8UhzNbGJ22rFmITAS8=
+github.com/flaxandteal/starches v0.1.2-0.20250912235932-a4a53f6fe537/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
+github.com/flaxandteal/starches v0.1.2-0.20250913131540-79e3c4d307a6 h1:XBHdghTc83XUW4h6pyvSTWPOq0N9QKGumYz7mvD2whw=
+github.com/flaxandteal/starches v0.1.2-0.20250913131540-79e3c4d307a6/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
+github.com/flaxandteal/starches v0.1.2-0.20250913133956-452204e76bcd h1:757QCj9ECpX4M91t0aHsDFsPX4SqCDwg9Wsxs31ocAo=
+github.com/flaxandteal/starches v0.1.2-0.20250913133956-452204e76bcd/go.mod h1:nY/B6Y+aCYyhXJumslBKyk8OZrI/LfSYBgvHSM+p46E=
+github.com/flaxandteal/starches v0.1.2-0.20250913135045-9656729593b2 h1:T0VJPqPELaBsMKpyrTNS+Yf93qbolWP5IrGuA/3n4O4=
+github.com/flaxandteal/starches v0.1.2-0.20250913135045-9656729593b2/go.mod h1:nY/B6Y+aCYyhXJumslBKyk8OZrI/LfSYBgvHSM+p46E=
+github.com/flaxandteal/starches v0.2.0 h1:U1GrIHkZHiIVMkmTTo1QFW7nRVNAxj7BRehmDd5uggA=
+github.com/flaxandteal/starches v0.2.0/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)

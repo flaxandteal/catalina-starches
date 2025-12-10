@@ -97,6 +97,7 @@ async function initializeAlizarin(): Promise<typeof graphManager> {
   await wasmReady;
 
   const archesClient = new client.ArchesClientRemoteStatic('', {
+<<<<<<< HEAD
     allGraphFile: () => "definitions/graphs/_all.json",
     graphToGraphFile: (graph: staticTypes.StaticGraphMeta) =>
       `definitions/graphs/resource_models/${graph.name.toString()}.json`,
@@ -104,6 +105,25 @@ async function initializeAlizarin(): Promise<typeof graphManager> {
       `definitions/business_data/${resourceId}.json`,
     collectionIdToFile: (collectionId: string) =>
       `definitions/reference_data/collections/${collectionId}.json`
+=======
+    allGraphFile: (() => "definitions/graphs/_all.json"),
+    graphToGraphFile: ((graph: staticTypes.StaticGraphMeta) => {
+      // graph.name is a WASM LocalizedString object - need to access .en property or convert to string
+      const nameObj = graph.name;
+      let name: string;
+      if (nameObj && typeof nameObj === 'object' && 'en' in nameObj) {
+        name = nameObj.en;
+      } else if (nameObj && typeof nameObj.toString === 'function') {
+        name = nameObj.toString();
+      } else {
+        name = String(nameObj);
+      }
+      console.log('graphToGraphFile resolved name:', name);
+      return `definitions/graphs/resource_models/${name}.json`;
+    }),
+    resourceIdToFile: ((resourceId) => `definitions/business_data/${resourceId}.json`),
+    collectionIdToFile: ((collectionId) => `definitions/reference_data/collections/${collectionId}.json`)
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
   });
 
   graphManager.archesClient = archesClient;
@@ -114,17 +134,85 @@ async function initializeAlizarin(): Promise<typeof graphManager> {
   return graphManager;
 }
 
+<<<<<<< HEAD
 // Asset loading
 async function loadAsset(slug: string, gm: typeof graphManager): Promise<Asset> {
   const asset = await gm.getResource(slug, false);
   debug('Loaded asset from graph manager');
+=======
+class SearchParams {
+  slug: string
+  publicView: boolean | undefined
+
+  constructor(slug: string, publicView: boolean | undefined) {
+    this.slug = slug;
+    this.publicView = publicView;
+  }
+};
+
+
+class Asset {
+  asset: any
+  meta: any
+
+  constructor(asset: any, meta: any) {
+    this.asset = asset;
+    this.meta = meta;
+  }
+}
+
+function getSearchParams() {
+  const searchParams = new URLSearchParams(window.location.search);
+  if (!searchParams.has("slug") || !searchParams.get("slug").match(/^[a-z0-9_]+$/i)) {
+    console.error("Bad slug"); // Keep this as a real error
+  }
+  const slug = searchParams.get("slug");
+  let publicView = true;
+  if (searchParams.get("full") === "true") {
+    publicView = false;
+  }
+  return new SearchParams(slug, publicView);
+}
+
+class Dialog {
+  title: string
+  body: string
+
+  constructor(title: string, body: string) {
+    this.title = title;
+    this.body = body;
+  }
+}
+
+class HeritageAsset extends AlizarinModel<HeritageAsset> { };
+
+async function loadAsset(slug: string, graphManager): Promise<Asset | null> {
+  // Parameters: resourceId, lazy=false, pruneTiles=false
+  // pruneTiles=false prevents alizarin from filtering out tiles that don't match nodegroups
+  const asset = await graphManager.getResource(slug, false, false);
+  if (!asset) {
+    debug("No asset found for slug:", slug);
+    return null;
+  }
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
   const meta = await getAssetMetadata(asset);
   return { asset, meta };
 }
 
+<<<<<<< HEAD
 async function loadMaritimeAsset(slug: string, gm: typeof graphManager): Promise<Asset> {
   const MaritimeVessel = await gm.get("MaritimeVessel");
   const asset = await MaritimeVessel.find(slug, false);
+=======
+async function loadMaritimeAsset(slug: string, graphManager): Promise<Asset | null> {
+  const MaritimeVessel = await graphManager.get("MaritimeVessel");
+  // Parameters: id, lazy=false, pruneTiles=false
+  const asset = (await MaritimeVessel.find(slug, false, false));
+  if (!asset) {
+    debug("No maritime asset found for slug:", slug);
+    return null;
+  }
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
   const meta = await getAssetMetadata(asset);
   return { asset, meta };
 }
@@ -759,10 +847,33 @@ class AssetManager implements IAssetManager {
     debug("Alizarin initialized");
   }
 
+<<<<<<< HEAD
   setUrlParams(slug: string, publicView: boolean): void {
     this._slug = slug;
     this._publicView = publicView;
   }
+=======
+  debug("Displaying for public view (NB: full data loaded regardless!):", publicView);
+  let asset: Asset | null;
+  // TODO: switch to generic loading.
+  const isMaritime: boolean = (slug.startsWith('MAR') || slug.startsWith('MAL'));
+
+  if (isMaritime) {
+    asset = await loadMaritimeAsset(slug, gm);
+  } else {
+    asset = await loadAsset(slug, gm);
+  }
+  debug("Loaded asset", asset);
+  
+  if (!asset) {
+    document.getElementById("asset-title").innerText = `Asset not found: ${slug}`;
+    return;
+  }
+  
+  debug("Asset being added");
+  window.alizarinAsset = asset;
+  debug("Asset added to window: window.alizarinAsset", window.alizarinAsset);
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
 
   async loadAssetFromUrl(): Promise<Asset> {
     const slug = this._slug;
@@ -915,6 +1026,7 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
   if (!dfcRegistryElement) return;
 
   if (await asset.asset.__has('record_and_registry_membership')) {
+<<<<<<< HEAD
     const memberships = await asset.asset.record_and_registry_membership;
     const items = await Promise.all(
       memberships.map(async (membership: any) => {
@@ -922,6 +1034,163 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
         const json = await registry.forJson();
         return `<li>${json.meta.title}</li>`;
       })
+=======
+    try {
+      const memberships = await asset.asset.record_and_registry_membership;
+      const membershipItems = await Promise.all(memberships.map(async membership => {
+        try {
+          const registry = await membership.record_or_registry;
+          if (!registry) return null;
+          const json = await registry.forJson();
+          const title = json?.meta?.title || json?.title || 'Unknown Registry';
+          return `<li>${title}</li>`;
+        } catch (e) {
+          debug('Error getting registry title:', e);
+          return null;
+        }
+      }));
+      const validItems = membershipItems.filter(item => item !== null);
+      document.getElementById('dfc-registry').innerHTML = validItems.length > 0 
+        ? "<ul>" + validItems.join("\n") + "</ul>"
+        : "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
+    } catch (e) {
+      debug('Error processing record_and_registry_membership:', e);
+      document.getElementById('dfc-registry').innerHTML = "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
+    }
+  } else {
+    document.getElementById('dfc-registry').innerHTML = "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
+  }
+
+  const template = await fetchTemplate(asset.asset);
+  debug("Loaded template", template, publicView, isMaritime);
+
+  debug("Rendering asset");
+  const dialogs: { [key: string]: Dialog } = publicView && template ? (
+    await renderAsset(asset, template)
+  ) : (
+    await renderAssetForDebug(asset)
+  );
+  debug("Dialogs:", dialogs);
+
+  const swapLink: HTMLAnchorElement | null = document.querySelector("a#swap-link");
+  debug("Swap Link:", swapLink);
+  if (swapLink) {
+    if (publicView) {
+      swapLink.href = `?slug=${slug}&full=true`;
+      swapLink.innerHTML = "visit full view";
+    } else {
+      swapLink.href = `?slug=${slug}&full=false`;
+      swapLink.innerHTML = "visit public view";
+    }
+  }
+
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  debug("URL Search Params", urlSearchParams);
+  const geoBounds = urlSearchParams.get("geoBounds");
+  const searchTerm = urlSearchParams.get("searchTerm");
+  const searchFilters = urlSearchParams.get("searchFilters");
+  let backUrl = "/?";
+
+  if (geoBounds && /^[-,\[\]_0-9a-f.]*$/i.exec(geoBounds)) {
+    backUrl += `&geoBounds=${geoBounds}`;
+  }
+
+  if (searchTerm && searchTerm != 'null' && /^[_0-9a-z ."'-:]*$/i.exec(searchTerm)) {
+    backUrl += `&searchTerm=${searchTerm}`;
+  }
+
+  if (searchFilters && searchFilters != '{}' && /^[_0-9a-z ."'-:]*$/i.exec(searchTerm)) {
+    backUrl += `&searchFilters=${searchFilters}`;
+  }
+
+  // const archesRoot = document.getElementById("arches-link").getAttribute("data-arches-root");
+  // document.getElementById("arches-link").href = `${archesRoot}report/${asset.meta.resourceinstanceid}`;
+  document.getElementById("asset-title").innerText = `${asset.meta.title}`;
+
+  /**
+   * Setup navigation elements based on search context
+   */
+  function setupAssetNavigation(currentId: string): void {
+    debug("Setting up asset navigation for:", currentId);
+    
+    // Setup breadcrumbs
+    setupBreadcrumbs();
+    
+    if (hasSearchContext()) {
+      debug("Search context found");
+      const { prev, next, position, total } = getNavigation(currentId);
+      debug("Navigation:", { prev, next, position, total });
+
+      // Set up both top and bottom navigation sections
+      const navigationSections = [
+        {
+          prev: document.getElementById('prev-asset-top') as HTMLAnchorElement,
+          next: document.getElementById('next-asset-top') as HTMLAnchorElement,
+          counter: document.getElementById('position-counter-top'),
+          location: 'top'
+        },
+        {
+          prev: document.getElementById('prev-asset-bottom') as HTMLAnchorElement,
+          next: document.getElementById('next-asset-bottom') as HTMLAnchorElement,
+          counter: document.getElementById('position-counter-bottom'),
+          location: 'bottom'
+        }
+      ];
+
+      // Configure each navigation section
+      navigationSections.forEach(section => {
+        const { prev: prevButton, next: nextButton, counter, location } = section;
+        
+        // Set position counter if available
+        if (counter && position && total) {
+          counter.innerHTML = `Result ${position} of ${total}`;
+          counter.style.display = 'block';
+        } else if (counter) {
+          counter.style.display = 'none';
+        }
+        
+        if (prevButton && nextButton) {
+          debug(`Setting up ${location} navigation buttons`);
+          
+          if (prev) {
+            prevButton.href = getAssetUrlWithContext(prev);
+            prevButton.style.display = 'inline-block';
+            debug(`Showing ${location} prev button to:`, prev);
+          } else {
+            prevButton.style.display = 'none';
+            debug(`Hiding ${location} prev button`);
+          }
+
+          if (next) {
+            nextButton.href = getAssetUrlWithContext(next);
+            nextButton.style.display = 'inline-block';
+            debug(`Showing ${location} next button to:`, next);
+          } else {
+            nextButton.style.display = 'none';
+            debug(`Hiding ${location} next button`);
+          }
+        } else {
+          debug(`Navigation buttons for ${location} not found in DOM`);
+        }
+      });
+    } else {
+      debug("No search context available");
+      // Hide counters if no context
+      document.getElementById('position-counter-top').style.display = 'none';
+      document.getElementById('position-counter-bottom').style.display = 'none';
+    }
+  };
+  
+  /**
+   * Setup breadcrumb information from search context
+   */
+  function setupBreadcrumbs(): void {
+    const breadcrumbs = getSearchBreadcrumbs();
+    updateBreadcrumbs(
+      breadcrumbs.searchTerm,
+      breadcrumbs.filters,
+      breadcrumbs.geoBounds
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     );
     dfcRegistryElement.innerHTML = `<ul>${items.join("\n")}</ul>`;
   } else {

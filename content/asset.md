@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 date: '2025-01-30T03:36:57-08:00'
 draft: false
@@ -19,3 +20,13 @@ breadcrumbs:
   - name: 'Asset'
     active: true
 ---
+=======
++++
+date = '2025-01-30T03:36:57-08:00'
+draft = false
+title = 'Heritage Asset'
+type = '_default'
+layout = 'asset'
+location = '[54,-6]'
++++
+>>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
