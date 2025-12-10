@@ -10,7 +10,7 @@
  *
  * Environment variables:
  *   BLOB_BASE_URL     - Base URL for blob storage (required)
- *   BLOB_CONTENT_PATH - Path to content in blob (default: content/)
+ *   BLOB_CONTENT_PATH - Path to content in blob (default: build/content/)
  *   SKIP_BLOB_FETCH   - Set to 'true' to skip fetching (keep local files)
  */
 
@@ -30,14 +30,14 @@ const CONTENT_DIR = path.join(PROJECT_ROOT, 'content');
 
 // Environment
 const BLOB_BASE_URL = process.env.BLOB_BASE_URL;
-const BLOB_CONTENT_PATH = process.env.BLOB_CONTENT_PATH || 'content/';
+const BLOB_CONTENT_PATH = process.env.BLOB_CONTENT_PATH || 'build/content/';
 const SKIP_BLOB_FETCH = process.env.SKIP_BLOB_FETCH === 'true';
 
 // Content files to fetch from blob (these contain client-specific content)
 const CONTENT_FILES = [
   '_index.md',
-  'faq.md',
-  'feedback.md',
+  'map.md',
+  'asset.md',
   // 'cookies.md',  // Optional - uncomment if client needs custom cookie policy
 ];
 
