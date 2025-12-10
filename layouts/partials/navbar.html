@@ -2,6 +2,7 @@
 
 {{- $meta := .Site.Params.navbar -}}
 {{- $nav := $meta.navigation -}}
+{{- $currentURL := .Page.RelPermalink -}}
 
 <nav id="main-nav" class="navbar navbar-expand-lg{{ if $meta.alternativecolor }} dark{{ end }}{{ if $meta.verticalorientation }} vertical{{ end }}" aria-label="Website navigation" role="navigation">
     <div id="navbarNav" class="container">
@@ -14,9 +15,10 @@
         <div class="navbar-collapse">
             <ul class="navbar-nav">
                 {{ range $nav }}
+                {{- $isActive := or .currentpage (cond (eq .url "/") (eq $currentURL "/") (hasPrefix $currentURL .url)) -}}
                     {{ if .navigationitems }}
-                        <li class="nav-item dropdown{{ if .alternativecolor }} alt{{ end }}{{ if .mobileonly }} mobile-only{{ end }}"> 
-                            <a class="nav-link{{ if not $meta.verticalorientation }} dropdown-toggle{{ end }}{{ if .currentpage }} active{{ end }}{{ if .dropdownoptions.hasNoLink }} hasNoLink{{ end }}" {{ if .currentpage }}aria-current="page"{{ end }}{{ if .dropdownoptions.hasNoLink }} href="#"{{ else }} href="{{ .url }}"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }} role="button" data-bs-toggle="dropdown"
+                        <li class="nav-item dropdown{{ if .alternativecolor }} alt{{ end }}{{ if .mobileonly }} mobile-only{{ end }}">
+                            <a class="nav-link{{ if not $meta.verticalorientation }} dropdown-toggle{{ end }}{{ if $isActive }} active{{ end }}{{ if .dropdownoptions.hasNoLink }} hasNoLink{{ end }}" {{ if $isActive }}aria-current="page"{{ end }}{{ if .dropdownoptions.hasNoLink }} href="#"{{ else }} href="{{ .url }}"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }} role="button" data-bs-toggle="dropdown"
                             aria-expanded="false">
                                 {{ if .iconname }}
                                     <span class="qld-icon qld-icon-md {{ .iconname }}" aria-hidden="true"></span>
@@ -29,13 +31,13 @@
                                     {{ .text }}
                                 {{ end }}
                             </a>
-                            <button class="nav-link dropdown-toggle"{{ if .currentpage }} aria-current="page"{{ end }}  data-bs-toggle="dropdown" aria-expanded="false" aria-selected="false" aria-label="Toggle navigation">                                
+                            <button class="nav-link dropdown-toggle"{{ if $isActive }} aria-current="page"{{ end }}  data-bs-toggle="dropdown" aria-expanded="false" aria-selected="false" aria-label="Toggle navigation">                                
                                 <span class="visually-hidden">Expand</span>
                             </button>
                             <ul class="dropdown-menu">
                                 {{ if not .dropdownoptions.hasNoLink }}
                                     <li>
-                                        <a class="dropdown-item parent-link" role="button"{{ if .currentpage }} aria-current="page"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>{{ if .dropdownoptions.alternativeText }}{{ .dropdownoptions.alternativeText }}{{ else }}{{ .text }}{{ end }}</a>
+                                        <a class="dropdown-item parent-link" role="button"{{ if $isActive }} aria-current="page"{{ end }}{{ if .target }} target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>{{ if .dropdownoptions.alternativeText }}{{ .dropdownoptions.alternativeText }}{{ else }}{{ .text }}{{ end }}</a>
                                         {{ if .dropdownoptions.description }}
                                             <p>{{ .dropdownoptions.description }}</p>
                                         {{ end }}
@@ -63,7 +65,7 @@
                         </li>
                     {{ else }}
                         <li class="nav-item{{ if .alternativecolor }} alt{{ end }}{{ if .mobileonly }} mobile-only{{ end }}">
-                            <a class="nav-link{{ if .currentpage }} active{{ end }}"{{ if .currentpage }} aria-current="page"{{ end }} href="{{ .url }}"{{ if .target }}  target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>
+                            <a class="nav-link{{ if $isActive }} active{{ end }}"{{ if $isActive }} aria-current="page"{{ end }} href="{{ .url }}"{{ if .target }}  target="{{ .target }}"{{ end }}{{ if eq .target "_blank" }} rel="noopener noreferrer"{{ end }}>
                             {{ if .iconname }}
                                 <span class="qld-icon qld-icon-md {{ .iconname }}" aria-hidden="true"></span>
                                 {{ if .hidelabel }}

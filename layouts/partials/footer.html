@@ -2,7 +2,6 @@
 {{- $ftr := cond (isset $prm "footer") $prm.footer (dict) -}}
 {{- $contact := cond (isset $ftr "contact") $ftr.contact (dict) -}}
 {{- $opt1 := cond (isset $ftr "optionalcolumn1") $ftr.optionalcolumn1 (dict) -}}
-{{- $opt2 := cond (isset $ftr "optionalcolumn2") $ftr.optionalcolumn2 (dict) -}}
 {{- $footerLinks := cond (isset $ftr "footerlinks") $ftr.footerlinks (dict) -}}
 {{- $footerLogo := cond (isset $ftr "footerlogo") $ftr.footerlogo (dict) -}}
 {{- $acks := cond (isset $ftr "acknowledgements") $ftr.acknowledgements (slice) -}}
@@ -40,47 +39,10 @@
           </div>
 
           <div class="col-12">
-            {{- /* Custom contact list: if showList is not explicitly false and list exists, render it */ -}}
-            {{- if and (or (not (isset $contact "showList")) (ne $contact.showList false)) (isset $contact "list") (gt (len $contact.list) 0) -}}
-              {{- range $k, $it := $contact.list }}
-                <div class="footer-contact-item footer-contact-{{ $k }}">
-                  <span class="qld-icon {{ $it.icon }}" aria-hidden="true"></span> {{ $it.label | safeHTML }}
-                </div>
-              {{- end }}
-            {{- else }}
-              <div class="footer-contact-item footer-contact-phone">
-                <span class="qld-icon qld-icon-phone" aria-hidden="true"></span>
-                <b>Phone:</b>
-                <a href="tel:137468" rel="noopener">13 123 456 789</a>
-              </div>
-
-              <div class="footer-contact-item footer-contact-email">
-                <span class="qld-icon qld-icon-email" aria-hidden="true"></span>
-                <b>Email:</b>
-                <a href="mailto:" rel="noopener"><span class="user-select-all">email@example.com</span></a>
-              </div>
-            {{- end }}
+            {{ partial "followLinks.html" . }}
           </div>
         </div>
       </div>
-
-      {{- /* Optional Column 1 */ -}}
-      {{- if or (isset $opt1 "content") (isset $opt1 "showFollowLinks") (isset $opt1 "showCustomLinks") }}
-      <div class="col-12 col-lg-2 optional-column-1 {{ if $opt1.hasBorderColumn }}border-column{{ end }}" aria-label="{{ default "Footer links" $opt1.title }}">
-        <div class="footer-column pe-16">
-          {{ if $opt1.title }}<h3 class="footer-heading">{{ $opt1.title }}</h3>{{ end }}
-          <div class="footer-content">
-            {{ if $opt1.content }}{{ $opt1.content | safeHTML }}{{ end }}
-            {{ if $opt1.showFollowLinks }}
-              {{/* follow links: implement if you have params.followLinks */}}
-            {{ end }}
-            {{ if $opt1.showCustomLinks }}
-              {{/* custom links: implement if you have opt1.customLinks */}}
-            {{ end }}
-          </div>
-        </div>
-      </div>
-      {{- end }}
 
       <!-- WoG links -->
       <div class="col-12 col-lg-2 {{ if $footerLinks.hasBorderColumn }}border-column{{ end }}" aria-label="footer-navigation">
@@ -96,15 +58,24 @@
         </div>
       </div>
 
-      {{- /* Optional Column 2 */ -}}
-      {{- if or (isset $opt2 "content") (isset $opt2 "showFollowLinks") (isset $opt2 "showCustomLinks") }}
-      <div class="col-12 col-lg-2 optional-column-2 {{ if $opt2.hasBorderColumn }}border-column{{ end }}" aria-label="{{ default "Footer links" $opt2.title }}">
+      {{- /* Optional Column 1 */ -}}
+      {{- $opt1Links := default (slice) $opt1.customlinks -}}
+      {{- if or $opt1.content $opt1.showfollowlinks (gt (len $opt1Links) 0) }}
+      <div class="col-12 col-lg-2 optional-column-2 {{ if $opt1.hasbordercolumn }}border-column{{ end }}" aria-label="{{ default "Footer links" $opt1.title }}">
         <div class="footer-column pe-lg-16">
-          {{ if $opt2.title }}<h3 class="footer-heading">{{ $opt2.title }}</h3>{{ end }}
+          {{ if $opt1.title }}<h3 class="footer-heading">{{ $opt1.title }}</h3>{{ end }}
           <div class="footer-content">
-            {{ if $opt2.content }}{{ $opt2.content | safeHTML }}{{ end }}
-            {{ if $opt2.showFollowLinks }}{{/* follow links */}}{{ end }}
-            {{ if $opt2.showCustomLinks }}{{/* custom links */}}{{ end }}
+            {{ if $opt1.content }}{{ $opt1.content | safeHTML }}{{ end }}
+            {{ if $opt1.showfollowlinks }}
+              {{ partial "followLinks.html" . }}
+            {{ end }}
+            {{ if gt (len $opt1Links) 0 }}
+              <ul class="nav footer-link-list flex-column">
+                {{- range $opt1Links }}
+                  <li><a class="nav-link" href="{{ .link }}"{{ if .target }} target="{{ .target }}"{{ end }}>{{ .label }}</a></li>
+                {{- end }}
+              </ul>
+            {{ end }}
           </div>
         </div>
       </div>
@@ -140,16 +111,16 @@
             {{ end }}
 
             {{- /* Footer Copyright */ -}}
-            {{ if isset $copyright "content" }}
-              <p class="copyright">{{ $copyright.content | safeHTML }}{{ if $copyright.showYearFrom }} {{ $copyright.yearFrom }} -{{ end }} {{ now.Format "2006" }}</p>
+            {{ if $copyright.content }}
+              <p class="copyright">{{ $copyright.content | safeHTML }}{{ if $copyright.showyearfrom }} {{ $copyright.yearfrom }} -{{ end }} {{ now.Format "2006" }}</p>
             {{ else }}
               <p class="copyright">© The State of Queensland {{ now.Format "2006" }}</p>
             {{ end }}
 
             {{- /* Organisation Link */ -}}
-            {{ if isset $org "show" }}
+            {{ if $org.show }}
               <p>
-                <a class="fw-semibold" href="{{ default "https://www.qld.gov.au" $org.URL }}" rel="external">
+                <a class="fw-semibold" href="{{ default "https://www.qld.gov.au" $org.url }}" rel="external">
                   {{ default "Queensland Government" $org.text }}
                 </a>
               </p>
