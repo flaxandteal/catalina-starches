@@ -66,7 +66,20 @@ const MODEL_FILES = {
 async function initializeAlizarin() {
   const archesClient = new client.ArchesClientRemoteStatic('', {
     allGraphFile: (() => "definitions/graphs/_all.json"),
-    graphToGraphFile: ((graph: staticTypes.StaticGraphMeta) => `definitions/graphs/resource_models/${graph.name.en}.json`),
+    graphToGraphFile: ((graph: staticTypes.StaticGraphMeta) => {
+      // graph.name is a WASM LocalizedString object - need to access .en property or convert to string
+      const nameObj = graph.name;
+      let name: string;
+      if (nameObj && typeof nameObj === 'object' && 'en' in nameObj) {
+        name = nameObj.en;
+      } else if (nameObj && typeof nameObj.toString === 'function') {
+        name = nameObj.toString();
+      } else {
+        name = String(nameObj);
+      }
+      console.log('graphToGraphFile resolved name:', name);
+      return `definitions/graphs/resource_models/${name}.json`;
+    }),
     resourceIdToFile: ((resourceId) => `definitions/business_data/${resourceId}.json`),
     collectionIdToFile: ((collectionId) => `definitions/reference_data/collections/${collectionId}.json`)
   });
@@ -124,15 +137,26 @@ class Dialog {
 
 class HeritageAsset extends AlizarinModel<HeritageAsset> { };
 
-async function loadAsset(slug: string, graphManager): Promise<Asset> {
-  const asset = await graphManager.getResource(slug, false);
+async function loadAsset(slug: string, graphManager): Promise<Asset | null> {
+  // Parameters: resourceId, lazy=false, pruneTiles=false
+  // pruneTiles=false prevents alizarin from filtering out tiles that don't match nodegroups
+  const asset = await graphManager.getResource(slug, false, false);
+  if (!asset) {
+    debug("No asset found for slug:", slug);
+    return null;
+  }
   const meta = await getAssetMetadata(asset);
   return new Asset(asset, meta);
 }
 
-async function loadMaritimeAsset(slug: string, graphManager): Promise<Asset> {
+async function loadMaritimeAsset(slug: string, graphManager): Promise<Asset | null> {
   const MaritimeVessel = await graphManager.get("MaritimeVessel");
-  const asset = (await MaritimeVessel.find(slug, false));
+  // Parameters: id, lazy=false, pruneTiles=false
+  const asset = (await MaritimeVessel.find(slug, false, false));
+  if (!asset) {
+    debug("No maritime asset found for slug:", slug);
+    return null;
+  }
   const meta = await getAssetMetadata(asset);
   return new Asset(asset, meta);
 }
@@ -537,7 +561,7 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   const slug = searchParams.slug;
 
   debug("Displaying for public view (NB: full data loaded regardless!):", publicView);
-  let asset: Asset;
+  let asset: Asset | null;
   // TODO: switch to generic loading.
   const isMaritime: boolean = (slug.startsWith('MAR') || slug.startsWith('MAL'));
 
@@ -547,6 +571,12 @@ window.addEventListener('DOMContentLoaded', async (event) => {
     asset = await loadAsset(slug, gm);
   }
   debug("Loaded asset", asset);
+  
+  if (!asset) {
+    document.getElementById("asset-title").innerText = `Asset not found: ${slug}`;
+    return;
+  }
+  
   debug("Asset being added");
   window.alizarinAsset = asset;
   debug("Asset added to window: window.alizarinAsset", window.alizarinAsset);
@@ -559,9 +589,28 @@ window.addEventListener('DOMContentLoaded', async (event) => {
   }, 500);
 
   if (await asset.asset.__has('record_and_registry_membership')) {
-    document.getElementById('dfc-registry').innerHTML = "<ul>" + (await Promise.all((await asset.asset.record_and_registry_membership).map(async membership => {
-      return `<li>${(await (await membership.record_or_registry).forJson()).meta.title}</li>`
-    }))).join("\n") + "</ul>";
+    try {
+      const memberships = await asset.asset.record_and_registry_membership;
+      const membershipItems = await Promise.all(memberships.map(async membership => {
+        try {
+          const registry = await membership.record_or_registry;
+          if (!registry) return null;
+          const json = await registry.forJson();
+          const title = json?.meta?.title || json?.title || 'Unknown Registry';
+          return `<li>${title}</li>`;
+        } catch (e) {
+          debug('Error getting registry title:', e);
+          return null;
+        }
+      }));
+      const validItems = membershipItems.filter(item => item !== null);
+      document.getElementById('dfc-registry').innerHTML = validItems.length > 0 
+        ? "<ul>" + validItems.join("\n") + "</ul>"
+        : "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
+    } catch (e) {
+      debug('Error processing record_and_registry_membership:', e);
+      document.getElementById('dfc-registry').innerHTML = "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
+    }
   } else {
     document.getElementById('dfc-registry').innerHTML = "<ul><li>" + asset.asset.__.wkrm.modelClassName + "</li></ul>";
   }

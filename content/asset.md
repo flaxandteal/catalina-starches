@@ -5,16 +5,4 @@ title = 'Heritage Asset'
 type = '_default'
 layout = 'asset'
 location = '[54,-6]'
-[[breadcrumbs]]
-name = 'Home'
-url = '/'
-
-[[breadcrumbs]]
-name = 'Search'
-url = '/map'
-
-[[breadcrumbs]]
-name = 'Asset'
-active = true
 +++
-
