@@ -31,3 +31,15 @@ cookies = "cookies.md"
 [[module.mounts]]
 source = "content"
 target = "content"
+
+[[module.mounts]]
+source = "static"
+target = "static"
+
+[[module.mounts]]
+source = "docs/pagefind"
+target = "static/pagefind"
+
+[[module.mounts]]
+source = "docs/definitions"
+target = "static/definitions"

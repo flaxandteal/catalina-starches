@@ -454,7 +454,24 @@ async function buildTextIndex(searchAction: (term: string, settings: object, pag
             </label>
         `;
     }).bind(filters);
+    // Override update() to guard against non-array this.available
+    filters.update = (function() {
+        if (!Array.isArray(this.available)) {
+            console.warn("FilterPills: this.available is not an array in update(), skipping", this.available);
+            return;
+        }
+        const filterMemo = this.available.map((t) => t[0]).join("~");
+        if (filterMemo === this.filterMemo) {
+            this.updateExisting();
+        } else {
+            this.renderNew();
+            this.filterMemo = filterMemo;
+        }
+    }).bind(filters);
     filters.renderNew = (function() {
+        if (!Array.isArray(this.available)) {
+            return;
+        }
         this.available.forEach(([val, count]) => {
             const button = document.createElement("div");
             button.innerHTML = this.pillInner(val, count);
@@ -551,7 +568,11 @@ async function buildTextIndex(searchAction: (term: string, settings: object, pag
             }
         }
         p.innerHTML = pInner;
-        el.children[1].append(p);
+        if (el.children[1]) {
+            el.children[1].append(p);
+        } else {
+            el.append(p);
+        }
         return el;
     };
     instance.add(resultList);

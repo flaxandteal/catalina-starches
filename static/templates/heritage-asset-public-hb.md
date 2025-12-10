@@ -4,9 +4,13 @@
 <em>{{ ha.display_name }}</em>
 {{/if}}
 
+{{#if ha.monument_names.length }}
 {{#each ha.monument_names }}
 - {{ monument_name }}
 {{/each}}
+{{else}}
+<em>No names recorded</em>
+{{/if}}
 
 ## Classification
 
@@ -18,7 +22,7 @@
 [Heritage Asset Type](@monument_type_n1): {{{ ha.monument_type_n1 }}}
 {{/if}}
 
-{{#if ha.characterization }}
+{{#if ha.characterization.length }}
 [Characterization](@characterization):
 
 {{#each ha.characterization }}
@@ -26,11 +30,23 @@
 {{/each}}
 {{/if}}
 
-{{#if ha.historical_period_type }}
+{{#if ha.historical_period_type.length }}
 {{#each ha.historical_period_type }}
 [Period](@historical_period_type): {{{ . }}}
 {{/each}}
 {{/if}}
+
+{{#if ha.designation_and_protection_assignment.length }}
+{{#each ha.designation_and_protection_assignment }}
+{{#if designation_or_protection_type }}
+[Designation Type](@designation_or_protection_type): {{{ designation_or_protection_type }}}
+{{/if}}
+{{/each}}
+{{/if}}
+
+{{#unless (or ha.category_type (or ha.monument_type_n1 (or ha.characterization.length (or ha.historical_period_type.length ha.designation_and_protection_assignment.length)))) }}
+<em>No classification information available</em>
+{{/unless}}
 
 ## Reference Numbers
 
@@ -46,13 +62,31 @@
 [IHR No.](@ihr_number): {{ ha.heritage_asset_references.ihr_number }}
 
 {{/if}}
+{{#if ha.system_reference_numbers.uuid.resourceid }}
+[Reference ID](@resourceid): {{ ha.system_reference_numbers.uuid.resourceid }}
+
+{{/if}}
+{{#if ha.system_reference_numbers.primaryreferencenumber.primary_reference_number }}
+[Primary Reference](@primary_reference_number): {{ ha.system_reference_numbers.primaryreferencenumber.primary_reference_number }}
+
+{{/if}}
+{{#unless (or ha.heritage_asset_references.hb_number (or ha.heritage_asset_references.smr_number (or ha.heritage_asset_references.ihr_number (or ha.system_reference_numbers.uuid.resourceid ha.system_reference_numbers.primaryreferencenumber.primary_reference_number)))) }}
+<em>No reference numbers available</em>
+{{/unless}}
 
 ## Summary
 
-[Condition Type](@condition_type): {{{ defaulty ha.condition_type (defaulty ha.condition_description.condition "(none)") }}}
+{{#if ha.condition_type }}
+[Condition Type](@condition_type): {{{ ha.condition_type }}}
+{{else if ha.condition_description.condition }}
+[Condition](@condition): {{{ ha.condition_description.condition }}}
+{{else}}
+<em>No condition information available</em>
+{{/if}}
 
 ## Descriptions
 
+{{#if ha.descriptions.length }}
 [Descriptions](@descriptions)
 
 {{#each ha.descriptions }}
@@ -64,34 +98,38 @@
 ---
 
 {{/each}}
-
-{{#if ha.use_phases}}
+{{else}}
+<em>No descriptions available</em>
+{{/if}}
 
 ## Use Phases
 
-{{#each ha.use_phases }}
+{{#if ha.use_phase.length }}
+{{#each ha.use_phase }}
 [Use Phase](@use_phase): {{ . }}
 {{/each}}
-
+{{else}}
+<em>No use phase information available</em>
 {{/if}}
-
-{{#if ha.construction_phases}}
 
 ## Construction Phases
 
+{{#if ha.construction_phases.length }}
 {{#each ha.construction_phases }}
 [Asset type](@monument_type): {{{ phase_classification.monument_type }}}
 
 ---
 
 {{/each}}
-
+{{else}}
+<em>No construction phase information available</em>
 {{/if}}
 
 ## Location
 
 ### Addresses
 
+{{#if ha.location_data.addresses.length }}
 {{#each ha.location_data.addresses }}
 | Address |       |
 | --- | ----- |
@@ -115,44 +153,74 @@
 {{/if}}
 
 {{/each}}
+{{else}}
+<em>No address information available</em>
+{{/if}}
 
 ### Administrative Areas
 
+{{#if ha.location_data.localities_administrative_areas.length }}
 | Area | Name |
 | ---- | ---- |
 {{#each ha.location_data.localities_administrative_areas }}
 | [{{{ clean area_type }}}](@localities_administrative_areas) | {{{ area_names.area_name }}} |
 {{/each}}
-| [Council](@council) | {{{ defaulty ha.location_data.council "(none)" }}} |
+{{#if ha.location_data.council }}
+| [Council](@council) | {{{ ha.location_data.council }}} |
+{{/if}}
+{{else}}
+<em>No administrative area information available</em>
+{{/if}}
 
-[OS Map No.](@current_base_map_name): {{ defaulty ha.location_data.geometry.current_base_map.current_base_map_names.current_base_map_name "(none)"}}
+### Geographic Details
 
-[Geometric Properties](@spatial_metadata_notes): {{ defaulty ha.location_data.geometry.spatial_metadata_descriptions.spatial_metadata_notes "(none)"}}
+[OS Map No.](@current_base_map_name): {{ defaulty ha.location_data.geometry.current_base_map.current_base_map_names.current_base_map_name "(not recorded)" }}
 
-[Grid Reference](@irish_grid_reference_tm65_): {{ defaulty ha.location_data.national_grid_references.irish_grid_reference_tm65_ "(none)"}}
+{{#if ha.location_data.geometry.spatial_metadata_descriptions.spatial_metadata_notes }}
+[Geometric Properties](@spatial_metadata_notes): {{ ha.location_data.geometry.spatial_metadata_descriptions.spatial_metadata_notes }}
+{{/if}}
+
+[Grid Reference](@irish_grid_reference_tm65_): {{ defaulty ha.location_data.national_grid_references.irish_grid_reference_tm65_ "(not recorded)" }}
+
+{{#if ha.location_data.location_descriptions.length }}
+### Location Descriptions
+
+{{#each ha.location_data.location_descriptions }}
+{{#if location_description }}
+- {{{ location_description }}}
+{{/if}}
+{{/each}}
+{{/if}}
 
 ## Dates
 
+{{#if ha.construction_phases.length }}
 {{#each ha.construction_phases }}
 {{#if construction_phase_timespan.construction_phase_display_date }}
 [Construction](@construction_phase_display_date): {{ construction_phase_timespan.construction_phase_display_date }}
 {{/if}}
 {{/each}}
+{{/if}}
 
 {{#if ha.sign_off.input_date.input_date_value }}
 [Record established](@input_date): {{{ ha.sign_off.input_date.input_date_value }}}
 {{/if}}
 
-{{#if ha.associated_actors.length }}
+{{#unless (or ha.construction_phases.length ha.sign_off.input_date.input_date_value) }}
+<em>No date information available</em>
+{{/unless}}
+
 ## People &amp; Organisations
 
+{{#if ha.associated_actors.length }}
 {{#each ha.associated_actors }}
 ### {{{ associated_actor.role_type }}}
 
 {{{ associated_actor.actor }}}
 
 {{/each}}
-
+{{else}}
+<em>No associated people or organisations recorded</em>
 {{/if}}
 
 ## Designation
@@ -196,43 +264,43 @@
 
 {{/each}}
 {{else}}
-### (No designation)
+<em>No designation information available</em>
 
 _NB: some physical assets have overlapping entries across multiple records, which could carry designations._
 {{/if}}
 
-{{#if images }}
-
 ## Images
 
+{{#if images.length }}
 | &nbsp; | Image | &nbsp; |
 | - | ----- | - |
 {{#each images }}
 | Image {{ plus @index 1 }} | {{ image.external_cross_reference }} | {{dialogLink id=(concat "image_" index) linkText="Show"}} |
 {{/each}}
-
+{{else}}
+<em>No images available</em>
 {{/if}}
-
-{{#if files }}
 
 ## Files
 
+{{#if files.length }}
 | &nbsp; | Name | File
 | ----- | - | - |
 {{#each files }}
 | File {{ plus @index 1 }} | {{ external_cross_reference }} | [{{ defaulty external_cross_reference_notes.external_cross_reference_description "Download"}}]({{ nospace (clean url) }}) |
 {{/each}}
-
+{{else}}
+<em>No files available</em>
 {{/if}}
-
-{{#if ecrs }}
 
 ## Cross References
 
+{{#if ecrs.length }}
 | &nbsp; | Name | Description
 | ----- | - | - |
 {{#each ecrs }}
-| #{{ plus @index 1 }} | {{{ external_cross_reference_source }}} | {{ external_cross_reference }} |
+| {{ plus @index 1 }} | {{ external_cross_reference }} | {{ external_cross_reference_notes.external_cross_reference_description }} |
 {{/each}}
-
+{{else}}
+<em>No cross references available</em>
 {{/if}}
