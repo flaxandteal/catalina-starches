@@ -1,7 +1,7 @@
 {{ define "main" }}
 
 <div class="container container-sm container-md container-lg radius">
-    {{ partial "banner.html" .Params }}
+    {{ partial "banner.html" . }}
     {{ partial "starches/map"
     (dict
         "includeSearch" true
