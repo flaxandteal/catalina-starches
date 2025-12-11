@@ -16,6 +16,20 @@ describe('Asset Page — accessibility + functionality', () => {
   const testAssetUrl = '/asset/?slug=AAI_aai-13-dundrum-newry-fd3db6&';
 
   beforeEach(() => {
+    // Intercept blob storage image list requests (use regex to catch any blob URL)
+    cy.intercept('GET', /restype=container.*comp=list/, {
+      statusCode: 200,
+      headers: { 'Content-Type': 'application/xml' },
+      body: `<?xml version="1.0" encoding="utf-8"?>
+        <EnumerationResults>
+          <Blobs>
+            <Blob><Name>img/tests/image_01.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_02.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_01.jpeg</Name></Blob>
+          </Blobs>
+        </EnumerationResults>`
+    }).as('blobList');
+
     cy.visit(testAssetUrl);
     // Wait for asset JavaScript to initialize and render content
     cy.get('#asset-title', { timeout: 10000 }).should('not.be.empty');
@@ -257,11 +271,11 @@ describe('Asset Page — accessibility + functionality', () => {
     });
 
     it('carousel displays images when asset has images', () => {
-      // This test assumes the test asset has images
-      cy.get('.swiper-slide').then(($slides) => {
+      // Wait for swiper to initialize and images to load
+      cy.get('.swiper-slide', { timeout: 5000 }).should('have.length.at.least', 1).then(($slides) => {
         if ($slides.length > 0) {
           cy.get('.swiper-slide').first().within(() => {
-            cy.get('img').should('exist');
+            cy.get('img', { timeout: 5000 }).should('exist');
           });
         } else {
           cy.log('No images found for this test asset - skipping image check');
@@ -273,7 +287,7 @@ describe('Asset Page — accessibility + functionality', () => {
       cy.get('.swiper-slide').then(($slides) => {
         if ($slides.length > 1) {
           // Click next button
-          cy.get('.swiper-button-next').click();
+          cy.get('.swiper-button-next', { timeout: 5000 }).click();
           // Verify slide changed (active class moved)
           cy.wait(500); // Allow for animation
           cy.get('.swiper-slide-active').should('exist');
