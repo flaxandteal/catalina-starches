@@ -16,6 +16,7 @@ import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate } from 'handlebar-utils';
 import { initSwiper } from 'swiper';
+import * as params from '@params';
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -564,7 +565,7 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const sections = await renderToHtml(markdown, nodes, false);
 
-  initSwiper(asset.meta.resourceinstanceid)
+  initSwiper(asset.meta.resourceinstanceid, params.blob_base_url, 'coverflow')
 
   injectSections(sections);
 

@@ -3,7 +3,6 @@ title: "Starches Historic Register"
 govuk: false
 hero:
     title: "Welcome to the Starches Historic Register!"
-    abstract: "The official register of historic places for Starches. Begin searching the register below"
     buttonText: "Search the Register"
 
 getStarted:
@@ -62,4 +61,8 @@ usefulLinks:
   links:
     - title: "test"
       url: "test"
+
+carousel:
+  includeButtons: false
+  config: "hero"
 ---

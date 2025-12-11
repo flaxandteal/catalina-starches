@@ -132,8 +132,8 @@ document.addEventListener('DOMContentLoaded', (): void => {
     });
 
     // Help toggle functionality
-    const helpToggle = document.getElementById('helpToggle');
-    const helpContent = document.getElementById('helpContent');
+    const helpToggle = document.getElementById('help-toggle');
+    const helpContent = document.getElementById('help-content');
     
     if (helpToggle) {
         helpToggle.addEventListener('click', (event: Event): void => {
