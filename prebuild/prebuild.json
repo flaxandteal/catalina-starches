@@ -10,12 +10,26 @@
         {
             "resources": "prebuild/business_data/registries.json",
             "public": true,
+            "searchFor": [
+                "3a6ce8b9-0357-4a72-b9a9-d8fdced04360"
+            ],
             "slugPrefix": "REG_"
         },
         {
             "resources": "prebuild/business_data/aai_merged.json",
             "public": true,
             "slugPrefix": "AAI_"
+        },
+        {
+            "resources": "prebuild/business_data/buildings_.*.json",
+            "public": true,
+            "slugPrefix": "BDG_",
+            "dependencies": [
+                "prebuild/business_data/persons_merged.json",
+                "prebuild/business_data/architects.json",
+                "prebuild/business_data/owner_b.json",
+                "prebuild/business_data/occupier_b.json"
+            ]
         }
     ]
 }

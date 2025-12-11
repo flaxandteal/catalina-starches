@@ -40,34 +40,7 @@ jobs:
 
       - name: Copy Static Web App Config
         run: cp staticwebapp.config.json docs/
-      
-      - name: Download flatbush files
-        run: |
-          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
-            echo "Flatbush files already exist, skipping download."
-          else
-            echo "Flatbush files not found, downloading from Blob Storage..."
-            az storage blob download-batch \
-              --source ${{ secrets.BLOB_CONTAINER_NAME }} \
-              --destination ./blob-data \
-              --pattern "flatbush.json flatbush.bin"
-          fi
-          echo "Listing contents of blob-data directory after download:"
-          ls -la blob-data/
-
-      - name: Copy flatbush files to docs
-        run: |
-          if [ -f "blob-data/flatbush.json" ] && [ -f "blob-data/flatbush.bin" ]; then
-            cp blob-data/flatbush.json blob-data/flatbush.bin ./docs/
-            echo "Copied flatbush files to docs"
-          else
-            echo "Error: flatbush files not found"
-            ls -la blob-data/
-            exit 1
-          fi
-          echo "Final docs contents:"
-          ls -la ./docs/
-      
+              
       - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:

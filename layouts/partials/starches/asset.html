@@ -1,0 +1,44 @@
+{{- if not (.Page.Store.Get "asset-style-loaded-flag") -}}
+
+{{ $baseAssets := (slice "asset.ts" "search.ts") }}
+{{ range $baseAssets }}
+{{- $js := resources.Get . -}}
+{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction "blob_base_url" (getenv "BLOB_BASE_URL") "blob_sas_token" (getenv "BLOB_SAS_TOKEN")) }}
+{{ $sourceMap := cond hugo.IsProduction "" "inline" }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2020" "params" $params }}
+{{ $js = $js | js.Build $opts }}
+{{ if hugo.IsProduction }}
+{{ $js = $js | fingerprint }}
+{{ end }}
+<script src="{{ $js.RelPermalink }}" {{ if hugo.IsProduction }}integrity="{{ $js.Data.Integrity }}" {{ end }}
+    type="module">
+    </script>
+{{ end }}
+{{- .Page.Store.Set "asset-style-loaded-flag" true -}}
+{{- end -}}
+
+<div class="container radius">
+    {{ partial "banner.html" . }}
+
+    {{ partial "asset-banner.html" }}
+
+    <div class="row mt-5 justify-content-between align-items-center">
+        <a class="col-auto" href="/map" data-cy="back-link">
+            <div class="d-flex align-items-center">
+                <span class="qld-icon qld-icon-xxl qld-icon-arrow-left"></span>
+                <span class="ms-4">Return to Search</span>
+            </div>
+        </a>
+
+        <div class="col-auto">
+            <a class="btn btn-primary " href="#" target="_blank" data-cy="download-button">
+                <span class="qld-icon qld-icon-md qld-icon-download leading" aria-hidden="true"></span>
+                <span class="btn-label-default">Download</span>
+                <span class="btn-label-progress"></span>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        {{ partial "tabs-content.html" }}
+    </div>
+</div>

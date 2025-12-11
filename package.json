@@ -30,7 +30,7 @@
     "mapbox-gl-arcgis-featureserver": "^0.0.8",
     "marked": "^15.0.7",
     "marked-plaintify": "^1.1.1",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.1",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.4",
     "toml": "^3.0.0"
   },
   "private": true,
@@ -60,7 +60,7 @@
   },
   "scripts": {
     "test:lint:css": "stylelint \"{static,themes}/**/*.css\" --allow-empty-input",
-    "start": "hugo server -D --bind=127.0.0.1 --port=1313",
+    "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "cy:open": "cypress open",
     "cy:run": "cypress run --config baseUrl=http://127.0.0.1:1313",
     "test:cy:dev": "start-server-and-test start http://127.0.0.1:1313 cy:run",

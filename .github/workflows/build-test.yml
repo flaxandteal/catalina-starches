@@ -22,13 +22,14 @@ jobs:
           mkdir -p blob-data
           az storage blob download-batch \
             --source ${{ secrets.BLOB_CONTAINER_NAME }} \
-            --destination ./blob-data
+            --destination ./blob-data \
+            --pattern "prebuild/*"
           echo "Downloaded files:"
-          ls -la ./blob-data/
+          ls -la ./blob-data/prebuild
 
       - name: Extract prebuild tarball
         run: |
-          tar -xzf ./blob-data/prebuild.tar.gz -C .
+          tar -xzf ./blob-data/prebuild/prebuild-2025-11-30-ptw.tgz -C .
           echo "Extracted files:"
           ls -la
       
@@ -37,7 +38,9 @@ jobs:
       
       - name: Build and Push Docker Image
         run: |
-          docker build -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
+          docker build \
+            --build-arg BLOB_BASE_URL=${{ secrets.BLOB_BASE_URL }} \
+            -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
           docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
 
   test_job:

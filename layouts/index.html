@@ -1,28 +1,30 @@
 {{ define "main" }}
-  <section class="container container-sm container-lg radius">
+<section class="container container-sm container-lg radius">
+  <div class="row">
     <div class="banner-container-with-image-slide p-md-72 pt-md-32 py-lg-56">
       {{- partial "banner-hero.html" . -}}
     </div>
-  </section>
-  {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
-  {{ partial "promo-panel-video.html" }}
-  <section class="py-64 bg-light">
-    {{ partial "text-input.html" .Params.historicalRecords }}
-  </section>
-  <section class="py-64">
-    {{partial "text-input.html" .Params.search }}
-    <div class="container">
-      <div class="row justify-content-center row-gap-5">
-        {{ range .Params.search.cards }}
-        <div class="col-10">
-          {{partial "multi-action-card.html" .}}
-        </div>
-        {{ end }}
+  </div>
+</section>
+{{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
+{{ partial "promo-panel-video.html" }}
+<section class="py-64 bg-light">
+  {{ partial "text-input.html" .Params.historicalRecords }}
+</section>
+<section class="py-64">
+  {{partial "text-input.html" .Params.search }}
+  <div class="container">
+    <div class="row justify-content-center row-gap-5">
+      {{ range .Params.search.cards }}
+      <div class="col-10">
+        {{partial "multi-action-card.html" .}}
       </div>
+      {{ end }}
     </div>
-  </section>
-  <section class="bg-light py-64">
-    {{ partial "link-list.html" .Params.usefulLinks }}
-  </section>
-  
+  </div>
+</section>
+<section class="bg-light py-64">
+  {{ partial "link-list.html" .Params.usefulLinks }}
+</section>
+
 {{ end }}
