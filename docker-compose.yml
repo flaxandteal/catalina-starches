@@ -2,9 +2,12 @@ version: '3.8'
 
 services:
   web:
-    build: .
+    build:
+      context: .
+      args:
+        BLOB_BASE_URL: ${BLOB_BASE_URL}
     ports:
       - "8080:8080"
-    volumes:
-      - ./docs:/usr/share/nginx/html:ro
+    # volumes:
+    #   - ./docs:/usr/share/nginx/html:ro
     user: "33"
