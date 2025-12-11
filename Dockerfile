@@ -1,41 +1,44 @@
-FROM node:23.10.0 AS node
-ARG STARCHES_INCLUDE_PRIVATE=0
+FROM node:23.10.0 AS build
+
+ARG BLOB_BASE_URL
+ARG BLOB_SAS_TOKEN
+ENV BLOB_BASE_URL=$BLOB_BASE_URL
+ENV BLOB_SAS_TOKEN=$BLOB_SAS_TOKEN
 
 WORKDIR /app
-COPY package.json package.json
-COPY package-lock.json package-lock.json
 
+# Install dependencies first (better caching)
+COPY package.json package-lock.json ./
 RUN npm install
 
+# Copy source
 COPY . .
 
-RUN curl -O -L https://go.dev/dl/go1.25.4.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.25.4.linux-amd64.tar.gz && \
-    ln -s /usr/local/go/bin/go /usr/bin/go
+# Install Go (required for Hugo modules)
+RUN curl -O -L https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz && \
+    rm go1.23.4.linux-amd64.tar.gz
+ENV PATH="/usr/local/go/bin:$PATH"
 
-RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.147.7/hugo_0.147.7_linux-amd64.tar.gz && tar -xzf hugo_0.147.7_linux-amd64.tar.gz
+# Install Hugo Extended (needed for SCSS)
+RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_extended_0.152.2_linux-amd64.tar.gz && \
+    tar -xzf hugo_extended_0.152.2_linux-amd64.tar.gz && \
+    mv hugo /usr/local/bin/ && \
+    rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-RUN apk add --no-cache git make musl-dev go
+# 1. ETL - process data first
+RUN npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private
 
-# Configure Go
-ENV GOROOT /usr/lib/go
-ENV GOPATH /go
-ENV PATH /go/bin:$PATH
+# 2. Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
+RUN hugo mod get && hugo
 
-RUN mkdir -p ${GOPATH}/src ${GOPATH}/bin
-RUN ./hugo
-
-ENV STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE
-RUN echo STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE && \
-    npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private
-
+# 3. Index - create search index AFTER Hugo builds the HTML
 RUN npx starches-builder index --site docs --include-private
-RUN tar -cf /app/docs.tar -C docs .
 
-FROM nginxinc/nginx-unprivileged:1.21.5-alpine
+# ---- SERVE WITH NGINX ----
+FROM nginxinc/nginx-unprivileged:1.25-alpine
 WORKDIR /usr/share/nginx/html
 USER root
-COPY --from=node /app/docs.tar .
-RUN tar -xf docs.tar && rm -f docs.tar
+COPY --from=build /app/docs .
 USER 33
 EXPOSE 8080
