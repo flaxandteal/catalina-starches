@@ -453,8 +453,9 @@
     margin-left: -50vw;
     width: 100vw;
     padding: 0;
-    min-height: 18rem;
+    min-height: 24rem;
     background: var(--qld-light-background);
+    justify-content: center;
 }
 
 .full-width-content .tab-content {
