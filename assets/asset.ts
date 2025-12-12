@@ -16,6 +16,12 @@ import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate } from 'handlebar-utils';
 import { initSwiper } from 'swiper';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { markdownToPdf } from 'pdf-make';
+
+pdfMake.vfs = pdfFonts.vfs;
 import * as params from '@params';
 
 // Types and interfaces
@@ -161,7 +167,7 @@ async function loadMaritimeAsset(slug: string, gm: typeof graphManager): Promise
 async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTemplateDelegate | undefined> {
   const graphId = asset.__.wkrm.graphId;
   const config = MODEL_FILES[graphId];
-
+  console.log("HELLO")
   if (config?.template) {
     const response = await fetch(config.template);
     return Handlebars.compile(await response.text());
@@ -564,7 +570,16 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
   const sections = await renderToHtml(markdown, nodes, false);
-
+  const pdf = markdownToPdf(markdown, nodes, asset.meta.title);
+  console.log("PDF", pdf)
+  pdfMake.createPdf(pdf).getBlob((blob) => {
+    const url = URL.createObjectURL(blob);
+    const pdfLink = document.getElementById('asset-download') as HTMLAnchorElement;
+    console.log("URL", url)
+    pdfLink.href = url;
+    console.log("REF", pdfLink.href)
+    pdfLink.style.display = 'inline-block';
+  });
   initSwiper(asset.meta.resourceinstanceid)
 
   injectSections(sections);
@@ -769,7 +784,7 @@ class AssetManager implements IAssetManager {
     }
 
     const template = await fetchTemplate(this.asset.asset);
-    debug("Template loaded:", !!template, "publicView:", publicView);
+    console.log("Template loaded:", template, !!template, "publicView:", publicView);
 
     this.dialogs = (publicView && template)
       ? await renderAsset(this.asset, template)
