@@ -456,6 +456,7 @@
     min-height: 24rem;
     background: var(--qld-light-background);
     justify-content: center;
+    align-items: center;
 }
 
 .full-width-content .tab-content {
