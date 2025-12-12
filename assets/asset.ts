@@ -351,7 +351,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
   // Register extensions for sections and nodeBlocks
   marked.use({
     extensions: [
-      // Section extension - captures content between section markers
       {
         name: 'section',
         level: 'block',
@@ -365,7 +364,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const sectionId = match[1];
             const content = match[2];
 
-            // Update current section ID for nested nodeBlocks
             currentSectionId = sectionId;
 
             const token: SectionToken = {
@@ -545,6 +543,11 @@ interface ImageRef {
   index: number;
 }
 
+function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string) {
+  const pdf = markdownToPdf(markdown, nodes, title);
+  pdfMake.createPdf(pdf).download(`${title}.pdf`);
+}
+
 async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): Promise<Record<string, Dialog>> {
   const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
   const nonstaticAsset = await alizarinRenderer.render(asset.asset);
@@ -570,19 +573,19 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
   const sections = await renderToHtml(markdown, nodes, false);
-  const pdf = markdownToPdf(markdown, nodes, asset.meta.title);
-  console.log("PDF", pdf)
-  pdfMake.createPdf(pdf).getBlob((blob) => {
-    const url = URL.createObjectURL(blob);
-    const pdfLink = document.getElementById('asset-download') as HTMLAnchorElement;
-    console.log("URL", url)
-    pdfLink.href = url;
-    console.log("REF", pdfLink.href)
-    pdfLink.style.display = 'inline-block';
-  });
+
+  const downloadPDF = () => {
+    renderPDFAsset(markdown, nodes, asset.meta.title);
+  }
+
   initSwiper(asset.meta.resourceinstanceid)
 
   injectSections(sections);
+
+  const downloadPdfButton = document.getElementById('asset-download');
+  if (downloadPdfButton) {
+    downloadPdfButton.addEventListener('click', downloadPDF);
+  }
 
   addAssetToMap(asset);
 

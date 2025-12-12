@@ -1,12 +1,9 @@
 import { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
 
 function formatNodeLabel(keyString: string, nodes: Map<string, any>): string {
-    console.log("KeyString", keyString);
-    console.log("Nodes", nodes);
     const isNodeAlias = keyString.startsWith('@');
     const alias = isNodeAlias ? keyString.substring(1) : null;
     const nodeLabel = alias ? nodes.get(alias).name : keyString;
-    console.log("NodeLabel", nodeLabel);
 
     return nodeLabel;
 }
@@ -30,7 +27,7 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
         // Accordion end
         if (line.trim() === '::end::') {
             if (sectionContent && sectionContent.content.length > 0) {
-                // Section header with gray background and bottom border
+                // Section header
                 content.push({
                     table: {
                         widths: ['*'],
