@@ -1,14 +1,12 @@
 {{ define "main" }}
-{{- $params := (dict "blob_base_url" (getenv "BLOB_BASE_URL") "config" .Params.carousel.config) -}}
-{{- $opts := dict "params" $params -}}
-{{- $indexJS := resources.Get "index.ts" | js.Build $opts -}}
-<script src="{{ $indexJS.RelPermalink }}" {{ if hugo.IsProduction }}integrity="{{ $indexJS.Data.Integrity }}" {{ end }}></script>
+{{- $indexJS := resources.Get "index.ts" | js.Build -}}
 
 <section class="container radius">
   <div class="row">
     <div class="banner-container-with-image-slide px-md-0">
       {{- partial "image-carousel.html" . -}}
       {{- partial "banner-hero.html" . -}}
+      <script src="{{ $indexJS.RelPermalink }}" {{ if hugo.IsProduction }}integrity="{{ $indexJS.Data.Integrity }}" {{ end }}></script>
     </div>
   </div>
 </section>

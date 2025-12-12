@@ -1,4 +1,4 @@
-declare const Swiper: any;
+import Swiper from 'swiper/bundle';
 
 async function fetchImages(resourceId: string, blobBaseUrl: string): Promise<string[]> {
   const listUrl = `${blobBaseUrl}?restype=container&comp=list&prefix=images/${resourceId}`;
@@ -42,8 +42,9 @@ const swiperConfigs = {
     slideToClickedSlide: true,
   },
   hero: {
+    loop: true,
     autoplay: {
-      delay: 4000,
+      delay: 1000,
       disableOnInteraction: false,
     },
     pagination: {
@@ -54,10 +55,6 @@ const swiperConfigs = {
 }
 
 function createSwiper(config: string): any {
-  if (typeof Swiper === 'undefined') {
-    console.error('Swiper is not loaded. Make sure the Swiper CDN script is included before this script.');
-    return null;
-  }
   if (!config){
     console.error('No config has been set for Swiper')
   }
@@ -127,26 +124,34 @@ function setupModal(): void {
   });
 }
 
-export async function initSwiper(resourceId: string, blobBaseUrl: string, config: string = 'hero', count: number= null): Promise<void> {
+export async function initSwiper(blobLocation: string): Promise<void> {
+  const container = document.querySelector('.swiper') as HTMLElement;
+  if (!container) {
+    console.error('[Swiper] Swiper container not found');
+    return;
+  }
 
-  const wrapper = document.querySelector('.swiper-wrapper');
+  const wrapper = container.querySelector('.swiper-wrapper');
   if (!wrapper) {
     console.error('[Swiper] Swiper wrapper not found');
     return;
   }
 
-  const swiper = createSwiper(config);
-  if (!swiper) return;
-
-  let images = await fetchImages(resourceId, blobBaseUrl);
-  if(count){
-    images = getRandomImages(images, count)
+  const { blobUrl, config = 'hero', showModal, count } = container.dataset;
+  let images = await fetchImages(blobLocation, blobUrl);
+  if (count) {
+    images = getRandomImages(images, parseInt(count));
   }
 
   await populateSlides(wrapper, images, config);
-  swiper.update();
 
-  if(config !== 'hero') {
+  // Create swiper AFTER slides are populated
+  const swiper = createSwiper(config);
+  if (!swiper) return;
+
+  if (showModal === 'true') {
     setupModal();
-  } 
+  }
+
+  container.classList.add('loaded');
 }

@@ -1,0 +1,27 @@
+# Hugo Base Configuration
+# =======================
+# This file contains structure-only settings.
+# Client-specific params are loaded from config/_default/params.yaml
+# (generated from blob storage by fetch-site-config.ts)
+
+baseURL: '/'
+languageCode: 'en-gb'
+title: 'Heritage Register'  # Fallback title
+publishDir: "docs"
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+
+module:
+  imports:
+    - path: 'github.com/flaxandteal/hugo-theme-qld-design-system'
+    - path: 'github.com/flaxandteal/starches'
+    - path: 'github.com/flaxandteal/hugo-cookies'
+
+security:
+  funcs:
+    getenv:
+      - '^BLOB_'
+      - '^HUGO_'
