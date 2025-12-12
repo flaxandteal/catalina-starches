@@ -19,7 +19,8 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
     for (const line of lines) {
         // Accordion start
         if (line.match(/^::(.+)::$/) && !line.includes('end')) {
-            const sectionTitle = line.match(/^::(.+)::$/)[1];
+            // This checks for the title and icon (if any)
+            const sectionTitle = line.match(/^::([^:{]+)(?:\{([^}]+)\})?::/)[1];
             sectionContent = { title: sectionTitle, content: [] };
             continue;
         }
