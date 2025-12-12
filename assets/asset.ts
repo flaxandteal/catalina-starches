@@ -565,7 +565,7 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const sections = await renderToHtml(markdown, nodes, false);
 
-  initSwiper(asset.meta.resourceinstanceid, params.blob_base_url, 'coverflow')
+  initSwiper(asset.meta.resourceinstanceid)
 
   injectSections(sections);
 

@@ -1,15 +1,15 @@
-<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
-<link rel="preconnect" href="{{ getenv "BLOB_BASE_URL" }}" crossorigin />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/swiper@12/swiper-bundle.min.js"></script>
 
 <!-- Slider main container -->
-<div class="swiper assetSwiper">
-    <div class="swiper-wrapper">
-        <!-- Placeholder slides shown while loading -->
-        <div class="swiper-slide placeholder-slide"><div class="placeholder-shimmer"></div></div>
-        <div class="swiper-slide placeholder-slide"><div class="placeholder-shimmer"></div></div>
-        <div class="swiper-slide placeholder-slide"><div class="placeholder-shimmer"></div></div>
+<div class="swiper assetSwiper"
+     data-blob-url="{{ getenv "BLOB_BASE_URL" }}"
+     data-config="{{ .Params.carousel.config | default "hero" }}"
+     data-show-modal="{{ .Params.carousel.showmodal | default false }}"
+     data-count="{{ .Params.carousel.count }}"
+>
+    <div class="swiper-wrapper"></div>
+    <div class="swiper-loading">
+        <div class="placeholder-shimmer"></div>
     </div>
     <div class="swiper-pagination"></div>
     {{ if .Params.carousel.includeButtons }}

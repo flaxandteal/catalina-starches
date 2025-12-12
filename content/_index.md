@@ -65,4 +65,5 @@ usefulLinks:
 carousel:
   includeButtons: false
   config: "hero"
+  count: 5
 ---

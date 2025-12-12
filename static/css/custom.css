@@ -1,4 +1,25 @@
-/* custom icons */
+/* ==========================================================================
+   CUSTOM STYLES
+   Table of Contents:
+   1. Custom Icons
+   2. QLD Design System Overrides
+   3. Card Components
+   4. Index Page - Hero Banner
+   5. Index Page - Border Radius Utilities
+   6. Index Page - Banner Containers
+   7. Background Image Slideshow
+   8. Search & Filter Components
+   9. Pagefind Integration
+   10. Full Width Content
+   11. Swiper Carousel
+   12. Image Modal
+   13. Utilities
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. CUSTOM ICONS
+   ========================================================================== */
 
 .qld-icon-archive {
     --qgds-icon-archive: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect width='20' height='5' x='2' y='3' rx='1'/><path d='M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8'/><path d='M10 12h4'/></svg>");
@@ -6,6 +27,43 @@
     mask-image: var(--qgds-icon-archive);
     -webkit-mask-image: var(--qgds-icon-archive)
 }
+
+.qld-icon-building {
+  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
+  -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
+}
+
+.icon-background {
+    width: 4rem;
+    height: 4rem;
+    mask-size: 4rem;
+    background-size: 4rem;
+    background-color: var(--qld-default-background-shade);
+    margin-left: 1.5rem;
+    border-radius: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ==========================================================================
+   2. QLD DESIGN SYSTEM OVERRIDES
+   ========================================================================== */
+
+.qld-tabs .tabs-area{
+    z-index: 5;
+}
+
+.qld-search-input .form-control {
+    border-radius: 0.25rem;
+    border-right-width: 0.125rem;
+}
+
+
+/* ==========================================================================
+   3. CARD COMPONENTS
+   ========================================================================== */
 
 /* Equal-height card helpers (apply by adding `equal-height` to the .row) */
 .qld-card-grid .row.equal-height > [class*="col-"] {
@@ -31,7 +89,21 @@
     object-position: left center;
 }
 
-.hero-banner{
+/* Result cards (search results) */
+.result-card .card-title {
+    font-size: 1.25rem;
+}
+
+.result-card .card-text {
+    font-size: 1rem;
+}
+
+
+/* ==========================================================================
+   4. INDEX PAGE - HERO BANNER
+   ========================================================================== */
+
+.hero-banner {
     max-width: 504px;
     background-color: rgba(0,94,184, 0.8);
     opacity: 0;
@@ -56,6 +128,23 @@
     }
 }
 
+.banner-title {
+    font-size: 2rem;
+}
+
+.banner-abstract.banner-hero-abstract {
+    font-size: 1.25rem;
+}
+
+.banner-content-full {
+    grid-column: none !important
+}
+
+
+/* ==========================================================================
+   5. INDEX PAGE - BORDER RADIUS UTILITIES
+   ========================================================================== */
+
 .radius .hero-banner {
     border-radius: 1rem 1rem 3rem 1rem
 }
@@ -69,25 +158,26 @@
     border-top-right-radius: 2rem;
 }
 
-.radius .banner-container-with-image-slide, .radius .banner-radius, .radius .swiper {
+.radius .banner-container-with-image-slide,
+.radius .banner-radius,
+.radius .swiper {
     border-bottom-left-radius: 2rem;
     border-bottom-right-radius: 2rem;
 }
 
 @media (max-width: 991.98px) {
-    .radius .banner-container-with-image-slide, .radius .banner-radius, .radius .swiper {
+    .radius .banner-container-with-image-slide,
+    .radius .banner-radius,
+    .radius .swiper {
         border-bottom-left-radius: 0rem;
         border-bottom-right-radius: 0rem;
     }
 }
 
-.banner-title {
-    font-size: 2rem;
-}
 
-.banner-abstract.banner-hero-abstract {
-    font-size: 1.25rem;
-}
+/* ==========================================================================
+   6. INDEX PAGE - BANNER CONTAINERS
+   ========================================================================== */
 
 .banner-container-with-image-slide {
     width: 100%;
@@ -133,6 +223,9 @@
 }
 
 
+/* ==========================================================================
+   7. BACKGROUND IMAGE SLIDESHOW
+   ========================================================================== */
 
 @media (max-width: 699) {
     .background-image {
@@ -207,9 +300,10 @@
     100% { opacity: 0; }
 }
 
-.banner-content-full {
-    grid-column: none !important
-}
+
+/* ==========================================================================
+   8. SEARCH & FILTER COMPONENTS
+   ========================================================================== */
 
 .search-filter {
     background-color: var(--qld-color-default-color-dark-background-default);
@@ -328,17 +422,10 @@
     max-height: 300px;
 }
 
-.result-card .card-title {
-    font-size: 1.25rem;
-}
 
-.result-card .card-text {
-    font-size: 1rem;
-}
-
-.hidden {
-    display: none;
-} 
+/* ==========================================================================
+   9. PAGEFIND INTEGRATION
+   ========================================================================== */
 
 .filter-options-wrap .pagefind-modular-filter-pills {
     overflow-x: auto;
@@ -352,6 +439,11 @@
     padding: 0;
     flex: 1;
 }
+
+
+/* ==========================================================================
+   10. FULL WIDTH CONTENT
+   ========================================================================== */
 
 .full-width-content {
     display: flex;
@@ -373,10 +465,16 @@
     flex: 1
 }
 
+
+/* ==========================================================================
+   11. SWIPER CAROUSEL
+   ========================================================================== */
+
+/* Base swiper styles */
 .swiper {
-    /* width: 50%; */
     padding-top: 50px;
     padding-bottom: 50px;
+    position: relative;
 }
 
 .swiper-coverflow {
@@ -384,6 +482,7 @@
     border-bottom-right-radius: 0rem !important;
 }
 
+/* Slide styles */
 .swiper-slide {
     background-position: center;
     background-size: cover;
@@ -403,78 +502,94 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    background-color: #e0e0e0;
 }
 
-/* Swiper placeholder loading state */
-.placeholder-slide {
-    background-color: #e0e0e0;
+/* Loading state */
+.swiper-loading {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    transition: opacity 0.3s ease-in-out;
+}
+
+.swiper.loaded .swiper-loading {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.swiper .swiper-wrapper {
     opacity: 0;
 }
 
+.swiper.loaded .swiper-wrapper {
+    opacity: 1;
+}
+
+/* Placeholder shimmer animation */
 .placeholder-shimmer {
     width: 100%;
     height: 100%;
+    background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
     background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: inherit;
+    mask-image: radial-gradient(ellipse 80% 70% at center, black 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 70% at center, black 40%, transparent 100%);
 }
 
-.icon-background {
-    width: 4rem;
-    height: 4rem;
-    mask-size: 4rem;
-    background-size: 4rem;
-    background-color: var(--qld-default-background-shade);
-    margin-left: 1.5rem;
-    border-radius: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+@keyframes shimmer {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: -200% 0;
+    }
 }
 
-/* override */
-.qld-tabs .tabs-area{
-    z-index: 5;
-}
 
-.qld-icon-building {
-  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
-  -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
-}
+/* ==========================================================================
+   12. IMAGE MODAL
+   ========================================================================== */
 
 .modal-container {
-    display:none; 
-    position:fixed; 
-    top:0; 
-    left:0; 
-    width:100vw; 
-    height:100vh; 
-    background:rgba(0,0,0,0.9); 
-    justify-content:center; 
-    align-items:center; 
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100vw;
+    height:100vh;
+    background:rgba(0,0,0,0.9);
+    justify-content:center;
+    align-items:center;
     z-index:999;
 }
 
 .modal-container img {
-    max-width:90vw; 
-    max-height:90vh; 
-    box-shadow:0 0 20px #000; 
-    position:fixed; 
+    max-width:90vw;
+    max-height:90vh;
+    box-shadow:0 0 20px #000;
+    position:fixed;
     z-index:999;
 }
 
 .modal-container button {
-    position:fixed; 
-    top:2rem; 
-    right:2rem; 
-    font-size:2rem; 
-    color:#fff; 
-    background:none; 
-    border:none; 
-    cursor:pointer; 
+    position:fixed;
+    top:2rem;
+    right:2rem;
+    font-size:2rem;
+    color:#fff;
+    background:none;
+    border:none;
+    cursor:pointer;
     z-index:999;
 }
 
-/* Overrides */
-.qld-search-input .form-control {
-    border-radius: 0.25rem;
-    border-right-width: 0.125rem;
+
+/* ==========================================================================
+   13. UTILITIES
+   ========================================================================== */
+
+.hidden {
+    display: none;
 }
