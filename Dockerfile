@@ -24,14 +24,10 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-# Process data files (ETL step)
-RUN echo "STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE" && \
-    for data in prebuild/business_data/*.json; do \
-        if [ -f "$data" ]; then \
-            echo "Processing: $data"; \
-            npx starches-builder etl --file "$data" --include-private=${STARCHES_INCLUDE_PRIVATE} || echo "Warning: Failed to process $data"; \
-        fi; \
-    done
+# Process data files (ETL step) - create preindex directory and process each data source
+RUN mkdir -p prebuild/preindex && \
+    npx starches-builder etl --file prebuild/business_data/registries.json --prefix REG_ --include-private=${STARCHES_INCLUDE_PRIVATE} && \
+    npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private=${STARCHES_INCLUDE_PRIVATE}
 
 # Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo
