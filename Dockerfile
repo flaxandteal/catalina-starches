@@ -1,34 +1,48 @@
-FROM node:23.10.0 as node
+FROM node:23.10.0 AS build
+
 ARG STARCHES_INCLUDE_PRIVATE=0
-
-WORKDIR /app
-COPY package.json package.json
-# COPY package-lock.json package-lock.json
-
-RUN npm install --include=dev
-
-COPY . .
-COPY pagefind-bin pagefind-bin
-RUN chmod +x pagefind-bin
-RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.147.7/hugo_0.147.7_linux-amd64.tar.gz && tar -xzf hugo_0.147.7_linux-amd64.tar.gz
-RUN ./hugo
-
 ENV STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE
 
+WORKDIR /app
+
+# Install dependencies first (better caching)
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy source
+COPY . .
+
+# Install Go (required for Hugo modules)
+RUN curl -O -L https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz && \
+    rm go1.23.4.linux-amd64.tar.gz
+ENV PATH="/usr/local/go/bin:$PATH"
+
+# Install Hugo Extended (needed for SCSS)
+RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_extended_0.152.2_linux-amd64.tar.gz && \
+    tar -xzf hugo_extended_0.152.2_linux-amd64.tar.gz && \
+    mv hugo /usr/local/bin/ && \
+    rm hugo_extended_0.152.2_linux-amd64.tar.gz
+
+# Process data files (ETL step)
 RUN echo "STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE" && \
     for data in prebuild/business_data/*.json; do \
         if [ -f "$data" ]; then \
             echo "Processing: $data"; \
-            node --import tsx utils/preindex.ts "$data" || echo "Warning: Failed to process $data"; \
+            npx starches-builder etl --file "$data" --include-private=${STARCHES_INCLUDE_PRIVATE} || echo "Warning: Failed to process $data"; \
         fi; \
     done
 
-# Run reindex with pagefind
-RUN PAGEFIND_BINARY_PATH=./pagefind-bin node --import tsx utils/reindex.ts
-RUN cd docs && tar -cf ../docs.tar *
+# Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
+RUN hugo mod get && hugo
 
-FROM nginxinc/nginx-unprivileged:1.21.5-alpine
-COPY --from=node /app/docs.tar /usr/share/nginx/html/
-RUN cd /usr/share/nginx/html && tar -xf docs.tar && rm -f docs.tar
+# Index - create search index AFTER Hugo builds the HTML
+RUN npx starches-builder index --site docs --include-private=${STARCHES_INCLUDE_PRIVATE}
+
+# ---- SERVE WITH NGINX ----
+FROM nginxinc/nginx-unprivileged:1.25-alpine
+WORKDIR /usr/share/nginx/html
+USER root
+COPY --from=build /app/docs .
 USER 33
 EXPOSE 8080
