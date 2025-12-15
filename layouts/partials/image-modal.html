@@ -1,0 +1,20 @@
+<div id="image-modal" class="modal-container" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+  <div class="modal-image-wrapper">
+    <img id="modal-img" src="" alt="">
+    <div class="modal-footer">
+      <figcaption id="modal-caption"></figcaption>
+      <div class="dropdown dark">
+        <a class="btn btn-tertiary dropdown-toggle modal-btn" href="" target="_blank" data-bs-toggle="dropdown" data-progress-label="Loading">
+          <span class="qld-icon qld-icon-md qld-icon-download leading" aria-hidden="true"></span>
+          <span class="btn-label-default">Download</span>
+          <span class="btn-label-progress">Loading</span>
+        </a>
+        <ul class="dropdown-menu">
+          <li><a id="download-original-image" class="dropdown-item" href="">Download Original</a></li>
+          <li><a id="download-reduced-image" class="dropdown-item" href="">Download Reduced Image</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <button id="close-modal" aria-label="Close modal">&times;</button>
+</div>
