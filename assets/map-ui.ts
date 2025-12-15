@@ -58,24 +58,6 @@ function removeFilter(category: string): void {
     updateActiveFiltersList();
 }
 
-function handleRadioChange(category: string, input: HTMLInputElement): void {
-    const label = input.nextElementSibling?.textContent?.trim();
-    if (input.value === 'All' || label === 'All') {
-        // "All" selected, remove filter
-        activeFilters.delete(category);
-    } else {
-        // Specific option selected, add filter
-        if (label) {
-            activeFilters.set(category, {
-                category,
-                value: input.value,
-                label: label
-            });
-        }
-    }
-    updateActiveFiltersList();
-}
-
 function hasSearchResults(): boolean {
     const searchResults = document.getElementById('results');
     if (!searchResults) return false;
@@ -172,18 +154,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
             subtree: true
         });
     }
-
-    // Radio button change listeners for filters - using event delegation to handle dynamically added elements
-    document.addEventListener('change', (event: Event): void => {
-        const target = event.target as HTMLInputElement;
-        // Check if the changed element is a radio button with name ending in "Option"
-        if (target && target.type === 'radio' && target.name && target.name.endsWith('Option')) {
-            const name = target.name;
-            // Extract category name (e.g., "recordType" or "category" from "recordTypeOption" or "categoryOption")
-            const category = name.replace('Option', '');
-            handleRadioChange(category, target);
-        }
-    });
 
     // Initialize: hide the filter label if no filters are active
     const firstFilterItem = document.querySelector('.tag-list.tag-dark.my-0 li:first-child');

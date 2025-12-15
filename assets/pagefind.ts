@@ -33,6 +33,7 @@ async function loadTemplateText(templatePath: string): Promise<string> {
 }
 
 export async function buildPagefind(searchAction: (term: string, settings: object, pagefind: any) => Promise<any>) {
+
     const instance = new PagefindModularUI.Instance({
         showImages: false,
         debounceTimeoutMs: 800,
@@ -139,27 +140,29 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         resultTemplate
     });
     await instance.__load__();
-    // This routine from pagefind.
-    // instance.__search__ = async function (term, filters) {
-    //     this.__dispatch__("loading");
-    //     await this.__load__();
-    //     const thisSearch = ++this.__searchID__;
 
-    //     const results = await this.__pagefind__.search(term, { filters });
-    //     if (results && this.__searchID__ === thisSearch) {
-    //       if (results.filters && Object.keys(results.filters)?.length) {
-    //         this.availableFilters = results.filters;
-    //         this.totalFilters = results.totalFilters;
-    //         this.__dispatch__("filters", {
-    //           available: this.availableFilters,
-    //           total: this.totalFilters,
-    //         });
-    //       }
-    //       this.searchResult = results;
-    //       this.__dispatch__("results", this.searchResult);
-    //     }
-    //   }
     instance.add(resultList);
+
+    // Get all available filters directly from the index
+    const filterList = await instance.__pagefind__.filters() || {};
+
+    if (Object.keys(filterList).length > 0) {
+        for (let [key, items] of Object.entries(filterList)) {
+            const filters = new customFilterPills({
+                containerElement: `#filter-${key}`,
+                filter: key,
+                alwaysShow: true,
+                customTemplate: filterTemplate as string
+            });
+
+            const filterEntries = Object.entries(items as Record<string, number>);
+            filters.available = [["All", 0], ...filterEntries];
+
+            instance.add(filters);
+            filters.update();
+        }
+    }
+    
 
     // Event delegation for "View on map" buttons
     const resultsContainer = document.querySelector('#results');

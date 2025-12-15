@@ -119,23 +119,24 @@ export class customFilterPills extends FilterPills {
     }
 
     renderNew() {
-        this.available.forEach(([val, count]) => {
+        this.available.forEach(([val, count], index) => {
             // Clone the pillContainer template for each pill
             const newPillContainer = this.pillContainer.cloneNode(true) as HTMLElement;
+
+            const pillId = `radio_${this.filter}_${index}`;
 
             // Update the input element
             const input = newPillContainer.querySelector("input");
             if (input) {
                 input.value = val;
-                input.name = `${this.filter}Option`
-                input.id = `radio_${val}_${this.filter}`;
+                input.id = pillId;
                 input.checked = this.selected.includes(val);
             }
 
             // Update the label element
             const label = newPillContainer.querySelector("label");
             if (label) {
-                label.setAttribute("for", `radio_${val}_${this.filter}`);
+                label.setAttribute("for", pillId);
                 label.textContent = `${val} (${count})`;
             }
 
