@@ -16,19 +16,56 @@ jobs:
     permissions:
       contents: read
       packages: write
-    strategy:
-      matrix:
-        visibility:
-          - image: catalina-starches-public
-            starches_include_private: '0'
-          - image: catalina-starches
-            starches_include_private: '1'
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'true'
+
+      - name: Install s3cmd
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y s3cmd
+
+      - name: Configure s3
+        run: |
+          cat > ~/.s3cfg << EOF
+          [default]
+          access_key = ${{ secrets.S3_ACCESS_KEY }}
+          secret_key = ${{ secrets.S3_SECRET_KEY }}
+          host_base = ${{ secrets.S3_HOST_BASE }}
+          host_bucket = %(bucket)s.${{ secrets.S3_HOST_BASE }}
+          use_https = True
+          EOF
+
+      - name: Fetch graphs
+        run: |
+          mkdir -p prebuild/graphs/resource_models
+          
+          # Download all JSON files from graphs directory
+          s3cmd get --recursive \
+                "s3://${S3_BUCKET_NAME}/starches/graphs/" \
+                prebuild/graphs/resource_models/
+          
+          echo "✓ Downloaded graph files:"
+          ls -lh prebuild/graphs/resource_models/
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+
+      - name: Fetch business data
+        run: |
+          mkdir -p prebuild/business_data
+          
+          # Download all JSON files from business data directory
+          s3cmd get --recursive \
+                "s3://${S3_BUCKET_NAME}/starches/business_data/" \
+                prebuild/business_data/
+          
+          echo "✓ Downloaded business data files:"
+          ls -lh prebuild/business_data/
+        env:
+          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -41,8 +78,8 @@ jobs:
         run: |
           docker build . \
             --file ./Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.visibility.image }}:latest \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.visibility.image }}:${{ github.sha }} \
-            --build-arg STARCHES_INCLUDE_PRIVATE=${{ matrix.visibility.starches_include_private }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.visibility.image }}:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/${{ matrix.visibility.image }}:${{ github.sha }}
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
+            --build-arg STARCHES_INCLUDE_PRIVATE=0
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
