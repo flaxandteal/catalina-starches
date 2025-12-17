@@ -32,12 +32,17 @@ jobs:
         run: |
           cat > ~/.s3cfg << EOF
           [default]
-          access_key = ${{ secrets.S3_ACCESS_KEY }}
-          secret_key = ${{ secrets.S3_SECRET_KEY }}
-          host_base = ${{ secrets.S3_HOST_BASE }}
-          host_bucket = %(bucket)s.${{ secrets.S3_HOST_BASE }}
+          access_key = ${S3_ACCESS_KEY}
+          secret_key = ${S3_SECRET_KEY}
+          host_base = ${S3_HOST_BASE}
+          host_bucket = ${S3_HOST_BASE}/%(bucket)s
           use_https = True
+          signature_v2 = False
           EOF
+        env:
+          S3_ACCESS_KEY: ${{ secrets.S3_ACCESS_KEY }}
+          S3_SECRET_KEY: ${{ secrets.S3_SECRET_KEY }}
+          S3_HOST_BASE: ${{ secrets.S3_HOST_BASE }}
 
       - name: Fetch graphs
         run: |
@@ -45,13 +50,11 @@ jobs:
           
           # Download all JSON files from graphs directory
           s3cmd get --recursive \
-                "s3://${S3_BUCKET_NAME}/starches/graphs/" \
+                "s3://catalina-starches/starches/graphs/" \
                 prebuild/graphs/resource_models/
           
           echo "✓ Downloaded graph files:"
           ls -lh prebuild/graphs/resource_models/
-        env:
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
       - name: Fetch business data
         run: |
@@ -59,13 +62,11 @@ jobs:
           
           # Download all JSON files from business data directory
           s3cmd get --recursive \
-                "s3://${S3_BUCKET_NAME}/starches/business_data/" \
+                "s3://catalina-starches/starches/business_data/" \
                 prebuild/business_data/
           
           echo "✓ Downloaded business data files:"
           ls -lh prebuild/business_data/
-        env:
-          S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
