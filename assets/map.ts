@@ -5,45 +5,66 @@ import { getConfig } from './managers';
 import { addMarkerImage } from './map-tools';
 import { ensureFlatbushLoaded } from './fbwrapper';
 import { getFlatbushManager, getMap, getSearchManager, resolvePrimaryMapWith, resolveMapManagerWith, IMapManager, ILayerManager } from './managers';
+import { loadTemplate } from './handlebar-utils';
+
+// Load the map dialog template
+const mapDialogTemplatePromise = loadTemplate('/templates/map-dialog-template.html');
 
 declare global {
   interface Window {
     map: Map;
   }
+  const bootstrap: {
+    Offcanvas: {
+      getOrCreateInstance: (el: HTMLElement) => { show: () => void; hide: () => void };
+    };
+  };
 }
 
-function resultFunction(map, e) {
+async function resultFunction(map, e) {
+    if (!e.features || e.features.length === 0) {
+        console.warn('No features found at click location');
+        return;
+    }
+
+    const feature = e.features[0];
+    const title = feature.properties.title;
+    const description = feature.properties.description;
+    const coordinates = feature.geometry.coordinates.slice();
+    const lngLat = e.lngLat;
+
     map.stop();
-    const coordinates = e.features[0].geometry.coordinates.slice();
     map.targeting = coordinates;
     const touch = isTouch();
 
-    if (touch) {
-        document.getElementById("map-dialog__heading").innerHTML = `<h3>${e.features[0].properties.title}</h3>`;
-        document.getElementById("map-dialog__content").innerHTML = e.features[0].properties.description;
+    const mapDialogTemplate = await mapDialogTemplatePromise;
+    if (typeof mapDialogTemplate !== 'function') {
+        console.error('Map dialog template failed to load');
+        return;
+    }
+    console.log('feature', feature);
+    const url = feature.properties.url || '#';
+    const renderedHtml = mapDialogTemplate({ title, description, location: coordinates, url });
 
-        const modalElt = document.getElementById("map-dialog");
-        if (!modalElt.classList.contains("peeking")) {
-            modalElt.classList.toggle("peeking");
-        }
-        modalElt.showModal();
+    if (touch) {
+        document.getElementById("map-offcanvas__content").innerHTML = renderedHtml;
+
+        const offcanvasEl = document.getElementById("map-offcanvas");
+        const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+        offcanvas.show();
     } else {
-        let description = `<h3>${e.features[0].properties.title}</h3>`;
-        description += `<div class='map-popup-body'>`;
-        description += e.features[0].properties.description;
-        description += '</div>';
 
         // (maplibre)
         // Ensure that if the map is zoomed out such that multiple
         // copies of the feature are visible, the popup appears
         // over the copy being pointed to.
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        while (Math.abs(lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += lngLat.lng > coordinates[0] ? 360 : -360;
         }
 
         new Popup()
             .setLngLat(coordinates)
-            .setHTML(description)
+            .setHTML(renderedHtml)
             .addTo(window.map);
     }
 }
@@ -437,29 +458,12 @@ class MapManager implements IMapManager {
 }
 
 // Map getter is now in managers.ts
-
-function mapDialogClickedOutside() {
-    const modalElt = document.getElementById("map-dialog");
-    modalElt.close();
-}
-
-function mapDialogClicked(event) {
-    const modalElt = document.getElementById("map-dialog");
-    modalElt.classList.toggle("peeking");
-    event.stopPropagation()
-}
-
 // MapManager getter is now in managers.ts
 
 document.addEventListener('DOMContentLoaded', async (event) => {
   const mapManagerInstance = new MapManager();
   await mapManagerInstance.addMaps();
   resolveMapManagerWith(mapManagerInstance);
-
-  const modalElt = document.getElementById("map-dialog");
-  modalElt.addEventListener("click", () => modalElt.close());
-  const modalInnerElt = document.getElementById("map-dialog__inner");
-  modalInnerElt.addEventListener("click", mapDialogClicked);
 
   ensureFlatbushLoaded();
 }, { once: true });
