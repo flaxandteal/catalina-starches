@@ -321,6 +321,7 @@ p.acknowledgement {
 /* Map Offcanvas (mobile bottom sheet) */
 #map-offcanvas {
   --bs-offcanvas-height: auto;
+  
   max-height: 70vh;
   min-height: 40vh;
   border-top: 0.1rem solid rgb(204, 204, 204);
