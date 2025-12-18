@@ -3,7 +3,8 @@ import { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
 function formatNodeLabel(keyString: string, nodes: Map<string, any>): string {
     const isNodeAlias = keyString.startsWith('@');
     const alias = isNodeAlias ? keyString.substring(1) : null;
-    const nodeLabel = alias ? nodes.get(alias).name : keyString;
+    const resolvedNode = alias ? nodes.get(alias) : null;
+    const nodeLabel = resolvedNode && typeof resolvedNode.name === 'string' ? resolvedNode.name : keyString;
 
     return nodeLabel;
 }
