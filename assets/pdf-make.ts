@@ -20,7 +20,12 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
         // Accordion start
         if (line.match(/^::(.+)::$/) && !line.includes('end')) {
             // This checks for the title and icon (if any)
-            const sectionTitle = line.match(/^::([^:{]+)(?:\{([^}]+)\})?::/)[1];
+            const titleMatch = line.match(/^::([^:{]+)(?:\{([^}]+)\})?::/);
+            if (!titleMatch || !titleMatch[1]) {
+                // Malformed markdown section; skip starting an accordion
+                continue;
+            }
+            const sectionTitle = titleMatch[1];
             sectionContent = { title: sectionTitle, content: [] };
             continue;
         }
