@@ -14,11 +14,11 @@
 {{/each}}
 ::end::
 
-::Descriptions::
-{{#each ha.descriptions }}
-[{{{ clean description_type }}}] {{ description }}
-{{/each}}
+{{#each ha.descriptions}}
+:: {{ description_type }} ::
+[@description] {{ description }}
 ::end::
+{{/each}}
 
 <!--section:asset-location-->
 
