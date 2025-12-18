@@ -16,6 +16,12 @@ import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate } from 'handlebar-utils';
 import { initSwiper } from 'swiper';
+import pdfMake from 'pdfmake/build/pdfmake';
+import pdfFonts from 'pdfmake/build/vfs_fonts';
+import { TDocumentDefinitions } from 'pdfmake/interfaces';
+import { markdownToPdf } from 'pdf-make';
+
+pdfMake.vfs = pdfFonts.vfs;
 import * as params from '@params';
 
 // Types and interfaces
@@ -161,7 +167,7 @@ async function loadMaritimeAsset(slug: string, gm: typeof graphManager): Promise
 async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTemplateDelegate | undefined> {
   const graphId = asset.__.wkrm.graphId;
   const config = MODEL_FILES[graphId];
-
+  console.log("HELLO")
   if (config?.template) {
     const response = await fetch(config.template);
     return Handlebars.compile(await response.text());
@@ -345,7 +351,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
   // Register extensions for sections and nodeBlocks
   marked.use({
     extensions: [
-      // Section extension - captures content between section markers
       {
         name: 'section',
         level: 'block',
@@ -359,7 +364,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const sectionId = match[1];
             const content = match[2];
 
-            // Update current section ID for nested nodeBlocks
             currentSectionId = sectionId;
 
             const token: SectionToken = {
@@ -539,6 +543,11 @@ interface ImageRef {
   index: number;
 }
 
+function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string) {
+  const pdf = markdownToPdf(markdown, nodes, title);
+  pdfMake.createPdf(pdf).download(`${title}.pdf`);
+}
+
 async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): Promise<Record<string, Dialog>> {
   const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
   const nonstaticAsset = await alizarinRenderer.render(asset.asset);
@@ -565,9 +574,18 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const sections = await renderToHtml(markdown, nodes, false);
 
+  const downloadPDF = () => {
+    renderPDFAsset(markdown, nodes, asset.meta.title);
+  }
+
   initSwiper(asset.meta.resourceinstanceid)
 
   injectSections(sections);
+
+  const downloadPdfButton = document.getElementById('asset-download');
+  if (downloadPdfButton) {
+    downloadPdfButton.addEventListener('click', downloadPDF);
+  }
 
   addAssetToMap(asset);
 
@@ -769,7 +787,7 @@ class AssetManager implements IAssetManager {
     }
 
     const template = await fetchTemplate(this.asset.asset);
-    debug("Template loaded:", !!template, "publicView:", publicView);
+    console.log("Template loaded:", template, !!template, "publicView:", publicView);
 
     this.dialogs = (publicView && template)
       ? await renderAsset(this.asset, template)
