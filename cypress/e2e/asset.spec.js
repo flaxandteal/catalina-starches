@@ -13,7 +13,7 @@
 
 describe('Asset Page — accessibility + functionality', () => {
   // The slug parameter should reference an existing asset in your test data
-  const testAssetUrl = '/asset/?slug=AAI_aai-13-dundrum-newry-fd3db6&';
+  const testAssetUrl = '/asset/?slug=AAI_aai-9-the-dorsey-new-b06937&';
 
   beforeEach(() => {
     // Intercept blob storage image list requests (use regex to catch any blob URL)
@@ -26,6 +26,9 @@ describe('Asset Page — accessibility + functionality', () => {
             <Blob><Name>img/tests/image_01.jpg</Name></Blob>
             <Blob><Name>img/tests/image_02.jpg</Name></Blob>
             <Blob><Name>img/tests/image_01.jpeg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_02_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpeg</Name></Blob>
           </Blobs>
         </EnumerationResults>`
     }).as('blobList');

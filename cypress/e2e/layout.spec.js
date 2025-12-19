@@ -10,6 +10,9 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
             <Blob><Name>img/tests/image_01.jpg</Name></Blob>
             <Blob><Name>img/tests/image_02.jpg</Name></Blob>
             <Blob><Name>img/tests/image_01.jpeg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_02_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpeg</Name></Blob>
           </Blobs>
         </EnumerationResults>`
     }).as('blobList');
