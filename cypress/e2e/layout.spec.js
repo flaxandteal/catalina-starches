@@ -255,7 +255,8 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
   });
 
   it('verifies all images on the page have alt text', () => {
-    cy.get('img').each(($img) => {
+    // Exclude modal image which is hidden and only populated when used on asset pages
+    cy.get('img:not(#modal-img)').each(($img) => {
       cy.wrap($img)
         .should('have.attr', 'alt')
         .and('not.be.empty');
