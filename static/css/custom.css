@@ -14,6 +14,7 @@
    11. Swiper Carousel
    12. Image Modal
    13. Utilities
+   14. MapLibre Overrides
    ========================================================================== */
 
 
@@ -599,4 +600,23 @@
 
 .hidden {
     display: none;
+}
+
+/* ==========================================================================
+   14. MAPLIBRE OVERRIDES
+   ========================================================================== */
+
+.div.maplibregl-popup-content {
+    background: none;
+    border-radius: 1rem;
+}
+
+.maplibregl-popup-close-button {
+    margin: 0.75rem 0.5rem;
+    color: var(--qld-action-icon-color);
+}
+
+.maplibregl-popup-close-button:hover {
+    color: var(--qld-action-icon-hover-color) !important;
+    background: none !important;
 }
