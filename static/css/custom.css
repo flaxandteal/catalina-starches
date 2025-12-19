@@ -575,9 +575,8 @@
 
 .modal-container img {
     max-width:90vw;
-    max-height:90vh;
-    box-shadow:0 0 20px #000;
-    position:fixed;
+    max-height:80vh;
+    box-shadow:0 0 20px #000;   
     z-index:999;
 }
 
@@ -591,6 +590,51 @@
     border:none;
     cursor:pointer;
     z-index:999;
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    color: #fff;
+}
+
+.modal-footer figcaption {
+    flex: 1;
+    margin: 0;
+    padding: 0 1rem;
+}
+
+.dropdown.dark {
+    background-color: unset;
+}
+
+.dropwdown-item {
+    color: var(--qld-btn-color) !important;
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.dropdown-item:hover,
+.dropdown-item:focus {
+    text-decoration: underline;
+    background: none;
+    border-color: transparent;
+    box-shadow: none;
+}
+
+.dropdown-item:visited {
+    color: inherit;
+}
+
+.modal-btn.show {
+    display: inline-flex !important;
+}
+
+.modal-btn.dropdown-toggle::after {
+    display: none;
 }
 
 
@@ -619,4 +663,9 @@
 .maplibregl-popup-close-button:hover {
     color: var(--qld-action-icon-hover-color) !important;
     background: none !important;
+}
+
+.relative-position {
+    position: relative; 
+    display: inline-block;
 }

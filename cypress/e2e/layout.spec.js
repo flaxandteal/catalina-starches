@@ -10,6 +10,9 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
             <Blob><Name>img/tests/image_01.jpg</Name></Blob>
             <Blob><Name>img/tests/image_02.jpg</Name></Blob>
             <Blob><Name>img/tests/image_01.jpeg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_02_web.jpg</Name></Blob>
+            <Blob><Name>img/tests/image_01_web.jpeg</Name></Blob>
           </Blobs>
         </EnumerationResults>`
     }).as('blobList');
@@ -252,7 +255,8 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
   });
 
   it('verifies all images on the page have alt text', () => {
-    cy.get('img').each(($img) => {
+    // Exclude modal image which is hidden and only populated when used on asset pages
+    cy.get('img:not(#modal-img)').each(($img) => {
       cy.wrap($img)
         .should('have.attr', 'alt')
         .and('not.be.empty');

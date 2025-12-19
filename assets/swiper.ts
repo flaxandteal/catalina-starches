@@ -95,21 +95,75 @@ function populateSlides(wrapper: Element, images: string[], config: string): Pro
   });
 }
 
-function setupModal(): void {
+async function downloadImage(e: Event, type: string, extensions: { name: string; ext: string }[] = null): Promise<void> {
+    e.preventDefault();
+    const img = document.querySelector('#modal-img') as HTMLImageElement;
+    let url = img.src.split('_web')[0]
+
+    if(type === 'reduced'){
+      url = `${url}_download.jpg`;
+    }
+
+    if(type === 'original' && extensions){
+      const filename = img.src.split('/').pop();
+      const imgName = filename.substring(0, filename.indexOf('_web'));
+      const extObj = extensions.find(ext => ext.name === imgName);
+      if(extObj){
+        url = `${url}.${extObj.ext}`;
+      }
+    }
+
+    console.log("Downloading from URL:", url)
+
+    if (!url) return;
+
+    try {
+      const response = await fetch(url);
+      const blob = await response.blob();
+      const blobUrl = URL.createObjectURL(blob);
+
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = url.split('/').pop();
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+    } catch (error) {
+      console.error('Download failed:', error);
+      window.open(url, '_blank');
+    }
+}
+
+function setupModal(extensions: { name: string; ext: string }[]): void {
   const modal = document.getElementById('image-modal') as HTMLElement;
   const modalImg = document.getElementById('modal-img') as HTMLImageElement;
+  const modalCaption = document.getElementById('modal-caption') as HTMLElement;
   const closeModal = document.getElementById('close-modal') as HTMLElement;
+  const downloadOriginalLink = modal?.querySelector('#download-original-image') as HTMLAnchorElement;
+  const downloadReducedLink = modal?.querySelector('#download-reduced-image') as HTMLAnchorElement;
 
   if (!modal || !modalImg || !closeModal) {
     console.error('Modal elements not found');
     return;
   }
 
+  // Handle download button click
+  if (downloadOriginalLink) {
+    downloadOriginalLink.addEventListener('click', (e) => downloadImage(e, 'original', extensions));
+  }
+
+  if (downloadReducedLink) {
+    downloadReducedLink.addEventListener('click', (e) => downloadImage(e, 'reduced'));
+  }
+
   document.querySelectorAll('.swiper-slide img').forEach(img => {
     img.addEventListener('click', function () {
-      modalImg.src = (this as HTMLImageElement).src;
+      const imgSrc = (this as HTMLImageElement).src;
+      modalImg.src = imgSrc;
       modalImg.alt = img.getAttribute('alt') || '';
       modal.style.display = 'flex';
+      modalCaption.textContent = modalImg.alt;
     });
   });
 
@@ -139,6 +193,22 @@ export async function initSwiper(blobLocation: string): Promise<void> {
 
   const { blobUrl, config = 'hero', showModal, count } = container.dataset;
   let images = await fetchImages(blobLocation, blobUrl);
+
+  // Store the original extensions for download links
+  const originalImages = images.filter(url => !url.includes('_web') && !url.includes('_download'));
+  const extensions = originalImages.map(url => {
+    const filename = url.split('/').pop();
+    const lastDot = filename.lastIndexOf('.');
+    return {
+      name: filename.substring(0, lastDot),
+      ext: filename.substring(lastDot + 1)
+    };
+  });
+
+  // Only include web-optimized images
+  images = images.filter(url => url.includes('_web'));
+  
+
   if (count) {
     images = getRandomImages(images, parseInt(count));
   }
@@ -150,7 +220,7 @@ export async function initSwiper(blobLocation: string): Promise<void> {
   if (!swiper) return;
 
   if (showModal === 'true') {
-    setupModal();
+    setupModal(extensions);
   }
 
   container.classList.add('loaded');
