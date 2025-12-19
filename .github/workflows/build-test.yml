@@ -24,7 +24,8 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-        name: Downlaod data from Blob Storage
+
+      - name: Download data from Blob Storage
         run: |
           mkdir -p blob-data
           az storage blob download-batch \
