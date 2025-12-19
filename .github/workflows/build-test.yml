@@ -9,27 +9,36 @@ jobs:
   build_image_job:
     runs-on: ubuntu-latest
     name: Build Docker Image
+    permissions:
+      id-token: write
+      contents: read
     steps:
       - uses: actions/checkout@v3
         with:
           submodules: false
           lfs: false
       
-      - name: Download data from Blob Storage
-        env:
-          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
+      - name: Azure login with OIDC
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        name: Downlaod data from Blob Storage
         run: |
           mkdir -p blob-data
           az storage blob download-batch \
             --source ${{ secrets.BLOB_CONTAINER_NAME }} \
             --destination ./blob-data \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --auth-mode login \
             --pattern "prebuild/*"
           echo "Downloaded files:"
           ls -la ./blob-data/prebuild
 
       - name: Extract prebuild tarball
         run: |
-          tar -xzf ./blob-data/prebuild/prebuild-2025-11-30-ptw.tgz -C .
+          tar -xzf ./blob-data/prebuild/${{ secrets.PREBUILD_TARBALL }} -C .
           echo "Extracted files:"
           ls -la
       

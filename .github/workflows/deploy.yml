@@ -18,16 +18,7 @@ jobs:
       id-token: write
       contents: read
     steps:
-      - uses: actions/checkout@v3
-      
-      - name: Download data from Blob Storage
-        env:
-          AZURE_STORAGE_CONNECTION_STRING: ${{ secrets.AZURE_STORAGE_CONNECTION_STRING }}
-        run: |
-          mkdir -p blob-data
-          az storage blob download-batch \
-            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
-            --destination ./blob-data
+      - uses: actions/checkout@v3      
       
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin

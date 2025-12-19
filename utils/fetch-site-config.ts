@@ -80,7 +80,7 @@ async function main(): Promise<void> {
     process.exit(1);
   }
 
-  const configUrl = `${BLOB_BASE_URL}/${BLOB_CONFIG_FILE}`;
+  const configUrl = `${BLOB_BASE_URL}/build/content/${BLOB_CONFIG_FILE}`;
   console.log(`Fetching config from: ${configUrl}\n`);
 
   let configData: Buffer;
