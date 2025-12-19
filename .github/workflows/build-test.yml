@@ -25,13 +25,25 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
+      - name: Get runner IP
+        id: runner-ip
+        run: echo "ipv4=$(curl -s https://api.ipify.org)" >> $GITHUB_OUTPUT
+
+      - name: Allow runner IP in storage firewall
+        run: |
+          az storage account network-rule add \
+            --account-name ${{ secrets.BLOB_STORAGE_ACCOUNT }} \
+            --ip-address ${{ steps.runner-ip.outputs.ipv4 }}
+          echo "Waiting for firewall rule to propagate..."
+          sleep 30
+
       - name: Download data from Blob Storage
         run: |
           mkdir -p blob-data
           az storage blob download-batch \
             --source ${{ secrets.BLOB_CONTAINER_NAME }} \
             --destination ./blob-data \
-            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --account-name ${{ secrets.BLOB_STORAGE_ACCOUNT }} \
             --auth-mode login \
             --pattern "prebuild/*"
           echo "Downloaded files:"
@@ -52,6 +64,13 @@ jobs:
             --build-arg BLOB_BASE_URL=${{ secrets.BLOB_BASE_URL }} \
             -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
           docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+
+      - name: Remove runner IP from storage firewall
+        if: always()
+        run: |
+          az storage account network-rule remove \
+            --account-name ${{ secrets.AZURE_STORAGE_ACCOUNT }} \
+            --ip-address ${{ steps.runner-ip.outputs.ipv4 }}
 
   test_job:
     needs: build_image_job
