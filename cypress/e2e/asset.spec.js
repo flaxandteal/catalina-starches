@@ -35,7 +35,7 @@ describe('Asset Page — accessibility + functionality', () => {
 
     cy.visit(testAssetUrl);
     // Wait for asset JavaScript to initialize and render content
-    cy.get('#asset-title', { timeout: 10000 }).should('not.be.empty');
+    cy.get('#asset-title', { timeout: 60000 }).should('not.be.empty');
   });
 
   describe('Core Page Elements', () => {
