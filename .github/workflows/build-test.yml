@@ -77,11 +77,11 @@ jobs:
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
+          start: npx serve docs -l 1314
           wait-on: 'http://127.0.0.1:1314'
           wait-on-timeout: 60
           browser: electron
-          config: baseUrl=http://127.0.0.1:1314
+          config: baseUrl=http://127.0.0.1:1314,video=false
           install: false
       
       - name: Upload Cypress screenshots on failure
@@ -90,12 +90,4 @@ jobs:
         with:
           name: cypress-screenshots
           path: cypress/screenshots
-          if-no-files-found: ignore
-      
-      - name: Upload Cypress videos
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: cypress-videos
-          path: cypress/videos
           if-no-files-found: ignore
