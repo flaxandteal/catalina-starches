@@ -9,6 +9,9 @@ languageCode: 'en-gb'
 title: 'Heritage Register'  # Fallback title
 publishDir: "docs"
 
+params:
+  version: "0.1.0"
+
 markup:
   goldmark:
     renderer:
