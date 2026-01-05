@@ -80,7 +80,7 @@ jobs:
           start: npx http-server docs -a 127.0.0.1 -p 1314 -c-1
           wait-on: 'http://127.0.0.1:1314'
           wait-on-timeout: 60
-          browser: chrome
+          browser: electron
           config: baseUrl=http://127.0.0.1:1314
           install: false
       
