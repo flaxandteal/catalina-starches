@@ -26,9 +26,16 @@ jobs:
 <<<<<<< HEAD
       - name: Install AWS CLI
         run: |
+<<<<<<< HEAD
           sudo apt-get update
 <<<<<<< HEAD
           sudo apt-get install -y s3cmd
+=======
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
+          aws --version
+>>>>>>> c4ae4f7 (fix: install aws cli from source)
 
       - name: Configure s3
         run: |
