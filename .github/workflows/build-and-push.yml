@@ -23,6 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'true'
 
+<<<<<<< HEAD
       - name: Install AWS CLI
         run: |
           sudo apt-get update
@@ -64,6 +65,8 @@ jobs:
           sudo apt-get install -y awscli
 >>>>>>> d3fd5bb (fix: switch to aws cli)
 
+=======
+>>>>>>> 726cfdc (fix: remove install from source)
       - name: Fetch graphs
         run: |
           mkdir -p prebuild/graphs/resource_models
