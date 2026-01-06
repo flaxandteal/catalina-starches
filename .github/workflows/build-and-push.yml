@@ -24,6 +24,7 @@ jobs:
           submodules: 'true'
 
 <<<<<<< HEAD
+<<<<<<< HEAD
       - name: Install AWS CLI
         run: |
 <<<<<<< HEAD
@@ -74,13 +75,15 @@ jobs:
 
 =======
 >>>>>>> 726cfdc (fix: remove install from source)
+=======
+>>>>>>> 3cda8e8 (fix: fix invalid s3 cmd formating)
       - name: Fetch graphs
         run: |
           mkdir -p prebuild/graphs/resource_models
           
           # Test S3 connection
           echo "Testing S3 connection..."
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ || echo "Connection test completed"
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} || echo "Connection test completed"
           
 <<<<<<< HEAD
           # Download all JSON files from graphs directory
@@ -93,10 +96,15 @@ jobs:
 >>>>>>> b8023d5 (chore: hard coded bucket name)
 =======
           # Download all files from graphs directory
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+          aws s3 sync \
                 s3://${{ secrets.S3_BUCKET_NAME }}/starches/graphs/ \
+<<<<<<< HEAD
 >>>>>>> d3fd5bb (fix: switch to aws cli)
                 prebuild/graphs/resource_models/
+=======
+                prebuild/graphs/resource_models/ \
+                --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
+>>>>>>> 3cda8e8 (fix: fix invalid s3 cmd formating)
           
           echo "✓ Downloaded graph files:"
           ls -lh prebuild/graphs/resource_models/
@@ -119,10 +127,15 @@ jobs:
 >>>>>>> b8023d5 (chore: hard coded bucket name)
 =======
           # Download all files from business data directory
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+          aws s3 sync \
                 s3://${{ secrets.S3_BUCKET_NAME }}/starches/business_data/ \
+<<<<<<< HEAD
 >>>>>>> d3fd5bb (fix: switch to aws cli)
                 prebuild/business_data/
+=======
+                prebuild/business_data/ \
+                --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
+>>>>>>> 3cda8e8 (fix: fix invalid s3 cmd formating)
           
           echo "✓ Downloaded business data files:"
           ls -lh prebuild/business_data/
@@ -146,4 +159,3 @@ jobs:
             --build-arg STARCHES_INCLUDE_PRIVATE=0
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
-          
