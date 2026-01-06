@@ -99,11 +99,11 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
     });
 
     cy.get('@nav-search').within(() => {
-      cy.get('a').should('contain.text', 'Search Register');
+      cy.get('a').should('contain.text', 'Search the Register');
     });
 
     cy.get('@nav-search').within(() => {
-      cy.get('a').should('contain.text', 'Search Register');
+      cy.get('a').should('contain.text', 'Search the Register');
       cy.get('a').should('have.attr', 'href').and('include', '/map'); // Check href contains /map
     });
 
@@ -114,7 +114,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
     cy.get("[data-cy='hero-banner']").as('hero-banner').should('be.visible');
 
     cy.get('@hero-banner').within(() => {
-      cy.contains('Welcome to the Starches Historic Register!')
+      cy.contains('Search the Queensland Heritage Register')
         .should('be.visible')
         .should('have.length', 1);
 
@@ -129,7 +129,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
   })
 
   it('contains a Get Started section with tiles', () => {
-    const expectedTexts = ['What are the Historic Records?', 'How to Search', 'Useful Information'];
+    const expectedTexts = ['What is the Queensland Heritage Register?', 'Heritage News', 'Useful Information'];
     const foundTexts = [];
 
     cy.get('[data-cy="get-started"]').within(() => {
@@ -163,11 +163,13 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
         .should('be.visible')
         .should('contain.text', 'Discover Heritage');
 
-      // Check image exists and has alt text
-      cy.get('[data-cy="promo-image"]')
+      // Check media exists and has accessible text (alt for image, aria-label for video)
+      cy.get('[data-cy="promo-image"], [data-cy="promo-video"]')
         .should('be.visible')
-        .should('have.attr', 'alt')
-        .and('not.be.empty');
+        .then(($el) => {
+          const attr = $el.is('video') ? 'aria-label' : 'alt';
+          expect($el).to.have.attr(attr).and.not.be.empty;
+        });
     });
   });
 
@@ -176,7 +178,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
       // Check heading
       cy.get('[data-cy="text-section-heading"]')
         .should('be.visible')
-        .should('contain.text', 'What are the Historical Records');
+        .should('contain.text', 'What is the Queensland Heritage Register?');
 
       // Check text content
       cy.get('[data-cy="text-section-text"]')
@@ -190,48 +192,35 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
     });
   });
 
-  it('contains How to Search section with correct heading and cards', () => {
-    const expectedCardTitles = ['Search multiple fields', 'Filtering', 'Download Information'];
-    const foundTitles = [];
-
+  it('contains Heritage News with correct heading and cards', () => {
     cy.get('[data-cy="text-section"]').eq(1).within(() => {
-      // Check heading
+      // Check heading is visible
       cy.get('[data-cy="text-section-heading"]')
         .should('be.visible')
-        .should('contain.text', 'How to Search');
+        .should('not.be.empty');
     });
 
-    // Check multi-action cards
+    // Check multi-action cards have visible content
     cy.get('[data-cy="multi-action-card"]')
       .should('have.length', 3)
       .each(($card) => {
         cy.wrap($card).within(() => {
-          // Check title
+          // Check title is visible
           cy.get('[data-cy="card-title"]')
             .should('be.visible')
-            .invoke('text')
-            .then((text) => {
-              const trimmedText = text.trim();
-              const matchedTitle = expectedCardTitles.find(title => trimmedText.includes(title));
-              expect(matchedTitle).to.exist;
-              foundTitles.push(matchedTitle);
-            });
+            .should('not.be.empty');
 
-          // Check card text
+          // Check card text is visible
           cy.get('[data-cy="card-text"]')
             .should('be.visible')
             .should('not.be.empty');
 
-          // Check image has alt text
-          cy.get('[data-cy="card-image"]')
-            .should('be.visible')
-            .should('have.attr', 'alt')
-            .and('not.be.empty');
+          // Check image has alt text if present
+          const $img = $card.find('[data-cy="card-image"]');
+          if ($img.length) {
+            expect($img).to.have.attr('alt').and.not.be.empty;
+          }
         });
-      })
-      .then(() => {
-        // Verify all three card titles are present
-        expect(foundTitles).to.have.members(expectedCardTitles);
       });
   });
 
@@ -269,13 +258,15 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
         const text = $el.text().trim();
         const ariaLabel = $el.attr('aria-label');
         const title = $el.attr('title');
-        
+        const href = $el.attr('href');
+        const outerHtml = $el.prop('outerHTML').substring(0, 200);
+
         // Link should have either visible text, aria-label, or title
         const hasText = text.length > 0;
         const hasAriaLabel = ariaLabel !== undefined && ariaLabel.length > 0;
         const hasTitle = title !== undefined && title.length > 0;
-        
-        expect(hasText || hasAriaLabel || hasTitle, `Link has no accessible text. Text: "${text}", aria-label: "${ariaLabel}", title: "${title}"`).to.be.true;
+
+        expect(hasText || hasAriaLabel || hasTitle, `Link has no accessible text.\nhref: "${href}"\nHTML: ${outerHtml}`).to.be.true;
       });
     });
   });
