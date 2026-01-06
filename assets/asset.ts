@@ -167,7 +167,6 @@ async function loadMaritimeAsset(slug: string, gm: typeof graphManager): Promise
 async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTemplateDelegate | undefined> {
   const graphId = asset.__.wkrm.graphId;
   const config = MODEL_FILES[graphId];
-  console.log("HELLO")
   if (config?.template) {
     const response = await fetch(config.template);
     return Handlebars.compile(await response.text());
@@ -578,7 +577,15 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
 
-  initSwiper(asset.meta.resourceinstanceid)
+  // This is a sample list of images
+  const testImages = [
+    { name: "image_01.jpeg", alt: "A picture of a snow covered mountain peak"},
+    { name: "image_02.jpg", alt: "A yellow flower on a tree branch"},
+    { name: "image_03.jpg", alt: "A woman standing by a lake in a national park overlooked by mountains"},
+    { name: "image_04.jpg", alt: "Close up picture of stone texture"},
+  ]
+
+  initSwiper(testImages, 'media/images')
 
   injectSections(sections);
 

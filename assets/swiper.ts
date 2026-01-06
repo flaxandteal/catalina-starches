@@ -14,9 +14,8 @@ function buildImageURLs(imageList: ImageInput[], baseUrl: string, path: string):
   return imageList.map(image => {
     const lastDot = image.name.lastIndexOf('.');
     const name = image.name.substring(0, lastDot);
-    const ext = image.name.substring(lastDot);
     return {
-      url: `${baseUrl}/${path}/${name}_web${ext}`,
+      url: `${baseUrl}/${path}/${name}_web.jpg`,
       alt: image.alt || 'Heritage site image'
     };
   });
