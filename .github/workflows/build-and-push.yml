@@ -23,58 +23,44 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'true'
 
-      - name: Install s3cmd
+      - name: Install AWS CLI
         run: |
           sudo apt-get update
-          sudo apt-get install -y s3cmd
-
-      - name: Configure s3
-        run: |
-          cat > ~/.s3cfg << EOF
-          [default]
-          access_key = ${{ secrets.S3_ACCESS_KEY }}
-          secret_key = ${{ secrets.S3_SECRET_KEY }}
-          host_base = ${{ secrets.S3_HOST_BASE }}
-          host_bucket = ${{ secrets.S3_HOST_BASE }}
-          use_https = True
-          signature_v2 = False
-          check_ssl_certificate = True
-          check_ssl_hostname = True
-          EOF
-          
-          # Verify configuration and list bucket
-          echo "Testing S3 connection..."
-          s3cmd ls s3://${{ secrets.S3_BUCKET_NAME }}/ || echo "Connection test completed"
+          sudo apt-get install -y awscli
 
       - name: Fetch graphs
         run: |
           mkdir -p prebuild/graphs/resource_models
           
-          # List available paths for debugging
-          echo "Checking available paths..."
-          s3cmd ls s3://${S3_BUCKET_NAME}/starches/ || true
+          # Test S3 connection
+          echo "Testing S3 connection..."
+          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ || echo "Connection test completed"
           
-          # Download all JSON files from graphs directory
-          s3cmd get --recursive \
-                --force \
-                "s3://${S3_BUCKET_NAME}/starches/graphs/" \
+          # Download all files from graphs directory
+          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+                s3://${{ secrets.S3_BUCKET_NAME }}/starches/graphs/ \
                 prebuild/graphs/resource_models/
           
           echo "✓ Downloaded graph files:"
           ls -lh prebuild/graphs/resource_models/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Fetch business data
         run: |
           mkdir -p prebuild/business_data
           
-          # Download all JSON files from business data directory
-          s3cmd get --recursive \
-                --force \
-                "s3://${S3_BUCKET_NAME}/starches/business_data/" \
+          # Download all files from business data directory
+          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+                s3://${{ secrets.S3_BUCKET_NAME }}/starches/business_data/ \
                 prebuild/business_data/
           
           echo "✓ Downloaded business data files:"
           ls -lh prebuild/business_data/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
@@ -92,3 +78,4 @@ jobs:
             --build-arg STARCHES_INCLUDE_PRIVATE=0
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
+          
