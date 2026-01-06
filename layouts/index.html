@@ -14,10 +14,10 @@
 <section class="pb-64">
   {{ partial "promo-panel-video.html" . }}
 </section>
-<section class="py-64 bg" data-cy="text-section">
+<section id="archive" class="py-64 bg" data-cy="text-section">
   {{ partial "text-input.html" .Params.historicalRecords }}
 </section>
-<section class="pb-64" data-cy="text-section">
+<section id="search" class="pb-64" data-cy="text-section">
   {{ partial "text-input.html" .Params.search }}
   <div class="container">
     <div class="row justify-content-center align-items-center flex-column row-gap-5">
@@ -27,7 +27,7 @@
     </div>
   </div>
 </section>
-<section class="bg-light py-64">
+<section id="useful-information" class="bg-light py-64">
   {{ partial "link-list.html" .Params.usefulLinks }}
 </section>
 

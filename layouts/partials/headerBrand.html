@@ -2,7 +2,7 @@
 {{- $main := cond (isset $hdr "maincontent") $hdr.maincontent (dict) -}}
 
 <div class="qld-header-brand">
-    <a class="qld-header-link d-lg-inline-flex align-middle" href="{{ with $main.url }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}">
+    <a class="qld-header-link d-lg-inline-flex align-middle" aria-label="Go to homepage" href="{{ with $main.url }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}">
         <div class="qld-header-brand-image align-self-center">
             {{- if $main.logo -}}
                 {{- $logoSrc := $main.logo.src -}}
