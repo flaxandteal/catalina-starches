@@ -1,7 +1,8 @@
 FROM node:23.10.0 AS build
 
-ARG BLOB_BASE_URL
-ENV BLOB_BASE_URL=$BLOB_BASE_URL
+ARG DATA_FILE="aai_merged.json"
+
+ENV DATA_FILE=$DATA_FILE
 
 WORKDIR /app
 
@@ -25,7 +26,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
 # 1. ETL - process data first
-RUN npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private
+RUN npx starches-builder etl --file prebuild/business_data/$DATA_FILE --prefix AAI_ --include-private
 
 # 2. Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo

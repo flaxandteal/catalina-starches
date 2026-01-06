@@ -15,30 +15,34 @@ jobs:
           submodules: false
           lfs: false
 
-      - name: Download data from Blob Storage
+      - name: Download and extract prebuild tarball
         run: |
-          mkdir -p blob-data
-          az storage blob download-batch \
-            --source ${{ secrets.BLOB_CONTAINER_NAME }} \
-            --destination ./blob-data \
-            --account-name ${{ secrets.BLOB_STORAGE_ACCOUNT }} \
-            --pattern "prebuild/*"
-          echo "Downloaded files:"
-          ls -la ./blob-data/prebuild
-
-      - name: Extract prebuild tarball
-        run: |
-          tar -xzf ./blob-data/prebuild/${{ secrets.PREBUILD_TARBALL }} -C .
+          curl -fsSL "${{ secrets.BLOB_BASE_URL }}/content/prebuild/${{ secrets.PREBUILD_TARBALL }}" -o prebuild.tar.gz
+          tar -xzf prebuild.tar.gz -C .
+          rm prebuild.tar.gz
           echo "Extracted files:"
           ls -la
-      
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch site content from blob
+        env:
+          BLOB_BASE_URL: ${{ secrets.BLOB_BASE_URL }}
+        run: npx ts-node utils/fetch-content.ts
+
       - name: Log in to Docker Registry
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       
       - name: Build and Push Docker Image
         run: |
           docker build \
-            --build-arg BLOB_BASE_URL=${{ secrets.BLOB_BASE_URL }} \
             -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
           docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
 
