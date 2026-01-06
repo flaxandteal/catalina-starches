@@ -1,16 +1,28 @@
+{{- $promo := .Params.promoPanel -}}
+{{- if $promo -}}
 <section class="container" data-cy="promo-panel">
     <div class="qld-promo-panel indent  indent-img">
-        <div class="row light content-right" 
-        >
+        <div class="row light content-right">
             <div class="image-panel">
-                <img class="promo-panel-image" src="img/promo-image.jpg" alt="Promotional Image" data-cy="promo-image">
+                {{- if $promo.video -}}
+                <video class="promo-panel-image" {{ with $promo.video.poster }}poster="{{ . }}"{{ end }} {{ if $promo.video.autoplay }}autoplay muted{{ end }} {{ if $promo.video.loop }}loop{{ end }} {{ if $promo.video.controls | default true }}controls{{ end }} playsinline data-cy="promo-video">
+                    <source src="{{ $promo.video.src }}" type="{{ $promo.video.type | default "video/mp4" }}">
+                    Your browser does not support the video tag.
+                </video>
+                {{- else -}}
+                <img class="promo-panel-image" src="{{ $promo.image | default "img/promo-image.jpg" }}" alt="{{ $promo.imageAlt | default "Promotional Image" }}" data-cy="promo-image">
+                {{- end -}}
             </div>
-            <div class="content-panel dark">      
+            <div class="content-panel dark">
                 <div class="main">
-                        <h2 data-cy="promo-heading">Discover Heritage</h2>
-                        <div class="promo-abstract">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor, leo vulputate ut odio mattis.</div>
-    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tortor, leo vulputate ut odio mattis. Vel suspendisse mi quisque consequat aliquet egestas.            </div>
+                    <h2 data-cy="promo-heading">{{ $promo.heading }}</h2>
+                    {{- with $promo.abstract -}}
+                    <div class="promo-abstract">{{ . }}</div>
+                    {{- end -}}
+                    {{ $promo.content }}
+                </div>
             </div>
         </div>
     </div>
 </section>
+{{- end -}}

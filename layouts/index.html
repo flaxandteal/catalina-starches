@@ -11,18 +11,18 @@
   </div>
 </section>
 {{ partial "card-grid.html" (dict "cards" (.Params.getStarted) "title" "Get Started") }}
-{{ partial "promo-panel-video.html" }}
-<section class="py-64 bg-light">
+<section class="pb-64">
+  {{ partial "promo-panel-video.html" . }}
+</section>
+<section class="py-64 bg" data-cy="text-section">
   {{ partial "text-input.html" .Params.historicalRecords }}
 </section>
-<section class="py-64">
-  {{partial "text-input.html" .Params.search }}
+<section class="pb-64" data-cy="text-section">
+  {{ partial "text-input.html" .Params.search }}
   <div class="container">
-    <div class="row justify-content-center row-gap-5">
+    <div class="row justify-content-center align-items-center flex-column row-gap-5">
       {{ range .Params.search.cards }}
-      <div class="col-10">
         {{partial "multi-action-card.html" .}}
-      </div>
       {{ end }}
     </div>
   </div>

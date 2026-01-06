@@ -11,7 +11,7 @@
                     <span class="d-none d-lg-inline">{{ with $pre.globallink.text }}{{ . }}{{ end }}</span>
 
                     {{ if $hdr.hasdeliveringforqldlogo }}
-                        <img class="qld-header-logo is-delivering-for-qld" alt="Queensland Government" src="{{ with $pre.logo }}{{ . | relURL }}{{ else }}{{ "img/header-logo-qgov--light.svg" | relURL }}{{ end }}">
+                        <img class="qld-header-logo is-delivering-for-qld" alt="Queensland Government" src="{{ with $pre.logo }}{{ . | relURL }}{{ else }}{{ "img/delivering-for-qld" | relURL }}{{ end }}">
                     {{ else }}
                         <img class="qld-header-logo" alt="Queensland Government" src="{{ with $pre.logo }}{{ . | relURL }}{{ else }}{{ "img/header-logo-qgov--light.svg" | relURL }}{{ end }}">
                     {{ end }}
@@ -20,7 +20,7 @@
                 {{ if not hugo.IsProduction }}<span class="align-self-center">v{{ .Site.Params.version }}</span>{{ end}}
 
                 {{ with $pre.actions }}
-                    <div class="d-none d-lg-flex align-items-baseline">
+                    <div class="d-none d-lg-flex align-items-center">
                         {{ range . }}
                             {{ if .dropdown }}
                                 <div class="dropdown">
