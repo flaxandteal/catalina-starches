@@ -29,12 +29,13 @@ jobs:
           
           # Test S3 connection
           echo "Testing S3 connection..."
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ || echo "Connection test completed"
+          aws s3 ls s3://${{ secrets.S3_BUCKET_NAME }}/ --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} || echo "Connection test completed"
           
           # Download all files from graphs directory
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+          aws s3 sync \
                 s3://${{ secrets.S3_BUCKET_NAME }}/starches/graphs/ \
-                prebuild/graphs/resource_models/
+                prebuild/graphs/resource_models/ \
+                --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
           
           echo "✓ Downloaded graph files:"
           ls -lh prebuild/graphs/resource_models/
@@ -47,9 +48,10 @@ jobs:
           mkdir -p prebuild/business_data
           
           # Download all files from business data directory
-          aws --endpoint-url ${{ secrets.S3_ENDPOINT_URL }} s3 sync \
+          aws s3 sync \
                 s3://${{ secrets.S3_BUCKET_NAME }}/starches/business_data/ \
-                prebuild/business_data/
+                prebuild/business_data/ \
+                --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
           
           echo "✓ Downloaded business data files:"
           ls -lh prebuild/business_data/
@@ -73,4 +75,3 @@ jobs:
             --build-arg STARCHES_INCLUDE_PRIVATE=0
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
-          
