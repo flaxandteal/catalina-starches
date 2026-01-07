@@ -186,8 +186,8 @@ jobs:
         run: |
           docker build . \
             --file ./Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:latest \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=0
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:${{ github.sha }}
