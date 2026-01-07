@@ -124,7 +124,7 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
       cy.get('a.btn')
         .should('exist')
         .should('have.length', 1)
-        .should('have.attr', 'href').and('include', 'google')
+        .should('have.attr', 'href').and('include', '/map')
     })
   })
 
