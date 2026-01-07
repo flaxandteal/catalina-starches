@@ -43,6 +43,7 @@ jobs:
       - name: Build and Push Docker Image
         run: |
           docker build \
+            --build-arg BLOB_BASE_URL=${{ secrets.BLOB_BASE_URL }} \
             -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
           docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
 
