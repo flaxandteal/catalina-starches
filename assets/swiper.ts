@@ -1,19 +1,29 @@
 import Swiper from 'swiper/bundle';
 
-async function fetchImages(resourceId: string, blobBaseUrl: string): Promise<string[]> {
-  const listUrl = `${blobBaseUrl}?restype=container&comp=list&prefix=images/${resourceId}`;
-  const response = await fetch(listUrl);
-  const xml = await response.text();
-
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(xml, 'application/xml');
-  const blobs = doc.querySelectorAll('Blob > Name');
-  return Array.from(blobs).map(b => `${blobBaseUrl}/${b.textContent}`);
+interface ImageInput {
+  name: string;
+  alt: string;
 }
 
-function getRandomImages(images: string[], amount: number) {
+interface ImageData {
+  url: string;
+  alt: string;
+}
+
+function buildImageURLs(imageList: ImageInput[], baseUrl: string, path: string): ImageData[] {
+  return imageList.map(image => {
+    const lastDot = image.name.lastIndexOf('.');
+    const name = image.name.substring(0, lastDot);
+    return {
+      url: `${baseUrl}/${path}/${name}_web.jpg`,
+      alt: image.alt || 'Heritage site image'
+    };
+  });
+}
+
+function getRandomImages(images: ImageData[], amount: number): ImageData[] {
   const sortedImages = images.sort(() => Math.random() - 0.5);
-  return sortedImages.slice(0, amount)
+  return sortedImages.slice(0, amount);
 }
 
 const swiperConfigs = {
@@ -44,7 +54,7 @@ const swiperConfigs = {
   hero: {
     loop: true,
     autoplay: {
-      delay: 1000,
+      delay: 6000,
       disableOnInteraction: false,
     },
     pagination: {
@@ -64,15 +74,15 @@ function createSwiper(config: string): any {
   return new Swiper('.swiper', carouselConfig);
 }
 
-function populateSlides(wrapper: Element, images: string[], config: string): Promise<void> {
+function populateSlides(wrapper: Element, images: ImageData[], config: string): Promise<void> {
   wrapper.innerHTML = '';
   return new Promise((resolve) => {
-    images.forEach((imgUrl, index) => {
+    images.forEach((imageData, index) => {
       const slide = document.createElement('div');
       slide.className = `swiper-slide ${config}`;
       const img = document.createElement('img');
-      img.src = imgUrl;
-      img.alt = `Gallery image ${index + 1}`;
+      img.src = imageData.url;
+      img.alt = imageData.alt;
       img.style.cursor = 'pointer';
 
       // Lazy load all images except the first one
@@ -178,7 +188,7 @@ function setupModal(extensions: { name: string; ext: string }[]): void {
   });
 }
 
-export async function initSwiper(blobLocation: string): Promise<void> {
+export async function initSwiper(imageList: ImageInput[], path: string): Promise<void> {
   const container = document.querySelector('.swiper') as HTMLElement;
   if (!container) {
     console.error('[Swiper] Swiper container not found');
@@ -192,22 +202,16 @@ export async function initSwiper(blobLocation: string): Promise<void> {
   }
 
   const { blobUrl, config = 'hero', showModal, count } = container.dataset;
-  let images = await fetchImages(blobLocation, blobUrl);
+  let images = buildImageURLs(imageList, blobUrl, path);
 
   // Store the original extensions for download links
-  const originalImages = images.filter(url => !url.includes('_web') && !url.includes('_download'));
-  const extensions = originalImages.map(url => {
-    const filename = url.split('/').pop();
-    const lastDot = filename.lastIndexOf('.');
+  const extensions = imageList.map(image => {
+    const lastDot = image.name.lastIndexOf('.');
     return {
-      name: filename.substring(0, lastDot),
-      ext: filename.substring(lastDot + 1)
+      name: image.name.substring(0, lastDot),
+      ext: image.name.substring(lastDot + 1)
     };
   });
-
-  // Only include web-optimized images
-  images = images.filter(url => url.includes('_web'));
-  
 
   if (count) {
     images = getRandomImages(images, parseInt(count));

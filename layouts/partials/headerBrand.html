@@ -2,16 +2,27 @@
 {{- $main := cond (isset $hdr "maincontent") $hdr.maincontent (dict) -}}
 
 <div class="qld-header-brand">
-    <a class="qld-header-link d-lg-inline-flex align-middle" href="{{ with $main.url }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}">
+    <a class="qld-header-link d-lg-inline-flex align-middle" aria-label="Go to homepage" href="{{ with $main.url }}{{ . }}{{ else }}{{ .Site.BaseURL }}{{ end }}">
         <div class="qld-header-brand-image align-self-center">
             {{- if $main.logo -}}
-            <img src="{{ $main.logo.src | relURL }}" height="56" alt="{{ with $main.logo.alttext }}{{ . }}{{ else }}Starches{{ end }}" />
+                {{- $logoSrc := $main.logo.src -}}
+                {{- $logoAlt := cond (isset $main.logo "alttext") $main.logo.alttext "Queensland Government" -}}
+                {{- $inlineSvg := cond (isset $main.logo "inline") $main.logo.inline false -}}
+                {{- if and $inlineSvg (strings.HasSuffix $logoSrc ".svg") -}}
+                    {{- $svgPath := printf "static/%s" $logoSrc -}}
+                    {{- $svgContent := readFile $svgPath -}}
+                    <span class="qld-header-logo" role="img" aria-label="{{ $logoAlt }}">
+                        {{ $svgContent | safeHTML }}
+                    </span>
+                {{- else -}}
+                    <img src="{{ $logoSrc | relURL }}" height="56" alt="{{ $logoAlt }}" />
+                {{- end -}}
             {{- else if $main.sitetitle -}}
-            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/delivering-for-qld.svg" | relURL }}">
             {{- else if $hdr.hasdeliveringforqldlogo -}}
-            <img class="qld-header-logo is-delivering-for-qld" height="56" alt="Queensland Government - Delivering for Queensland" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            <img class="qld-header-logo is-delivering-for-qld" height="56" alt="Queensland Government - Delivering for Queensland" src="{{ "img/delivering-for-qld.svg" | relURL }}">
             {{- else -}}
-            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/flax__teal_limited_logo.svg" | relURL }}">
+            <img class="qld-header-logo" height="56" alt="Queensland Government" src="{{ "img/delivering-for-qld.svg" | relURL }}">
             {{- end -}}
         </div>
         {{- if $main.secondarylogo -}}

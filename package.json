@@ -62,9 +62,7 @@
   },
   "scripts": {
     "test:lint:css": "stylelint \"{static,themes}/**/*.css\" --allow-empty-input",
-    "fetch:config": "dotenv -e .env -- npx ts-node utils/fetch-site-config.ts",
     "fetch:content": "dotenv -e .env -- npx ts-node utils/fetch-content.ts",
-    "fetch:all": "npm run fetch:config && npm run fetch:content",
     "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:local": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:fetch": "npm run fetch:all && npm run start",

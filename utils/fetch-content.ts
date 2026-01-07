@@ -27,18 +27,20 @@ const __dirname = path.dirname(__filename);
 // Paths
 const PROJECT_ROOT = path.resolve(__dirname, '..');
 const CONTENT_DIR = path.join(PROJECT_ROOT, 'content');
+const CONFIG_DIR = path.join(PROJECT_ROOT, 'config', '_default');
 
 // Environment
 const BLOB_BASE_URL = process.env.BLOB_BASE_URL;
-const BLOB_CONTENT_PATH = process.env.BLOB_CONTENT_PATH || 'build/content/';
 const SKIP_BLOB_FETCH = process.env.SKIP_BLOB_FETCH === 'true';
 
 // Content files to fetch from blob (these contain client-specific content)
-const CONTENT_FILES = [
-  '_index.md',
-  'map.md',
-  'asset.md',
-  // 'cookies.md',  // Optional - uncomment if client needs custom cookie policy
+// Map of blob filename -> local destination directory
+const CONTENT_FILES: { filename: string; destDir: string }[] = [
+  { filename: '_index.md', destDir: CONTENT_DIR },
+  { filename: 'map.md', destDir: CONTENT_DIR },
+  { filename: 'asset.md', destDir: CONTENT_DIR },
+  { filename: 'params.yaml', destDir: CONFIG_DIR },
+  // { filename: 'cookies.md', destDir: CONTENT_DIR },  // Optional - uncomment if client needs custom cookie policy
 ];
 
 /**
@@ -81,12 +83,18 @@ async function fetchUrl(url: string): Promise<string | null> {
 /**
  * Fetch a single content file from blob
  */
-async function fetchContentFile(filename: string): Promise<void> {
-  const blobUrl = `${BLOB_BASE_URL}/${BLOB_CONTENT_PATH}${filename}`;
-  const localPath = path.join(CONTENT_DIR, filename);
+async function fetchContentFile(filename: string, destDir: string): Promise<void> {
+  const blobUrl = `${BLOB_BASE_URL}/content/config/${filename}`;
+  const localPath = path.join(destDir, filename);
 
   console.log(`\nProcessing: ${filename}`);
   console.log(`  Fetching from: ${blobUrl}`);
+  console.log(`  Destination: ${localPath}`);
+
+  // Ensure destination directory exists
+  if (!fs.existsSync(destDir)) {
+    fs.mkdirSync(destDir, { recursive: true });
+  }
 
   const content = await fetchUrl(blobUrl);
 
@@ -120,8 +128,8 @@ async function main(): Promise<void> {
   }
 
   // Process each content file
-  for (const filename of CONTENT_FILES) {
-    await fetchContentFile(filename);
+  for (const { filename, destDir } of CONTENT_FILES) {
+    await fetchContentFile(filename, destDir);
   }
 
   console.log('\n=== Content fetch complete ===');

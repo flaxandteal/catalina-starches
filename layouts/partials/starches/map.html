@@ -28,7 +28,7 @@
 {{- .Page.Store.Set "notice-style-loaded-flag" true -}}
 {{- end -}}
 <div id="map-row" class="py-64">
-{{ if .includeSearch }}
+{{ if .Params.includeSearch }}
     <script>window.STARCHES_HAS_SEARCH = true;</script>
     <div class="search-column col-lg-5 col-sm-12 pe-3 px-sm-12 px-md-24 position-relative">
         {{ partial "search-map.html" }}
@@ -49,7 +49,7 @@
     <div id="map-column">
         <div id="filter-warning" class="filter-warning-hidden">Filtering geographically, <a href="javascript:resetView()">reset</a> view to see all results</div>
         <div id="map-container">
-{{ if .includeSearch }}
+{{ if .Params.includeSearch }}
             <div id="map-cover">
                 <div id="map-instructions">
                     Search by typing 4+ characters into the <strong>searchbox</strong>, or
@@ -58,7 +58,7 @@
                 </div>
             </div>
 {{ end }}
-            <div class="map" data-center="{{ .center }}" data-zoom="{{ .zoom }}" {{ if .mobileZoom }}data-zoom-mobile="{{ .mobileZoom }}"{{ end }}></div>
+            <div class="map" data-center="{{ .Params.center }}" data-zoom="{{ .Params.zoom }}" {{ if .Params.mobileZoom }}data-zoom-mobile="{{ .Params.mobileZoom }}"{{ end }}></div>
         </div>
     </div>
 </div>

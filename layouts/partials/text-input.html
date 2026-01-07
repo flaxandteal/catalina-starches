@@ -2,18 +2,17 @@
 {{ $text := .text }}
 {{ $showImage := .showImage }}
 
-<section class="py-64" data-cy="text-section">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-{{ if $showImage }}6{{ else }}12{{ end }}">
-                <h2 data-cy="text-section-heading">{{ $title }}</h2>
-                <p data-cy="text-section-text">{{ $text }}</p>
-            </div>
-            {{ if $showImage }}
-            <div class="col-sm-8 offset-sm-2 offset-lg-0 col-lg-6">
-                <img src="img/peanut-silo.jpg" alt="Peanut Silo" width="100%" height="auto" data-cy="text-section-image">
-            </div>
-            {{ end }}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-{{ if $showImage }}6{{ else }}12{{ end }}">
+            <h2 data-cy="text-section-heading">{{ $title }}</h2>
+            <div data-cy="text-section-text">{{ $text | markdownify }}</div>
         </div>
+        {{ if $showImage }}
+        <div class="col-sm-8 offset-sm-2 offset-lg-0 col-lg-6">
+            <img src="{{ .image }}" alt="{{ .imageAlt }}" width="100%" height="auto" data-cy="text-section-image">
+        </div>
+        {{ end }}
     </div>
-</section>
+</div>
+

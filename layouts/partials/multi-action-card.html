@@ -1,10 +1,16 @@
-<div class="col-md-12 col-lg-12" data-cy="multi-action-card">
-    <div class="card card-default default card-multi-action card-feature card-feature-left">
+{{- $showImage := default true .showImage -}}
+{{- $colClass := cond $showImage "col-md-12 col-lg-12" "col-md-5" -}}
+{{- $cardClass := cond $showImage "card card-default default card-multi-action card-feature card-feature-left" "card card-default default card-multi-action" -}}
+
+<div class="{{ $colClass }}" data-cy="multi-action-card">
+    <div class="{{ $cardClass }}">
+        {{- if $showImage }}
         <div class="card-img ratio ratio-16x9">
             <a href="#" class="card-img-right ratio ratio-16x9" aria-label="{{ .title }}">
                 <img src="{{ .image | relURL }}" alt="{{ .imageAlt | default "Card image" }}" class="card-img-right" data-cy="card-image" />
             </a>
         </div>
+        {{- end }}
         <div class="card-inner">
             <div class="card-body">
                 <h3 class="card-title" data-cy="card-title">
@@ -15,7 +21,7 @@
                 </div>
             </div>
             <div class="card-footer">
-                {{ partial "call-to-action.html" (dict "link" .link)}}
+                {{ partial "call-to-action.html" . }}
             </div>
         </div>
     </div>

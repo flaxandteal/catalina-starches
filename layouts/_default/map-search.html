@@ -2,15 +2,11 @@
 
 <div class="container container-sm container-md container-lg radius">
     {{ partial "banner.html" . }}
-    {{ partial "starches/map"
-    (dict
-        "includeSearch" true
-        "center" "[-6, 54]"
-        "zoom" 6
-        "mobileZoom" 10
-    )}}
+    {{ partial "starches/map" .}}
 </div>
 
-{{ .Content }}
+<div class="container py-sm-1 py-64">
+    {{ .Content}}
+</div>
 
 {{ end }}
