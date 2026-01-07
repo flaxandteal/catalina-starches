@@ -9,8 +9,15 @@
                 {{- $logoAlt := cond (isset $main.logo "alttext") $main.logo.alttext "Queensland Government" -}}
                 {{- $inlineSvg := cond (isset $main.logo "inline") $main.logo.inline false -}}
                 {{- if and $inlineSvg (strings.HasSuffix $logoSrc ".svg") -}}
-                    {{- $svgPath := printf "static/%s" $logoSrc -}}
-                    {{- $svgContent := readFile $svgPath -}}
+                    {{- $svgContent := "" -}}
+                    {{- if or (strings.HasPrefix $logoSrc "http://") (strings.HasPrefix $logoSrc "https://") -}}
+                        {{- with resources.GetRemote $logoSrc -}}
+                            {{- $svgContent = .Content -}}
+                        {{- end -}}
+                    {{- else -}}
+                        {{- $svgPath := printf "static/%s" $logoSrc -}}
+                        {{- $svgContent = readFile $svgPath -}}
+                    {{- end -}}
                     <span class="qld-header-logo" role="img" aria-label="{{ $logoAlt }}">
                         {{ $svgContent | safeHTML }}
                     </span>
