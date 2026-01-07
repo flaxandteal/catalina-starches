@@ -109,6 +109,6 @@
     "build": "dotenv -- tsc && vite build",
 >>>>>>> eb8adc2 (fix: map and asset page now functioning, pulls data as expected)
     "preview": "dotenv vite preview",
-    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --import tsx utils/preindex.ts $data; done && dotenv -- node --import tsx utils/reindex.ts'",
+    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --import tsx utils/preindex.ts $data; done && dotenv -- node --import tsx utils/reindex.ts'"
   }
 }
