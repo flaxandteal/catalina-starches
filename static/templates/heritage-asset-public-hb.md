@@ -15,7 +15,7 @@
 ::end::
 
 {{#each ha.descriptions}}
-:: {{ description_type }} ::
+:: {{ clean description_type }} ::
 [@description] {{ description }}
 ::end::
 {{/each}}
