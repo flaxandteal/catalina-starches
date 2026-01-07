@@ -60,6 +60,6 @@
     "dev": "dotenv vite",
     "build": "dotenv -- tsc && vite build",
     "preview": "dotenv vite preview",
-    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --import tsx utils/preindex.ts $data; done && dotenv -- node --import tsx utils/reindex.ts'",
+    "reindex": "dotenv -- bash -c 'rm -f prebuild/preindex/* docs/definitions/business_data/* && for data in prebuild/business_data/*; do echo DATA $data; dotenv -- node --import tsx utils/preindex.ts $data; done && dotenv -- node --import tsx utils/reindex.ts'"
   }
 }
