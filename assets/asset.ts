@@ -553,9 +553,9 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   debug('Rendered non-static asset');
 
   const { images, files, otherEcrs } = categorizeExternalReferences(nonstaticAsset);
-
   const markdown = template(
     {
+      meta: asset.meta,
       title: asset.meta.title,
       ha: nonstaticAsset,
       js: JSON.stringify(nonstaticAsset, null, 2),
