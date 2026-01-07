@@ -9,6 +9,10 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  S3_ENDPOINT_URL: ${{ secrets.S3_ENDPOINT_URL }}
+  S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
 
 jobs:
   build-starches:
@@ -23,6 +27,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           submodules: 'true'
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
       - name: Install AWS CLI
@@ -105,15 +110,28 @@ jobs:
                 prebuild/graphs/resource_models/ \
                 --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
 >>>>>>> 3cda8e8 (fix: fix invalid s3 cmd formating)
+=======
+      - name: Create prebuild directory structure
+        run: |
+          mkdir -p prebuild/graphs/resource_models
+          mkdir -p prebuild/graphs/branches
+          mkdir -p prebuild/business_data
+
+      - name: Fetch graphs
+        run: |
+          # Download all files from graphs directory
+          aws s3 sync \
+                s3://$S3_BUCKET_NAME/starches/graphs/ \
+                prebuild/graphs/resource_models/ \
+                --endpoint-url $S3_ENDPOINT_URL
+>>>>>>> de075a1 (fix: create ignored prebuild directories)
           
           echo "✓ Downloaded graph files:"
-          ls -lh prebuild/graphs/resource_models/
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
+          ls -lah prebuild/graphs/resource_models/
 
       - name: Fetch business data
         run: |
+<<<<<<< HEAD
           mkdir -p prebuild/business_data
           
 <<<<<<< HEAD
@@ -136,12 +154,16 @@ jobs:
                 prebuild/business_data/ \
                 --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
 >>>>>>> 3cda8e8 (fix: fix invalid s3 cmd formating)
+=======
+          # Download all files from business data directory
+          aws s3 sync \
+                s3://$S3_BUCKET_NAME/starches/business_data/ \
+                prebuild/business_data/ \
+                --endpoint-url $S3_ENDPOINT_URL
+>>>>>>> de075a1 (fix: create ignored prebuild directories)
           
           echo "✓ Downloaded business data files:"
-          ls -lh prebuild/business_data/
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
+          ls -lah prebuild/business_data/
 
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
