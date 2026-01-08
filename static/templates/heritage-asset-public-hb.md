@@ -2,6 +2,7 @@
 
 ::IDs::
 [Resource ID] {{ meta.resourceinstanceid }}
+[Place ID] {{ ha.system_reference_numbers.uuid.resourceid }}
 ::end::
 
 ::Names::
@@ -69,16 +70,13 @@
 
 <!--section:asset-related-->
 
-::Places{location}::
-[Related] Brisbane
-::end::
-
+{{#if ha.associated_actors.length}}
 ::People{profile}::
-[Related] John Smith
-[Related] Jane Doe
-[Related] Anna Smythe
+{{#each ha.associated_actors }}
+[Related] {{{ associated_actor.actor }}}
+{{/each}}
 ::end::
+{{else}}
+<h3>No related resources</h3>
+{{/if}}
 
-::Organisation{building}::
-[Related] Council
-::end::

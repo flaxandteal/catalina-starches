@@ -321,6 +321,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
     alias: string;      // The node alias (from @alias)
     label: string;      // Display label
     value: string;      // The value after the colon
+    slug?: string;      // The url slug for the related resource
     node?: any;         // Looked up node data
   }
 
@@ -413,10 +414,16 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
               const alias = isNodeRef ? label.substring(1) : null;
               const node = alias ? nodes.get(alias) : null;
 
+              // Extract data-id from alizarin-resource-instance spans to build slug
+              const dataIdMatch = value.match(/data-id=['"]([^'"]+)['"]/);
+              const resourceId = dataIdMatch ? dataIdMatch[1] : null;
+              const slug = resourceId ? `?slug=${resourceId}` : null
+
               fields.push({
                 alias: alias || '',
                 label: isNodeRef ? (node?.name || alias) : label,
                 value,
+                slug,
                 node
               });
             }
@@ -548,7 +555,6 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
   const nonstaticAsset = await alizarinRenderer.render(asset.asset);
   debug('Rendered non-static asset');
-
   const { images, files, otherEcrs } = categorizeExternalReferences(nonstaticAsset);
   const markdown = template(
     {
