@@ -541,6 +541,25 @@ async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>
   return {};
 }
 
+async function getImageList(asset: Asset) {
+  const graphId = asset.asset.__.wkrm.graphId;
+  const imageList: Array<{ name: string; alt: string }> = [];
+  switch (graphId) {
+    case "076f9381-7b00-11e9-8d6b-80000b44d1d9": // Heritage Asset
+      const images = await asset.asset.Images
+      for (const img of await images) {
+        const name = await img.name;
+        const alt = await img.alt_text;
+        imageList.push({ name, alt });
+      }
+      break;
+  
+    default:
+      break;
+  }
+  return imageList;
+}
+
 interface ImageRef {
   image: any;
   index: number;
@@ -579,6 +598,8 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const downloadPDF = () => {
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
+  
+  const imageList = await getImageList(asset);
 
   // This is a sample list of images
   const testImages = [
