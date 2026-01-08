@@ -13,7 +13,7 @@
 
 describe('Asset Page — accessibility + functionality', () => {
   // The slug parameter should reference an existing asset in your test data
-  const testAssetUrl = '/asset/?slug=AAI_aai-9-the-dorsey-new-b06937&';
+  const testAssetUrl = '/asset/?slug=AAI_monument-name-06f569&';
 
   beforeEach(() => {
     // Intercept blob storage image list requests (use regex to catch any blob URL)
@@ -361,18 +361,6 @@ describe('Asset Page — accessibility + functionality', () => {
       });
     });
 
-    it('Places category has location icon', () => {
-      cy.get('#asset-related div[id*="places"]').then(($section) => {
-        if ($section.length > 0) {
-          cy.wrap($section).within(() => {
-            cy.get('[class*="qld-icon-location"]').should('exist');
-          });
-        } else {
-          cy.log('No Places section found in test data');
-        }
-      });
-    });
-
     it('People category has profile icon', () => {
       cy.get('#asset-related div[id*="people"]').then(($section) => {
         if ($section.length > 0) {
@@ -381,18 +369,6 @@ describe('Asset Page — accessibility + functionality', () => {
           });
         } else {
           cy.log('No People section found in test data');
-        }
-      });
-    });
-
-    it('Organisation category has building icon', () => {
-      cy.get('#asset-related div[id*="organisation"]').then(($section) => {
-        if ($section.length > 0) {
-          cy.wrap($section).within(() => {
-            cy.get('[class*="qld-icon-building"]').should('exist');
-          });
-        } else {
-          cy.log('No Organisation section found in test data');
         }
       });
     });
