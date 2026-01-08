@@ -196,7 +196,7 @@ async function getAssetMetadata(asset: AlizarinModel<any>): Promise<AssetMetadat
     resourceinstanceid: `${await asset.id}`,
     geometry,
     location,
-    title: await asset.$.getName(true)
+    title: await asset.$.getName()
   };
 }
 
@@ -591,6 +591,8 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
       allowProtoMethodsByDefault: true
     }
   );
+
+  console.log("META", asset.meta);
 
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
