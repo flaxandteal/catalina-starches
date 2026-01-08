@@ -399,29 +399,26 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const icon = match[2]?.trim();
             const body = match[3].trim();
 
-            // Parse each line for @alias : value pattern
+            // Parse fields - capture multi-line values until next [field] or end
             const fields: NodeBlockField[] = [];
-            const lines = body.split('\n');
+            const fieldPattern = /\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/g;
+            let fieldMatch: RegExpExecArray | null;
 
-            for (const line of lines) {
-              // Match [@alias] value  OR  [Plain Text] value
-              const fieldMatch = line.match(/^\[([^\]]+)\]\s+(.*)$/);
-              if (fieldMatch) {
-                const label = fieldMatch[1].trim();
-                const value = fieldMatch[2].trim();
+            while ((fieldMatch = fieldPattern.exec(body)) !== null) {
+              const label = fieldMatch[1].trim();
+              const value = fieldMatch[2].trim();
 
-                // Check if it's a node reference (starts with @)
-                const isNodeRef = label.startsWith('@');
-                const alias = isNodeRef ? label.substring(1) : null;
-                const node = alias ? nodes.get(alias) : null;
+              // Check if it's a node reference (starts with @)
+              const isNodeRef = label.startsWith('@');
+              const alias = isNodeRef ? label.substring(1) : null;
+              const node = alias ? nodes.get(alias) : null;
 
-                fields.push({
-                  alias: alias || '',
-                  label: isNodeRef ? (node?.name || alias) : label,
-                  value,
-                  node
-                });
-              }
+              fields.push({
+                alias: alias || '',
+                label: isNodeRef ? (node?.name || alias) : label,
+                value,
+                node
+              });
             }
 
             const token: NodeBlockToken = {

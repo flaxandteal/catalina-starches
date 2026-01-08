@@ -14,9 +14,39 @@
 {{/each}}
 ::end::
 
+::Address::
+[Local Government Area] This is a gov area {{{ county.county_value }}}
+{{#each ha.location_data.addresses }}
+{{#if street.street_value }}
+[@street_value] {{ street.street_value }}
+{{/if}}
+{{#if town_or_city.town_or_city_value }}
+[Suburb] {{ town_or_city.town_or_city_value }}
+{{/if}}
+{{#if postcode.postcode_value }}
+[@postcode_value] {{ postcode.postcode_value }}
+{{/if}}
+{{/each}}
+::end::
+
+::Parcel::
+{{#each ha.location_data.addresses }}
+[Lot] {{ building_name.building_name_value }}
+{{/each}}
+{{#each ha.location_data.area_assignments.area_assignment }}
+[Plan] {{ area_reference.area_reference_value }}
+{{/each}}
+::end::
+
+::Criteria::
+{{#each ha.designation_and_protection_assignment }}
+{{{ local_heritage_list_criteria_type }}}
+{{/each}}
+::end::
+
 {{#each ha.descriptions}}
 :: {{ clean description_type }} ::
-[@description] {{ description }}
+{{{ description }}}
 ::end::
 {{/each}}
 
@@ -35,18 +65,6 @@
 [@postcode_value] {{ postcode.postcode_value }}
 {{/if}}
 {{/each}}
-::end::
-
-::Lot::
-{{#if ha.location_data.addresses.lot.lot_value }}
-[@lot_value]{{ addresses.lot.lot_value }}
-{{/if}}
-::end::
-
-::Plan::
-{{#if area_assignments.area_reference.area_reference_value }}
-[Plan]{{ area_assignments.area_reference.area_reference_value }}
-{{/if}}
 ::end::
 
 <!--section:asset-related-->
