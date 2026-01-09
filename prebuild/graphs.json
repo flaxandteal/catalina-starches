@@ -1,6 +1,6 @@
 {
     "models": {
-        "076f9381-7b00-11e9-8d6b-80000b44d1d9": {"name": "Heritage Asset"},
+        "076f9381-7b00-11e9-8d6b-80000b44d1d9": {"name": "Heritage Item"},
         "22477f01-1a44-11e9-b0a9-000d3ab1e588": {"name": "Person"},
         "d4a88461-5463-11e9-90d9-000d3ab1e588": {"name": "Organization"},
         "3a6ce8b9-0357-4a72-b9a9-d8fdced04360": {

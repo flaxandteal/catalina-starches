@@ -3,6 +3,7 @@ import dompurify from 'dompurify';
 import * as Handlebars from 'handlebars';
 import { Map as MLMap } from 'maplibre-gl';
 import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin';
+import '@alizarin/filelist';
 import { addMarkerImage } from 'map-tools';
 import {
   getSearchUrlWithContext,
@@ -605,12 +606,17 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const imageList = await getImageList(asset);
 
   // This is a sample list of images
-  const testImages = [
-    { name: "image_01.jpeg", alt: "A picture of a snow covered mountain peak"},
-    { name: "image_02.jpg", alt: "A yellow flower on a tree branch"},
-    { name: "image_03.jpg", alt: "A woman standing by a lake in a national park overlooked by mountains"},
-    { name: "image_04.jpg", alt: "Close up picture of stone texture"},
-  ]
+  const imageArray = ((await asset.asset.images) || [[]])
+  const testImages = [];
+  await Promise.all(imageArray.map(async (i) => {
+    for (const image of i) {
+      images.push({
+        name: await image.name,
+        url: await image.url,
+        alt: (await image._file.alt_text) || (await image.name)
+      });
+    }
+  }));
 
   initSwiper(testImages, 'media/images')
 
