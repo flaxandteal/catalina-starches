@@ -16,8 +16,10 @@
 ::end::
 
 ::Address::
-[Local Government Area] This is a gov area {{{ county.county_value }}}
 {{#each ha.location_data.addresses }}
+{{#if county.county_value }}
+[Local Government Area] {{{ county.county_value }}}
+{{/if}}
 {{#if street.street_value }}
 [@street_value] {{ street.street_value }}
 {{/if}}
@@ -32,7 +34,9 @@
 
 ::Parcel::
 {{#each ha.location_data.addresses }}
+{{#if building_name.building_name_value }}
 [Lot] {{ building_name.building_name_value }}
+{{/if}}
 {{/each}}
 {{#each ha.location_data.area_assignments.area_assignment }}
 [Plan] {{ area_reference.area_reference_value }}
@@ -46,16 +50,20 @@
 ::end::
 
 {{#each ha.descriptions}}
+{{#if description }}
 :: {{ clean description_type }} ::
 {{{ description }}}
 ::end::
+{{/if}}
 {{/each}}
 
 <!--section:asset-location-->
 
 ::Address::
-[Local Government Area] This is a gov area {{{ county.county_value }}}
 {{#each ha.location_data.addresses }}
+{{#if county.county_value }}
+[Local Government Area] {{{ county.county_value }}}
+{{/if}}
 {{#if street.street_value }}
 [@street_value] {{ street.street_value }}
 {{/if}}

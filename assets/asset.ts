@@ -399,7 +399,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
           if (match) {
             const title = match[1].trim();
             const icon = match[2]?.trim();
-            const body = match[3].trim();
+            let body = match[3].trim();
 
             // Parse fields - capture multi-line values until next [field] or end
             const fields: NodeBlockField[] = [];
@@ -427,6 +427,10 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
                 slug,
                 node
               });
+            }
+
+            if (!body) {
+              body = '<p><strong>No data available</strong></p>';
             }
 
             const token: NodeBlockToken = {
@@ -542,26 +546,6 @@ async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>
   return {};
 }
 
-async function getImageList(asset: Asset) {
-  const graphId = asset.asset.__.wkrm.graphId;
-  const imageList: Array<{ name: string; alt: string }> = [];
-  switch (graphId) {
-    case "076f9381-7b00-11e9-8d6b-80000b44d1d9": // Heritage Asset
-      const images = await asset.asset?.images
-      if (!images) return imageList;
-      for (const img of await images) {
-        const name = await img.name;
-        const alt = await img.alt_text;
-        imageList.push({ name, alt });
-      }
-      break;
-  
-    default:
-      break;
-  }
-  return imageList;
-}
-
 interface ImageRef {
   image: any;
   index: number;
@@ -602,8 +586,6 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const downloadPDF = () => {
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
-  
-  const imageList = await getImageList(asset);
 
   // This is a sample list of images
   const imageArray = ((await asset.asset.images) || [[]])
@@ -617,6 +599,8 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
       });
     }
   }));
+
+  console.log("testImages", testImages);
 
   initSwiper(testImages, 'media/images')
 
