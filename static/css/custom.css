@@ -224,7 +224,7 @@
         }
 }
 
-.navbar #burgerCloseBtn::before {
+.navbar [id="burgerCloseBtn"]::before {
 	--nav-header-icon-color: var(--qld-white);
 }
 
