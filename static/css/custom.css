@@ -224,6 +224,9 @@
         }
 }
 
+.navbar #burgerCloseBtn::before {
+	--nav-header-icon-color: var(--qld-white);
+}
 
 /* ==========================================================================
    7. BACKGROUND IMAGE SLIDESHOW
