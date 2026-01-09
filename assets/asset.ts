@@ -609,8 +609,8 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const imageArray = ((await asset.asset.images) || [[]])
   const testImages = [];
   await Promise.all(imageArray.map(async (i) => {
-    for (const image of i) {
-      images.push({
+    for (const image of (await i)) {
+      testImages.push({
         name: await image.name,
         url: await image.url,
         alt: (await image._file.alt_text) || (await image.name)
