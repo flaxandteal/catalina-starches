@@ -26,14 +26,13 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
 
 # Process data files (ETL step) - create preindex directory and process each data source
 RUN mkdir -p prebuild/preindex && \
-    npx starches-builder etl --file prebuild/business_data/registries.json --prefix REG_ --include-private=${STARCHES_INCLUDE_PRIVATE} && \
-    npx starches-builder etl --file prebuild/business_data/aai_merged.json --prefix AAI_ --include-private=${STARCHES_INCLUDE_PRIVATE}
+    RUN npx starches-builder etl --file prebuild/business_data/$DATA_FILE --prefix AAI_ --include-private
 
 # Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo
 
 # Index - create search index AFTER Hugo builds the HTML
-RUN npx starches-builder index --site docs --include-private=${STARCHES_INCLUDE_PRIVATE}
+RUN npx starches-builder index --site docs --include-private
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
