@@ -126,17 +126,19 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
     content.push({ text: title, style: 'documentTitle' });
 
     // Match nodeBlocks: ::Title{icon}::\n...content...\n::end::
-    const nodeBlockPattern = /^::([^:{]+)(?:\{([^}]+)\})?::\n([\s\S]*?)::end::/gm;
+    const nodeBlockPattern = /^::([^:{]*)(?:\{([^}]+)\})?::\n([\s\S]*?)::end::/gm;
     let blockMatch: RegExpExecArray | null;
 
     while ((blockMatch = nodeBlockPattern.exec(markdown)) !== null) {
         const sectionTitle = blockMatch[1].trim();
 
-        // Skip duplicate sections
-        if (seenSections.has(sectionTitle)) {
+        // Skip duplicate sections (only for titled sections)
+        if (sectionTitle && seenSections.has(sectionTitle)) {
             continue;
         }
-        seenSections.add(sectionTitle);
+        if (sectionTitle) {
+            seenSections.add(sectionTitle);
+        }
 
         const body = blockMatch[3].trim();
 
