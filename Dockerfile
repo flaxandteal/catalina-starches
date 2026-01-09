@@ -1,7 +1,10 @@
 FROM node:23.10.0 AS build
 
 ARG STARCHES_INCLUDE_PRIVATE=0
+ARG DATA_FILE="aai_merged.json"
+
 ENV STARCHES_INCLUDE_PRIVATE=$STARCHES_INCLUDE_PRIVATE
+ENV DATA_FILE=$DATA_FILE
 
 WORKDIR /app
 
@@ -26,7 +29,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
 
 # Process data files (ETL step) - create preindex directory and process each data source
 RUN mkdir -p prebuild/preindex && \
-    RUN npx starches-builder etl --file prebuild/business_data/$DATA_FILE --prefix AAI_ --include-private
+    npx starches-builder etl --file prebuild/business_data/$DATA_FILE --prefix AAI_ --include-private
 
 # Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo
