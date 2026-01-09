@@ -23,7 +23,7 @@ time[pubdate=""]:before {
 }
 
 .alizarin-concept-value {
-    font-weight: bold;
+    font-weight: inherit;
 }
 
 .govuk-width-container {

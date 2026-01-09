@@ -2,7 +2,7 @@
 
 {{- $mapUI := resources.Get "map-ui.ts" -}}
 {{ $sourceMap := cond hugo.IsProduction "" "inline" }}
-{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2020" }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2022" }}
 {{ $mapUI = $mapUI | js.Build $opts }}
 {{ if hugo.IsProduction }}
   {{ $mapUI = $mapUI | fingerprint }}
@@ -14,7 +14,7 @@
 {{- $js := resources.Get . -}}
 {{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction ) }}
 {{ $sourceMap := cond hugo.IsProduction "" "inline" }}
-{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2020" "params" $params }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2022" "params" $params }}
 {{ $js = $js | js.Build $opts }}
 {{ if hugo.IsProduction }}
   {{ $js = $js | fingerprint }}

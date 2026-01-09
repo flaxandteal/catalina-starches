@@ -2,6 +2,7 @@
 
 ::IDs::
 [Resource ID] {{ meta.resourceinstanceid }}
+[Place ID] {{ ha.system_reference_numbers.uuid.resourceid }}
 ::end::
 
 ::Names::
@@ -14,17 +15,11 @@
 {{/each}}
 ::end::
 
-{{#each ha.descriptions}}
-:: {{ clean description_type }} ::
-[@description] {{ description }}
-::end::
-{{/each}}
-
-<!--section:asset-location-->
-
 ::Address::
-[Local Government Area] This is a gov area {{{ county.county_value }}}
 {{#each ha.location_data.addresses }}
+{{#if county.county_value }}
+[Local Government Area] {{{ county.county_value }}}
+{{/if}}
 {{#if street.street_value }}
 [@street_value] {{ street.street_value }}
 {{/if}}
@@ -37,30 +32,59 @@
 {{/each}}
 ::end::
 
-::Lot::
-{{#if ha.location_data.addresses.lot.lot_value }}
-[@lot_value]{{ addresses.lot.lot_value }}
+::Parcel::
+{{#each ha.location_data.addresses }}
+{{#if building_name.building_name_value }}
+[Lot] {{ building_name.building_name_value }}
 {{/if}}
+{{/each}}
+{{#each ha.location_data.area_assignments.area_assignment }}
+[Plan] {{ area_reference.area_reference_value }}
+{{/each}}
 ::end::
 
-::Plan::
-{{#if area_assignments.area_reference.area_reference_value }}
-[Plan]{{ area_assignments.area_reference.area_reference_value }}
+::Criteria::
+{{#each ha.designation_and_protection_assignment }}
+{{{ local_heritage_list_criteria_type }}}
+{{/each}}
+::end::
+
+{{#each ha.descriptions}}
+{{#if description }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
 {{/if}}
+{{/each}}
+
+<!--section:asset-location-->
+
+::Address::
+{{#each ha.location_data.addresses }}
+{{#if county.county_value }}
+[Local Government Area] {{{ county.county_value }}}
+{{/if}}
+{{#if street.street_value }}
+[@street_value] {{ street.street_value }}
+{{/if}}
+{{#if town_or_city.town_or_city_value }}
+[Suburb] {{ town_or_city.town_or_city_value }}
+{{/if}}
+{{#if postcode.postcode_value }}
+[@postcode_value] {{ postcode.postcode_value }}
+{{/if}}
+{{/each}}
 ::end::
 
 <!--section:asset-related-->
 
-::Places{location}::
-[Related] Brisbane
-::end::
-
+{{#if ha.associated_actors.length}}
 ::People{profile}::
-[Related] John Smith
-[Related] Jane Doe
-[Related] Anna Smythe
+{{#each ha.associated_actors }}
+[Related] {{{ associated_actor.actor }}}
+{{/each}}
 ::end::
+{{else}}
+<h3>No related resources</h3>
+{{/if}}
 
-::Organisation{building}::
-[Related] Council
-::end::

@@ -5,7 +5,9 @@ title = 'Heritage Register'
 text = 'This is some information about the search register'
 type = '_default'
 layout = 'map-search'
-location = '[54,-6]'
+center = '[153.0358,-27.4635]'
+zoom = 10
+includeSearch = true
 
 [[breadcrumbs]]
 name = 'Home'

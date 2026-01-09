@@ -3,6 +3,7 @@ import Swiper from 'swiper/bundle';
 interface ImageInput {
   name: string;
   alt: string;
+  url?: string;
 }
 
 interface ImageData {
@@ -15,7 +16,7 @@ function buildImageURLs(imageList: ImageInput[], baseUrl: string, path: string):
     const lastDot = image.name.lastIndexOf('.');
     const name = image.name.substring(0, lastDot);
     return {
-      url: `${baseUrl}/${path}/${name}_web.jpg`,
+      url: image.url || `${baseUrl}/${path}/${name}_web.jpg`,
       alt: image.alt || 'Heritage site image'
     };
   });

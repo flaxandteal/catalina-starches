@@ -1,6 +1,6 @@
 {
     "indexTemplates": {
-        "HeritageAsset": "heritage-asset-index-hb.md",
+        "HeritageItem": "heritage-asset-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
     "customDatatypes": {
@@ -31,5 +31,11 @@
                 "prebuild/business_data/occupier_b.json"
             ]
         }
-    ]
+    ],
+    "filters": {
+        "district": {
+            "path": "location_data.localities_administrative_areas.area_names.area_name",
+            "type": "single"
+        }
+    }
 }
