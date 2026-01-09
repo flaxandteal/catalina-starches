@@ -31,7 +31,7 @@
     "leaflet.markercluster": "^1.5.3",
     "mapbox-gl-arcgis-featureserver": "^0.0.8",
     "maplibre-gl": "^4.7.1",
-    "marked": "^15.0.7",
+    "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
     "starches": "github:flaxandteal/starches#v0.2.1-alpha.11",
