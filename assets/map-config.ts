@@ -97,7 +97,8 @@ export class RasterBasemapLoader implements IBasemapLoader {
     map.addLayer({
       id: layerId,
       type: 'raster',
-      source: sourceId
+      source: sourceId,
+      layout: { visibility: 'none' }
     }, insertBefore);
 
     return {

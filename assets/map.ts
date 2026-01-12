@@ -400,8 +400,8 @@ class MapManager implements IMapManager {
     let overlayLayerMap = new Map<string, string>();
 
     if (mapConfig) {
-      // Load basemaps (don't use insertBefore to avoid hiding them under background)
-      basemapResults = await loadBasemapsFromConfig(map, mapConfig);
+      // Load basemaps
+      basemapResults = await loadBasemapsFromConfig(map, mapConfig, layersBefore[0]);
 
       // Load overlays
       overlayLayerMap = await loadOverlaysFromConfig(map, mapConfig);

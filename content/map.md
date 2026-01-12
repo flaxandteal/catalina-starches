@@ -9,8 +9,8 @@ type = '_default'
 layout = 'map-search'
 
 "includeSearch" = true
-"center" = "[149, -22.5]"
-"zoom" = 5
+"center" = "[144, -22.5]"
+"zoom" = 4
 "mobileZoom" = 4
 
 [[breadcrumbs]]
