@@ -81,7 +81,7 @@
 {{#if ha.associated_actors.length}}
 ::People{profile}::
 {{#each ha.associated_actors }}
-[Related] {{{ associated_actor.actor }}}
+[Related] {{#if associated_actor.actor }} {{{ associated_actor.actor }}} {{else}} (untilted) {{/if}}
 {{/each}}
 ::end::
 {{else}}

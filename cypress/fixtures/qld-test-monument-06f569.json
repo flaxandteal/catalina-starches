@@ -1,0 +1,478 @@
+{
+  "__scopes": [],
+  "metadata": {},
+  "resourceinstance": {
+    "createdtime": "2026-01-08T09:46:05.350",
+    "descriptors": {},
+    "graph_id": "076f9381-7b00-11e9-8d6b-80000b44d1d9",
+    "graph_publication_id": "9c246242-c158-4574-b0b5-3397d293166e",
+    "name": "Test Monument",
+    "principaluser_id": 1,
+    "publication_id": "9c246242-c158-4574-b0b5-3397d293166e",
+    "resourceinstanceid": "06f569e1-319a-4f1d-bdba-f76fa198f0ab"
+  },
+  "tiles": [
+    {
+      "data": {
+        "46f25cd9-b6c7-11ea-8651-f875a44e0e11": [
+          {
+            "alt_text": "Image 01",
+            "attribution": "Heritage Branch",
+            "name": "image_01.png",
+            "title": "image_01.png",
+            "type": "image/png",
+            "url": "/image_01.png"
+          }
+        ]
+      },
+      "nodegroup_id": "46f25cd9-b6c7-11ea-8651-f875a44e0e11",
+      "resourceinstance_id": "0009548f-01ee-52a8-91cc-ea8ab6f9948b",
+      "tileid": "26e99664-e797-47cd-a931-6c6c24ef8b90"
+    },
+    {
+      "data": {
+        "46f25cd9-b6c7-11ea-8651-f875a44e0e11": [
+          {
+            "alt_text": "Image 02",
+            "attribution": "Heritage Branch",
+            "name": "image_02.jpg",
+            "title": "image_02.jpg",
+            "type": "image/jpeg",
+            "url": "/image_02.jpg"
+          }
+        ]
+      },
+      "nodegroup_id": "46f25cd9-b6c7-11ea-8651-f875a44e0e11",
+      "resourceinstance_id": "0009548f-01ee-52a8-91cc-ea8ab6f9948b",
+      "tileid": "d93307c5-b8df-4d62-867d-948b8b8084a6"
+    },
+    {
+      "data": {
+        "ba345577-b554-11ea-a9ee-f875a44e0e11": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "<p>Rothwells Building was erected in 1885 along with the adjacent Rowes Building (QHR 600095). These buildings were erected together for their respective owners, John Forsyth and Thomas MacDonald-Paterson. Forsyth was a local merchant while MacDonald-Paterson was a solicitor and who also served as a Member of Parliament. The buildings cost &pound;13,000 to erect and the contractor for the project was W Macfarlane. The ground floor was designed to be used as offices while the other floors were intended for either offices or warehousing.</p>\n\n<p>Forsyth leased his half of the building to Carew, Gardner and Billington Limited in January 1887. This family drapery and importing company later purchased the building in 1896, and in turn leased the building to Rothwells Ltd from December</p>\n\n<p>1904. This firm of drapers and tailors was established in 1897 and in 1909 purchased the building for &pound;9,000. In January 1909 a fire burned out four floors of Rothwells Chambers, as it was then known, and the damaged portions of the building were rebuilt.</p>\n\n<p>During 1957 and 1958 interior renovations were undertaken. Considerable alterations occurred in the early 1980s as part of the redevelopment of this site and the adjacent Rowes Building. The building currently contains a tavern, an arcade of shops and office accommodation.</p>\n\n<p>The current owners purchased the building in 1980.</p>\n"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "ba345578-b554-11ea-97b3-f875a44e0e11": "6fbe3775-e51d-4f90-af53-5695dd204c9a",
+        "ba345579-b554-11ea-9232-f875a44e0e11": "b5f1ff2d-d667-4c4e-86a1-c17fa4b9447b",
+        "ba34557a-b554-11ea-9a51-f875a44e0e11": "219c6377-d9d9-47b3-bea3-269aca0075d4",
+        "ba34557b-b554-11ea-ab95-f875a44e0e11": "219c6377-d9d9-47b3-bea3-269aca0075d4"
+      },
+      "nodegroup_id": "ba342e69-b554-11ea-a027-f875a44e0e11",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "25ed6625-e09a-4edf-acc7-c9bd804dae8d"
+    },
+    {
+      "data": {
+        "ba345577-b554-11ea-a9ee-f875a44e0e11": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "<p>Rothwells building is a five storeyed masonry building with a basement. The street facade contains individual classical variants common in late Victorian buildings.</p>\n\n<p>The lower floors have wide arched openings with flanking columns topped by decorative capitals, while the windows have arched architraves with keystones. At the parapet level there is a cornice supported by bracketing, and above this is an ornate triangular pediment spanning the width of the building bearing the words &#39;ROTHWELL&#39;S - ESTABLISHED 1897&#39;.</p>\n\n<p>Internally the building is connected with its neighbour Rowes and contains the servicing for both buildings. Suspended ceilings and modern office partitioning predominate.</p>\n\n<p>The building is similar in design to the adjacent Rowes Building.</p>\n"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "ba345578-b554-11ea-97b3-f875a44e0e11": "6fbe3775-e51d-4f90-af53-5695dd204c9a",
+        "ba345579-b554-11ea-9232-f875a44e0e11": "b5f1ff2d-d667-4c4e-86a1-c17fa4b9447b",
+        "ba34557a-b554-11ea-9a51-f875a44e0e11": "d5366899-09ec-4db1-8a49-a32b7e4784e3",
+        "ba34557b-b554-11ea-ab95-f875a44e0e11": "3f507168-6411-42b6-a8e6-1e771db53fff"
+      },
+      "nodegroup_id": "ba342e69-b554-11ea-a027-f875a44e0e11",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 1,
+      "tileid": "32c2552b-010e-4180-a527-57b0343958d4"
+    },
+    {
+      "data": {
+        "676d47fc-9c1c-11ea-b5b0-f875a44e0e11": null,
+        "676d47fd-9c1c-11ea-9d73-f875a44e0e11": null,
+        "676d47fe-9c1c-11ea-aa28-f875a44e0e11": "8f985e91-6cd2-4d70-a03c-b49a50d09a3b",
+        "676d47ff-9c1c-11ea-b07f-f875a44e0e11": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "Rothwells Building"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "676d4800-9c1c-11ea-93f6-f875a44e0e11": "a0e096e2-f5ae-4579-950d-3040714713b4",
+        "676d4801-9c1c-11ea-8d11-f875a44e0e11": "04a4c4d5-5a5e-4018-93aa-65abaa53fb53",
+        "676d4802-9c1c-11ea-a30f-f875a44e0e11": "5a88136a-bf3a-4b48-a830-a7f42000dd24"
+      },
+      "nodegroup_id": "676d47f9-9c1c-11ea-9aa0-f875a44e0e11",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "8c5c305a-7c35-4ddf-b8bd-e734d7e208bd"
+    },
+    {
+      "data": {
+        "676d47fc-9c1c-11ea-b5b0-f875a44e0e11": null,
+        "676d47fd-9c1c-11ea-9d73-f875a44e0e11": null,
+        "676d47fe-9c1c-11ea-aa28-f875a44e0e11": "8f985e91-6cd2-4d70-a03c-b49a50d09a3b",
+        "676d47ff-9c1c-11ea-b07f-f875a44e0e11": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "R Building"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "676d4800-9c1c-11ea-93f6-f875a44e0e11": "a0e096e2-f5ae-4579-950d-3040714713b4",
+        "676d4801-9c1c-11ea-8d11-f875a44e0e11": "04a4c4d5-5a5e-4018-93aa-65abaa53fb53",
+        "676d4802-9c1c-11ea-a30f-f875a44e0e11": "5a88136a-bf3a-4b48-a830-a7f42000dd24"
+      },
+      "nodegroup_id": "676d47f9-9c1c-11ea-9aa0-f875a44e0e11",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 1,
+      "tileid": "86060a7f-8f54-4215-a3b5-4496404e775a"
+    },
+    {
+      "data": {},
+      "nodegroup_id": "87d39b2e-f44f-11eb-9a4a-a87eeabdefba",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "fd4a127f-9f51-4136-9131-9e23bc5ef321"
+    },
+    {
+      "data": {
+        "87d39b36-f44f-11eb-a905-a87eeabdefba": null,
+        "87d39b3d-f44f-11eb-aa0d-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d39b3e-f44f-11eb-bec5-a87eeabdefba": "5a88136a-bf3a-4b48-a830-a7f42000dd24",
+        "87d39b3f-f44f-11eb-be51-a87eeabdefba": "67b76fd1-4906-4055-b493-711c93fc0996",
+        "87d39b40-f44f-11eb-9828-a87eeabdefba": "8a37a140-0be2-44bc-aa64-74c1f3f3b372",
+        "87d39b41-f44f-11eb-8be6-a87eeabdefba": "f27c88b2-d8e3-46f7-b730-ceae86161447",
+        "87d39b42-f44f-11eb-9a05-a87eeabdefba": "2d5e7f32-ee8d-4ae5-b660-3b7eeb9604eb",
+        "87d39b43-f44f-11eb-8b0b-a87eeabdefba": null,
+        "87d39b49-f44f-11eb-a564-a87eeabdefba": null,
+        "87d39b4b-f44f-11eb-80ef-a87eeabdefba": {
+          "en": {
+            "direction": "ltr",
+            "value": "237 Edward Street"
+          }
+        },
+        "87d39b4c-f44f-11eb-8cf1-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d39b4d-f44f-11eb-8dbc-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d39b4e-f44f-11eb-a9d1-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d39b4f-f44f-11eb-b2d3-a87eeabdefba": "98355a3e-6f84-45ae-9281-8aa7e20d47f5",
+        "87d39b50-f44f-11eb-8284-a87eeabdefba": "78b7f967-9831-42ea-b744-1737c5cb2ebc",
+        "87d3d7b9-f44f-11eb-a91d-a87eeabdefba": "3ccd7de2-49c9-44d1-99cd-47cc83fa583e",
+        "87d3d7ba-f44f-11eb-a2dd-a87eeabdefba": null,
+        "87d3d7dd-f44f-11eb-bb45-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d3d7de-f44f-11eb-99cc-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d3d7df-f44f-11eb-8389-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d3d7e0-f44f-11eb-9594-a87eeabdefba": null,
+        "87d3ff21-f44f-11eb-9ce9-a87eeabdefba": {
+          "en": {
+            "direction": "ltr",
+            "value": "Brisbane City"
+          }
+        },
+        "87d3ff23-f44f-11eb-ad2f-a87eeabdefba": {
+          "en": {
+            "direction": "ltr",
+            "value": "B01 4RD"
+          }
+        },
+        "87d3ff25-f44f-11eb-a4eb-a87eeabdefba": null,
+        "87d3ff27-f44f-11eb-a92b-a87eeabdefba": {
+          "en": {
+            "direction": "ltr",
+            "value": "600094"
+          }
+        },
+        "87d3ff28-f44f-11eb-a365-a87eeabdefba": "6b77c7ee-1b64-4a0d-a870-e554e59f2eb6",
+        "87d3ff29-f44f-11eb-b39f-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d3ff2b-f44f-11eb-aad3-a87eeabdefba": null,
+        "87d3ff2c-f44f-11eb-b680-a87eeabdefba": "326b5f21-b744-41a1-a009-e60adb9de95c",
+        "87d3ff2d-f44f-11eb-b859-a87eeabdefba": "2103d23d-2b68-4bfb-ad23-2689f060e357",
+        "87d3ff2e-f44f-11eb-8319-a87eeabdefba": "34260e17-20ef-4cc4-b512-1ebcc6a55f1e",
+        "87d3ff31-f44f-11eb-8a20-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8",
+        "87d3ff32-f44f-11eb-aa82-a87eeabdefba": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "Brisbane City Council"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "87d3ff33-f44f-11eb-94d4-a87eeabdefba": "6bdffb5e-9f5b-44f7-a3a6-11cf81219fd8"
+      },
+      "nodegroup_id": "87d39b25-f44f-11eb-95e5-a87eeabdefba",
+      "parenttile_id": "fd4a127f-9f51-4136-9131-9e23bc5ef321",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "a0fe0cdd-4b80-49b5-afa8-f0bb0ea66eeb"
+    },
+    {
+      "data": {
+        "87d39b51-f44f-11eb-ba0c-a87eeabdefba": null,
+        "87d39b52-f44f-11eb-aadd-a87eeabdefba": null,
+        "87d3c3e8-f44f-11eb-9866-a87eeabdefba": "35999571-5ac9-4bca-abc6-db5ba2588253",
+        "87d3c3ec-f44f-11eb-8b03-a87eeabdefba": "6fbe3775-e51d-4f90-af53-5695dd204c9a",
+        "87d3c3ed-f44f-11eb-8d6c-a87eeabdefba": null,
+        "87d3c3f7-f44f-11eb-bd00-a87eeabdefba": "b5f1ff2d-d667-4c4e-86a1-c17fa4b9447b",
+        "87d3c3f8-f44f-11eb-b343-a87eeabdefba": "d5366899-09ec-4db1-8a49-a32b7e4784e3",
+        "87d3c3fc-f44f-11eb-beff-a87eeabdefba": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "This is the plan"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "87d3d7b8-f44f-11eb-9b47-a87eeabdefba": null,
+        "87d3d7c1-f44f-11eb-ade9-a87eeabdefba": "65ef7ae0-6a6b-4fac-9324-41dd8e712880",
+        "87d3d7c3-f44f-11eb-aeaf-a87eeabdefba": "c6dd5482-6687-44ae-bb54-7d49e084664a",
+        "87d3d7c4-f44f-11eb-bf67-a87eeabdefba": "b29ec4bd-8cbf-4a00-9762-4f51ba013469",
+        "87d3d7c6-f44f-11eb-a1bd-a87eeabdefba": null,
+        "87d3d7ca-f44f-11eb-b80a-a87eeabdefba": null,
+        "87d3d7e2-f44f-11eb-951c-a87eeabdefba": "1d5c7465-7225-4bca-b1df-045a86e286b2"
+      },
+      "nodegroup_id": "87d39b22-f44f-11eb-887e-a87eeabdefba",
+      "parenttile_id": "fd4a127f-9f51-4136-9131-9e23bc5ef321",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "03073476-14e5-4182-afa3-68da9e53c88a"
+    },
+    {
+      "data": {
+        "87d3d7bd-f44f-11eb-b1e4-a87eeabdefba": "SP6074567201"
+      },
+      "nodegroup_id": "87d39b2b-f44f-11eb-af5e-a87eeabdefba",
+      "parenttile_id": "fd4a127f-9f51-4136-9131-9e23bc5ef321",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "e273c65d-af12-4da3-a9fb-ee61d84a609a"
+    },
+    {
+      "data": {
+        "87d39b39-f44f-11eb-9b17-a87eeabdefba": null,
+        "87d3d7dc-f44f-11eb-bee9-a87eeabdefba": {
+          "features": [
+            {
+              "geometry": {
+                "coordinates": [
+                  -1.1106255717313047,
+                  52.299584858677804
+                ],
+                "type": "Point"
+              },
+              "id": "47d924177e7c986ef01eb600243ca5f7",
+              "properties": {
+                "nodeId": "87d3d7dc-f44f-11eb-bee9-a87eeabdefba"
+              },
+              "type": "Feature"
+            }
+          ],
+          "type": "FeatureCollection"
+        },
+        "87d3ff1c-f44f-11eb-9b1e-a87eeabdefba": "dbc18bc0-ec10-4623-b866-52ece47d9780"
+      },
+      "nodegroup_id": "87d3872b-f44f-11eb-bd0c-a87eeabdefba",
+      "parenttile_id": "fd4a127f-9f51-4136-9131-9e23bc5ef321",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "d5425215-2dfe-42ae-95fe-0a289596b763"
+    },
+    {
+      "data": {
+        "ba345577-b554-11ea-a9ee-f875a44e0e11": {
+          "de": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "el": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "en": {
+            "direction": "ltr",
+            "value": "<h3>Criterion A</h3>\n\n<h3>The place is important in demonstrating the evolution or pattern of Queensland&rsquo;s history.</h3>\n\n<p>The Rothwells Building is significant as it demonstrates the principal characteristics of an 1880s commercial building with an elaborate facade.</p>\n\n<p>The Rothwells Building is significant as it exhibits aesthetic characteristics valued by the community, in particular its fine, classically detailed facade, and its form, materials and scale, which make a strong contribution to the Edward Street streetscape.</p>\n\n<h3>Criterion D</h3>\n\n<h3>The place is important in demonstrating the principal characteristics of a particular class of cultural places.</h3>\n\n<p>The Rothwells Building is significant as it demonstrates the principal characteristics of an 1880s commercial building with an elaborate facade.</p>\n\n<h3>Criterion E</h3>\n\n<h3>The place is important because of its aesthetic significance.</h3>\n\n<p>The Rothwells Building is significant as it exhibits aesthetic characteristics valued by the community, in particular its fine, classically detailed facade, and its form, materials and scale, which make a strong contribution to the Edward Street streetscape.</p>\n"
+          },
+          "en-US": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "fr": {
+            "direction": "ltr",
+            "value": ""
+          },
+          "pt": {
+            "direction": "ltr",
+            "value": ""
+          }
+        },
+        "ba345578-b554-11ea-97b3-f875a44e0e11": "6fbe3775-e51d-4f90-af53-5695dd204c9a",
+        "ba345579-b554-11ea-9232-f875a44e0e11": "b5f1ff2d-d667-4c4e-86a1-c17fa4b9447b",
+        "ba34557a-b554-11ea-9a51-f875a44e0e11": "d5366899-09ec-4db1-8a49-a32b7e4784e3",
+        "ba34557b-b554-11ea-ab95-f875a44e0e11": "0fb56869-37af-4573-a978-5fc4dcbb5840"
+      },
+      "nodegroup_id": "ba342e69-b554-11ea-a027-f875a44e0e11",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 2,
+      "tileid": "c4237b62-b4ef-4fa8-923a-28ea090b537f"
+    },
+    {
+      "data": {
+        "6af2a0ce-efc5-11eb-88d1-a87eeabdefba": null,
+        "6af2a0cf-efc5-11eb-806d-a87eeabdefba": null,
+        "6af2a0d0-efc5-11eb-ab44-a87eeabdefba": null,
+        "6af2b4b4-efc5-11eb-a0d8-a87eeabdefba": null,
+        "6af2b4b5-efc5-11eb-9977-a87eeabdefba": "8f985e91-6cd2-4d70-a03c-b49a50d09a3b",
+        "6af2b4b6-efc5-11eb-b8cf-a87eeabdefba": "337514d3-a8a8-46c1-a89a-aea83e582a8d",
+        "6af2b692-efc5-11eb-8adf-a87eeabdefba": "a0e096e2-f5ae-4579-950d-3040714713b4",
+        "6af2b693-efc5-11eb-a32f-a87eeabdefba": "04a4c4d5-5a5e-4018-93aa-65abaa53fb53",
+        "6af2b695-efc5-11eb-a0c0-a87eeabdefba": "59a0c936-3f60-44f9-9e37-67b6ed0f4fa4",
+        "6af2b696-efc5-11eb-b0b5-a87eeabdefba": null,
+        "6af2b697-efc5-11eb-8152-a87eeabdefba": null,
+        "6af2b698-efc5-11eb-9eeb-a87eeabdefba": null,
+        "6af2b699-efc5-11eb-b88e-a87eeabdefba": null,
+        "6af2b69a-efc5-11eb-848d-a87eeabdefba": "c9bc15cc-46fe-4d34-a530-a228854845c8",
+        "6af2b69b-efc5-11eb-8d5a-a87eeabdefba": null,
+        "6af2b69c-efc5-11eb-bf2b-a87eeabdefba": "8687011e-9dfa-463e-89e2-79bfdbbe7dda",
+        "6af2b69e-efc5-11eb-801e-a87eeabdefba": null,
+        "6af2b6a0-efc5-11eb-985a-a87eeabdefba": null,
+        "6af2b6a2-efc5-11eb-aef4-a87eeabdefba": "62f3f620-ea25-46c8-9a7b-dbadf23aa874",
+        "6af2b6a3-efc5-11eb-af76-a87eeabdefba": [
+          "c37f74c8-1c50-401a-922a-34b97dcdba5a",
+          "f6089f59-c579-462c-8ef9-ca5bb0a117e6",
+          "4052687c-0d73-4ac3-a399-4b5fc844dcf6"
+        ],
+        "6af2b6a4-efc5-11eb-b5d4-a87eeabdefba": null
+      },
+      "nodegroup_id": "6af2a0cb-efc5-11eb-8436-a87eeabdefba",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "3ee7820c-1dac-40d4-87de-fef270324ac3"
+    },
+    {
+      "data": {
+        "6300b212-9801-11e9-b99f-00224800b26d": [
+          {
+            "inverseOntologyProperty": "",
+            "ontologyProperty": "",
+            "resourceId": "e87ee52e-3437-4237-a90c-6661aaaff48b",
+            "resourceXresourceId": "3cab3808-61e2-4ed4-a62f-40da639ce74c"
+          }
+        ]
+      },
+      "nodegroup_id": "6300b212-9801-11e9-b99f-00224800b26d",
+      "resourceinstance_id": "06f569e1-319a-4f1d-bdba-f76fa198f0ab",
+      "sortorder": 0,
+      "tileid": "51072f77-c9a3-46f4-8b5f-e421641fe18d"
+    }
+  ],
+  "tiles_loaded": true
+}
