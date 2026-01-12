@@ -402,8 +402,9 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             let body = match[3].trim();
 
             // Parse fields - capture multi-line values until next [field] or end
+            // Use multiline mode with ^ to only match [label] at start of line
             const fields: NodeBlockField[] = [];
-            const fieldPattern = /\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/g;
+            const fieldPattern = /^\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/gm;
             let fieldMatch: RegExpExecArray | null;
 
             while ((fieldMatch = fieldPattern.exec(body)) !== null) {
@@ -495,11 +496,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
   const remainingContent = parsed.slice(lastIndex);
   if (remainingContent.trim()) {
     sections[activeSectionId] = (sections[activeSectionId] || '') + remainingContent;
-  }
-
-  // Sanitize each section
-  for (const sectionId of Object.keys(sections)) {
-    sections[sectionId] = dompurify.sanitize(sections[sectionId]);
   }
 
   // Remove empty default section if other sections exist

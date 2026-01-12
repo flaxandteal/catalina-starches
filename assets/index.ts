@@ -14,4 +14,4 @@ const bannerImages = [
     { name: "650004 - Maroon State School - Teaching Blg looking SE_2015_1_public_SQUARE.jpg", alt: "650004 - Maroon State School" }
 ]
 
-initSwiper(bannerImages, 'media/banner_images').then(() => document.querySelector('.hero-banner')?.classList.add('loaded'));
+initSwiper(bannerImages, 'img').then(() => document.querySelector('.hero-banner')?.classList.add('loaded'));

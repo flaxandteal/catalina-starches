@@ -37,7 +37,17 @@ const SKIP_BLOB_FETCH = process.env.SKIP_BLOB_FETCH === 'true';
 // Add image filenames here as needed
 const IMAGE_FILES = [
   // Header/branding images
-  'header-logo-qgov--dark.svg',,
+  'header-logo-qgov--dark.svg',
+  '600209 - Old Museum Building - 20090612 from E 010s_web.jpg',
+  '600242 - Home - 20240510_121923_web.jpg',
+  '600432 - Raine Island Beacon - (EHP) - l.rai.90.205.11.7s_web.jpg',
+  '600432_Raine Island Beacon (2015)_085_web.jpg',
+  '600432_Raine Island Beacon (2015)_101_web.jpg',
+  '600458 - Carcory Homestead Ruins (2016) -020_web.jpg',
+  '602825 Oribin Studio streetscape views (2012) - Explorer_web.jpg',
+  '645612 - Mount Elliott Mining Complex - 3_web.jpg',
+  '645612 - Mount Elliott Mining Complex - Smelter precinct_web.jpg',
+  '650004 - Maroon State School - Teaching Blg looking SE_2015_1_public_SQUARE_web.jpg',
 ];
 
 /**

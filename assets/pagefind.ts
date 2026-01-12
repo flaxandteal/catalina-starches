@@ -1,4 +1,5 @@
 import * as PagefindModularUI from "@pagefind/modular-ui";
+import { marked } from 'marked';
 import { customFilterPills } from "filterPills";
 import Handlebars from 'handlebars';
 
@@ -108,24 +109,15 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     }
     
     const resultTemplate = async function (result) {
-        let [indexOnly, description] = result.excerpt.split('$$$');
-        if (description && description.trim().length > 0) {
-            result.excerpt = description;
-        } else {
-            result.excerpt = indexOnly;
-        }
-
-        // Decode HTML entities in excerpt
-        const excerptDiv = document.createElement('div');
-        excerptDiv.innerHTML = result.excerpt;
-        const decodedExcerpt = excerptDiv.textContent || excerptDiv.innerText || '';
+        let description = result.meta.rawContent;
+        result.excerpt = await marked.parse(description.trim());
 
         const url = await makeSearchQuery(result.url);
         const location = result.meta.location ? JSON.parse(result.meta.location) : null;
 
         const templateData = {
             title: result.meta.title || 'Untitled',
-            excerpt: decodedExcerpt,
+            excerpt: result.excerpt,
             url: url,
             location: location
         };
