@@ -121,8 +121,12 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
             title: result.meta.title || 'Untitled',
             excerpt: result.excerpt,
             url: url,
-            location: location
+            location: location,
+            thumbnail: result.meta.thumbnailName,
+            thumbnailAlt: result.meta.thumbnailAltText ?? ''
         };
+
+        console.log("Rendering result:", templateData);
 
         // Render the Handlebars template
         const rawHtml = resultCardTemplate(templateData);
