@@ -526,7 +526,7 @@ describe('Asset Page — accessibility + functionality', () => {
 describe('Asset Page — intercepted data tests', () => {
     const testAssetUrl = '/asset/?slug=qld-test-monument-06f569&full=false';
 
-    it.only('shows no related resources message when none exist', () => {
+    it('shows no related resources message when none exist', () => {
         cy.intercept(
             'GET',
             '/definitions/business_data/qld-test-monument-06f569.json',
