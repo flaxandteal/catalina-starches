@@ -1,6 +1,6 @@
 FROM node:23.10.0 AS build
 
-ARG DATA_FILE="aai_merged.json"
+ARG DATA_FILE="test_data.json"
 ARG BLOB_BASE_URL
 
 ENV DATA_FILE=$DATA_FILE
@@ -28,7 +28,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
 # 1. ETL - process data first
-RUN npx starches-builder etl --file prebuild/business_data/$DATA_FILE --prefix AAI_ --include-private
+RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/test_data.json --prefix qld- --include-private --summary
 
 # 2. Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo
