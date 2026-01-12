@@ -126,8 +126,6 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
             thumbnailAlt: result.meta.thumbnailAltText ?? ''
         };
 
-        console.log("Rendering result:", templateData);
-
         // Render the Handlebars template
         const rawHtml = resultCardTemplate(templateData);
         return rawHtml;
