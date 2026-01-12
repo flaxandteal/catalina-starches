@@ -34,8 +34,16 @@ RUN mkdir -p prebuild/preindex && \
 # Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
 RUN hugo mod get && hugo
 
-# Index - create search index AFTER Hugo builds the HTML
+# Index - create search index
 RUN npx starches-builder index --site docs --include-private
+
+# Generate Flatbush spatial index
+RUN bash -c 'for data in prebuild/business_data/*; do \
+      node --import tsx utils/preindex.ts $data || true; \
+    done' && \
+    node --import tsx utils/reindex.ts || true
+
+RUN cp static/flatbush.* docs/ 2>/dev/null || true
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
