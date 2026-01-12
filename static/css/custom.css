@@ -116,9 +116,8 @@
 }
 
 .card-image img {
-    width: 2.5rem;
     height: 100%;
-    width: 100%;
+    width: auto;
     object-fit: cover;
     object-position: center;
 }
