@@ -27,14 +27,13 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-# 1. ETL - process data first
 RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/test_data.json --prefix qld- --include-private --summary
 
-# 2. Hugo - fetch modules and build site (outputs to docs/ per hugo.toml)
+RUN npx starches-builder index --site docs --include-private
+
 RUN hugo mod get && hugo
 
-# 3. Index - create search index AFTER Hugo builds the HTML
-RUN npx starches-builder index --site docs --include-private
+RUN npm run precompile:templates
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
