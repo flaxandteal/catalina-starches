@@ -1,5 +1,5 @@
 ---
-title: "Queensland Historic Register"
+title: "Queensland Heritage Register"
 govuk: false
 hero:
     title: "Search the Queensland Heritage Register"
