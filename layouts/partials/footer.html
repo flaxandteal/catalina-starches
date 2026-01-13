@@ -7,6 +7,7 @@
 {{- $acks := cond (isset $ftr "acknowledgements") $ftr.acknowledgements (slice) -}}
 {{- $org := cond (isset $ftr "organisationlink") $ftr.organisationlink (dict) -}}
 {{- $copyright := cond (isset $ftr "copyright") $ftr.copyright (dict) -}}
+{{- $additionalInformation := cond (isset $ftr "additionalinformation") $ftr.additionalinformation (dict) -}}
 {{- $feedback := $prm.feedback | default (dict) -}}
 
 <footer class="qld-footer {{ $prm.variantClass }}" role="contentinfo">
@@ -116,6 +117,10 @@
               <p class="copyright">{{ $copyright.content | safeHTML }}{{ if $copyright.showyearfrom }} {{ $copyright.yearfrom }} -{{ end }} {{ now.Format "2006" }}</p>
             {{ else }}
               <p class="copyright">© The State of Queensland {{ now.Format "2006" }}</p>
+            {{ end }}
+
+            {{ range $additionalInformation }}
+              <p>{{ .text }}</p>
             {{ end }}
 
             {{- /* Organisation Link */ -}}
