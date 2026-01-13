@@ -35,7 +35,8 @@ function loadLocalHTMLTemplate(filename: string): string {
   // Try multiple locations for templates
   const possiblePaths = [
     join(process.cwd(), 'themes', 'hugo-theme-qld-design-system', 'static', 'templates', filename),
-    join(process.cwd(), 'themes', 'hugo-theme-qld-design-system', filename)
+    join(process.cwd(), 'themes', 'hugo-theme-qld-design-system', filename),
+    join(process.cwd(), 'static', 'templates', filename),
   ];
 
   for (const path of possiblePaths) {
