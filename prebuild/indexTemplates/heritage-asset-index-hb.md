@@ -1,17 +1,26 @@
-{{#if ha.monument_names }}
-{{#each ha.monument_names }}
-{{ monument_name }}
-{{/each}}
-{{/if }}
-
-{{#if ha.display_name }}
-{{ ha.display_name }}
-{{/if }}
-
-{{ ha.system_reference_numbers.uuid.resourceid }}
+Place ID {{ ha.system_reference_numbers.uuid.resourceid }}
 
 {{#each ha.location_data.addresses }}
-{{{ replace full_address "_x000D_" "" }}}
+{{ street.street_value }} , {{ town_or_city.town_or_city_value }} , {{ postcode.postcode_value }}
+{{ county.county_value }}
+{{/each}}
+
+{{ ha.record_type }}
+
+{{ title }}
+
+$$$
+
+TEST
+{{ title }}
+{{#each ha.monument_names }}
+- {{ monument_name }}
+{{/each}}
+
+{{#each ha.location_data.addresses }}
+{{ street.street_value }} 
+{{ town_or_city.town_or_city_value }}
+{{ postcode.postcode_value }}
 {{/each}}
 
 {{#each ha.descriptions }}

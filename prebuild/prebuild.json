@@ -32,10 +32,24 @@
             ]
         }
     ],
-    "filters": {
-        "district": {
-            "path": "location_data.localities_administrative_areas.area_names.area_name",
-            "type": "single"
+    "filters": [
+        {
+            "graph": "HeritageItem",
+            "district": {
+                "path": "location_data.localities_administrative_areas.area_names.area_name",
+                "type": "single"
+            }
         }
-    }
+    ],
+    "thumbnail": [
+        {
+            "graph": "HeritageItem",
+            "path": "images",
+            "identifier": [
+                "sq",
+                "square",
+                "thumbnail"
+            ]
+        }
+    ]
 }

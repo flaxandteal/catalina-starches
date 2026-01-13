@@ -1,0 +1,211 @@
+# Client-Specific Parameters
+# ==========================
+# THIS FILE IS AUTO-GENERATED from blob storage by fetch-site-config.ts
+# DO NOT EDIT MANUALLY - changes will be overwritten
+#
+# To modify, update site-config.yaml in blob storage and run:
+#   npm run fetch:config
+
+govuk: false
+logotext: "QLD"
+product: "Queensland Public Asset Viewer"
+phase: "alpha"
+feedbackurl: "/feedback/"
+archesurl: "http://localhost:8000/"
+ga4token: "GTM-K3B6FBDS"
+ga4gtag: "G-HJZQETB39E"
+cookies: "/cookies/"
+sitename: "Queensland Government"
+variantClass: "dark"
+
+feedback:
+  showInFooter: true
+  showFloatingButton: true
+  footerTitle: "Website feedback"
+  footerDescription: "Help us improve the content on our website or tell us what is working well."
+  footerLinkText: "Leave your feedback"
+  hasBorderColumn: true
+
+header:
+  hasDeliveringForQLDLogo: true
+
+  preHeader:
+    palette: "dark"
+    globalLink:
+      url: "https://www.qld.gov.au/"
+      text: "qld.gov.au"
+    logo: 
+      src: "https://stnonprodweb7zck.blob.core.windows.net/media/site_images/delivering-for-qld.svg"
+      altText: "Queensland Government"
+      inline: true
+    actions:
+      - id: "find_services"
+        text: "Find services"
+        url: "https://www.qld.gov.au/services"
+      - id: "business_queensland"
+        text: "Business Queensland"
+        url: "https://www.business.qld.gov.au/"
+      - id: "government_employees"
+        text: "Government Employees"
+        url: "https://www.forgov.qld.gov.au/"
+      - id: "contact_us"
+        text: "Contact us"
+        url: "https://www.qld.gov.au/contact-us"
+      # - id: "services"
+      #   text: "Services"
+      #   dropdown:
+      #     type: "list"
+      #     items:
+      #       - text: "Service 1"
+      #         url: "/services/service-1"
+      #       - text: "Service 2"
+      #         url: "/services/service-2"
+      #         target: "_blank"
+      #     viewMore:
+      #       text: "View all services"
+      #       url: "/services"
+
+  mainContent:
+    palette: "default"
+    url: "/"
+    # siteTitle: "Queensland Heritage"
+    # subline: "This is the dev site"
+    logo:
+      src: "https://stnonprodweb7zck.blob.core.windows.net/media/site_images/delivering-for-qld.svg"
+      altText: "Queensland Government"
+      inline: true
+
+  assets:
+    siteSearch:
+      value: false
+      formAction:
+        url: "https://www.qld.gov.au/search"
+
+footer:
+  contact:
+    title: "Contact us"
+    content: "<p>Get in touch for enquiries, feedback, complaints and compliments.</p>"
+    buttonLabel: "Contact us"
+    buttonLink: "https://www.qld.gov.au/contact-us"
+    hasBorderColumn: false
+    showList: true
+
+  footerLinks:
+    # title: "Useful links"
+    hasBorderColumn: true
+    list:
+      - label: "Help"
+        link: "https://www.qld.gov.au/help"
+      - label: "Copyright"
+        link: "https://www.qld.gov.au/legal/copyright"
+      - label: "Disclaimer"
+        link: "https://www.qld.gov.au/legal/disclaimer"
+      - label: "Privacy"
+        link: "https://www.qld.gov.au/legal/privacy"
+      - label: "Right to information"
+        link: "https://www.qld.gov.au/about/rights-accountability/right-to-information"
+      - label: "Accessibility"
+        link: "https://www.qld.gov.au/help/accessibility"
+      - label: "Jobs"
+        link: "https://smartjobs.qld.gov.au/"
+        target: "_blank"
+      - label: "Other languages"
+        link: "https://www.qld.gov.au/help/languages"
+
+  acknowledgements:
+    - title: "Cultural Acknowledgement"
+      content: "<p>We pay our respects to the Aboriginal and Torres Strait Islander ancestors of this land, their spirits and their legacy. The foundations laid by these ancestors—our First Nations peoples—give strength, inspiration and courage to current and future generations towards creating a better Queensland.</p>"
+
+  footerLogo:
+    src: ""
+    alt: ""
+    show: false
+
+  organisationLink:
+    show: false
+    URL: ""
+    text: ""
+
+  copyright:
+    content: "© The State of Queensland"
+    showYearFrom: true
+    yearFrom: 1995
+
+  additionalInformation:
+    - text: "This site uses Arches for HERs v2.0 models" 
+
+  followLinks:
+    - label: "Phone: 13 QGOV (13 74 68)"
+      link: "tel:137468"
+      icon: "phone"
+      target: "_blank"
+    - label: "/QueenslandGovernment"
+      link: "https://www.facebook.com/QueenslandGovernment/"
+      icon: "facebook"
+      target: "_blank"
+    - label: "@QldGov"
+      link: "https://x.com/qldgov"
+      icon: "x"
+      target: "_blank"
+
+  # optionalColumn1:
+  #   title: "Quick Links"
+  #   hasBorderColumn: true
+  #   customLinks:
+  #     - label: "About Us"
+  #       link: "/about"
+  #     - label: "Contact"
+  #       link: "/contact"
+  #     - label: "External Site"
+  #       link: "https://example.com"
+  #       target: "_blank"
+
+  feedbackForm:
+    show: true
+    title: "Provide feedback"
+    description: "Help us improve by providing your feedback."
+    action: "/submit-feedback"
+    method: "POST"
+    submitLabel: "Submit feedback"
+    fields:
+      - id: "feedback-type"
+        label: "Feedback type"
+        type: "select"
+        required: true
+        placeholder: "Select feedback type"
+        options:
+          - value: "general"
+            text: "General feedback"
+          - value: "complaint"
+            text: "Complaint"
+          - value: "compliment"
+            text: "Compliment"
+          - value: "suggestion"
+            text: "Suggestion"
+      - id: "feedback-message"
+        label: "Your feedback"
+        type: "textarea"
+        required: true
+        placeholder: "Please enter your feedback here"
+        rows: 5
+      - id: "feedback-email"
+        label: "Email (optional)"
+        type: "email"
+        placeholder: "your.email@example.com"
+        required: false
+      - id: "feedback-privacy"
+        label: 'I agree to the <a href="/legal/privacy">privacy policy</a>'
+        type: "checkbox"
+        required: true
+
+navbar:
+  navbarbrandname: "Queensland Heritage"
+  alternativecolor: false
+  verticalorientation: false
+  navigation:
+    - text: "Home"
+      hidelabel: true
+      iconname: "qld-icon-home"
+      url: "/"
+    - text: "Search the Register"
+      url: "/map"
