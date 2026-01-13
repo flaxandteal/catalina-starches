@@ -107,7 +107,7 @@
 	background-size: 4rem;
 	background-color: var(--qld-card-icon-background-color);
 	margin-left: 1.25rem;
-	margin-block-start: -1rem;
+	margin-block-start: 0.5rem;
     border-radius: 0.5rem;
 	display: flex;
 	align-items: center;
@@ -115,7 +115,7 @@
     overflow: hidden;
 }
 
-.card-image img {
+.card-image object {
     height: 100%;
     width: auto;
     object-fit: cover;

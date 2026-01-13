@@ -116,14 +116,16 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
 
         const url = await makeSearchQuery(result.url);
         const location = result.meta.location ? JSON.parse(result.meta.location) : null;
+        const thumbnailURL  = 'https://stnonprodweb7zck.blob.core.windows.net/media/images/' + result.meta.thumbnailName;
 
         const templateData = {
             title: result.meta.title || 'Untitled',
             excerpt: result.excerpt,
             url: url,
             location: location,
-            thumbnail: result.meta.thumbnailName,
-            thumbnailAlt: result.meta.thumbnailAltText ?? ''
+            thumbnailURL,
+            thumbnailAlt: result.meta.thumbnailAltText ?? '',
+            icon: result.meta.icon || 'building',
         };
 
         // Render the Handlebars template
