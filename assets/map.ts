@@ -286,7 +286,7 @@ async function loadBasemapsFromConfig(
       results.push(result);
 
       // Show default basemap, hide others
-      const visibility = basemap.id === config.defaultBasemap ? 'visible' : 'none';
+      const visibility = basemap.id === defaultBasemap ? 'visible' : 'none';
       for (const layerId of result.layerIds) {
         if (map.getLayer(layerId)) {
           map.setLayoutProperty(layerId, 'visibility', visibility);
