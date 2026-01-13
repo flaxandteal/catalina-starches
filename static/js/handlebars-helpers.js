@@ -43,5 +43,14 @@
     );
   });
 
+  Handlebars.registerHelper("clean", (a) => {
+    // If the value has a __clean property, return it (for Cleanable objects)
+    if (a && typeof a === 'object' && a.__clean !== undefined) {
+      return a.__clean;
+    }
+    // Otherwise return the value as-is
+    return a;
+  });
+
   console.log('Handlebars helpers registered');
 })();

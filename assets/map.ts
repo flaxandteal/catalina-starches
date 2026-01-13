@@ -25,9 +25,13 @@ import { ensureFlatbushLoaded, FlatbushManager } from './fbwrapper';
 import { getFlatbushManager, getMap, getSearchManager, resolvePrimaryMapWith, resolveMapManagerWith, IMapManager, ILayerManager } from './managers';
 import { loadTemplate } from './handlebar-utils';
 import { debug, debugWarn } from './debug';
+import { buildIconConfig, preloadCategoryIcons, IconConfig, buildCategoryIconExpressionWithFallback } from './map-icons';
 
 // Get map config from Hugo params, with fallback
 const mapConfig: MapConfig | undefined = params.map_config;
+
+// Get icon config from Hugo params, with fallback to defaults
+const iconConfig: IconConfig = buildIconConfig(params.map_icons);
 
 // Load the map dialog template
 const mapDialogTemplatePromise = loadTemplate('/templates/map-dialog-template.html');
@@ -475,6 +479,12 @@ class MapManager implements IMapManager {
 
     await addMarkerImage(map);
 
+    // Preload category icons for heritage assets
+    // Icons are loaded from Google Material Symbols
+    preloadCategoryIcons(map, iconConfig).catch(e => {
+      debugWarn('Failed to preload category icons:', e);
+    });
+
     const source = map.addSource('assets', {
       type: 'geojson',
       data: fg,
@@ -511,7 +521,8 @@ class MapManager implements IMapManager {
       'source': 'assets',
       'minzoom': config.minSearchZoom,
       'layout': {
-        'icon-image': 'marker-new',
+        // Use category-based icons if available, fallback to default marker
+        'icon-image': buildCategoryIconExpressionWithFallback(iconConfig, 'category', 'marker-new'),
         'icon-allow-overlap': true,
         'text-allow-overlap': true,
         'text-offset': [0, 1.25],

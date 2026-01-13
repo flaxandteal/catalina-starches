@@ -165,8 +165,11 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
             const viewButton = target.closest('a.view-button');
             if (viewButton) {
                 event.preventDefault();
-                const locationStr = viewButton.getAttribute('data-location');
+                let locationStr = viewButton.getAttribute('data-location');
                 if (locationStr && window.map) {
+                    if (!locationStr.includes("[")) {
+                        locationStr = `[${locationStr}]`;
+                    }
                     const location = JSON.parse(locationStr);
                     window.map.flyTo({ center: location, zoom: 14 });
                 }
