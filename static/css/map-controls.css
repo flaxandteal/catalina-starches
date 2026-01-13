@@ -1,0 +1,23 @@
+/* Map control styles - moved from inline JavaScript to satisfy CSP */
+
+.basemap-switch-ctrl {
+    padding: 10px !important;
+    background: white !important;
+}
+
+.basemap-switch-ctrl label,
+.overlay-toggle-ctrl label {
+    display: block !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+}
+
+.basemap-switch-ctrl input[type="radio"],
+.overlay-toggle-ctrl input[type="checkbox"] {
+    margin-right: 6px !important;
+}
+
+.overlay-toggle-ctrl {
+    padding: 10px !important;
+    background: white !important;
+}

@@ -38,21 +38,15 @@ export class BasemapSwitchControl implements IControl {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group basemap-switch-ctrl';
-    this._container.style.padding = '10px';
-    this._container.style.background = 'white';
 
     this._basemaps.forEach(basemap => {
       const label = document.createElement('label');
-      label.style.display = 'block';
-      label.style.cursor = 'pointer';
-      label.style.whiteSpace = 'nowrap';
 
       const radio = document.createElement('input');
       radio.type = 'radio';
       radio.name = 'basemap';
       radio.value = basemap.id;
       radio.checked = basemap.id === this._currentBasemap;
-      radio.style.marginRight = '6px';
       radio.onchange = () => this._switchBasemap(basemap.id);
 
       label.appendChild(radio);
@@ -60,12 +54,23 @@ export class BasemapSwitchControl implements IControl {
       this._container.appendChild(label);
     });
 
+    // Explicitly ensure the default basemap is visible on initial load
+    if (this._currentBasemap) {
+      this._switchBasemap(this._currentBasemap);
+    }
+
     return this._container;
   }
 
   _switchBasemap(basemapId: string): void {
     const map = this._map;
     this._currentBasemap = basemapId;
+
+    // Update radio button states
+    const radios = this._container.querySelectorAll<HTMLInputElement>('input[type="radio"]');
+    radios.forEach(radio => {
+      radio.checked = radio.value === basemapId;
+    });
 
     // Hide all basemap layers, show only the selected one
     for (const [id, layerIds] of this._basemapLayers.entries()) {
@@ -111,19 +116,13 @@ export class OverlayToggleControl implements IControl {
     this._map = map;
     this._container = document.createElement('div');
     this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group overlay-toggle-ctrl';
-    this._container.style.padding = '10px';
-    this._container.style.background = 'white';
 
     this._layers.forEach(layer => {
       const label = document.createElement('label');
-      label.style.display = 'block';
-      label.style.cursor = 'pointer';
-      label.style.whiteSpace = 'nowrap';
 
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.checked = layer.visible === true;
-      checkbox.style.marginRight = '6px';
       checkbox.onchange = () => {
         if (map.getLayer(layer.layerId)) {
           map.setLayoutProperty(layer.layerId, 'visibility',

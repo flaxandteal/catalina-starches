@@ -29,7 +29,7 @@
 {{- end -}}
 <div id="map-row" class="py-64">
 {{ if .Params.includeSearch }}
-    <script>window.STARCHES_HAS_SEARCH = true;</script>
+    <script src="{{ "js/search-flag.js" | relURL }}"></script>
     <div class="search-column col-lg-5 col-sm-12 pe-3 px-sm-12 px-md-24 position-relative">
         {{ partial "search-map.html" }}
         <div id="scrollable-content" class="overflow-auto flex-fill">

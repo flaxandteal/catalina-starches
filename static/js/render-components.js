@@ -1,23 +1,10 @@
 // static/js/render-components.js
 (async function () {
   // --- CONFIG ---
-  const CDN_BASE = 'https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/components/bs5/';
   const COMPONENTS = [
     // declare the components you will render. If a component uses partials, list them.
     { name: 'header', container: 'header-container', partials: [ 'headerBrand' ] }
   ];
-
-  // --- small in-memory cache for fetched templates ---
-  const hbsCache = {};
-  async function fetchHbs(name, dir) {
-    if (hbsCache[name]) return hbsCache[name];
-    const url = `${CDN_BASE}${dir}/${name}.hbs`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`Failed to fetch ${url}: ${res.status}`);
-    const txt = await res.text();
-    hbsCache[name] = txt;
-    return txt;
-  }
 
   // --- get JSON data: from embedded window var OR fetch static JSON ---
   async function getData() {
@@ -28,34 +15,38 @@
     return await res.json();
   }
 
-  function getTheme() {
-    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  // --- register precompiled partials ---
+  function registerPrecompiledPartials(componentName) {
+    const precompiled = window.__PRECOMPILED_TEMPLATES?.[componentName];
+    if (!precompiled?.partials) return;
+
+    for (const [partialName, templateFunc] of Object.entries(precompiled.partials)) {
+      // Template functions are already compiled and ready to use
+      Handlebars.registerPartial(partialName, templateFunc);
+    }
   }
 
-  // --- register partials ---
-  async function registerPartials(partials = [], dir = "") {
-    for (const p of partials) {
-      const txt = await fetchHbs(p, dir);
-      // Register partial under its base name
-      Handlebars.registerPartial(p, txt);
+  // --- get precompiled template ---
+  function getPrecompiledTemplate(componentName) {
+    const precompiled = window.__PRECOMPILED_TEMPLATES?.[componentName];
+    if (!precompiled?.template) {
+      throw new Error(`Precompiled template not found for component: ${componentName}`);
     }
+    // Template function is already compiled and ready to use
+    return precompiled.template;
   }
 
   // --- main render flow ---
   try {
     const data = await getData();
-    // const theme = getTheme();
-    
     console.log('Loaded data:', data);
 
     for (const comp of COMPONENTS) {
-      if (comp.partials) await registerPartials(comp.partials, comp.name);
+      if (comp.partials) registerPrecompiledPartials(comp.name);
 
       if (comp.isPartial) continue; // only register partials for these entries
 
-      const tplText = await fetchHbs(comp.name, comp.name);
-      const tpl = Handlebars.compile(tplText);
-      // Pass the entire data object as context (JSON is already structured for header component)
+      const tpl = getPrecompiledTemplate(comp.name);
       const context = data;
       console.log('Rendering context:', context);
       const html = tpl(context);

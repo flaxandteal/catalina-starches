@@ -7,23 +7,29 @@ import { makeSearchQuery } from "./searchContext";
 import { getConfig } from './managers';
 
 /**
- * Get and compile a Handlebars template from a script tag
- * @param templateId - The ID of the script tag containing the template
- * @returns Compiled Handlebars template function
+ * Get a precompiled Handlebars template
+ * @param templateName - The name of the precompiled template
+ * @returns Precompiled Handlebars template function
  */
-async function loadTemplate(templatePath: string, compile: boolean = true): Promise<HandlebarsTemplateDelegate | string> {
+function getPrecompiledTemplate(templateName: string): HandlebarsTemplateDelegate {
+    const precompiled = (window as any).__PRECOMPILED_TEMPLATES?.[templateName];
+    if (!precompiled?.template) {
+        throw new Error(`Precompiled template not found: ${templateName}`);
+    }
+    return precompiled.template;
+}
+
+/**
+ * Get template text (for non-compiled use like filter templates)
+ * @param templatePath - The path to fetch the template from
+ * @returns Template text as string
+ */
+async function loadTemplateText(templatePath: string): Promise<string> {
     const response = await fetch(templatePath);
     if (!response.ok) {
         throw new Error(`Failed to load template: ${response.statusText}`)
-    } 
-    const templateText = await response.text();
-
-    if (compile){
-        return Handlebars.compile(templateText);
-    } else {
-        return templateText
     }
-    
+    return await response.text();
 }
 
 export async function buildPagefind(searchAction: (term: string, settings: object, pagefind: any) => Promise<any>) {
@@ -43,7 +49,7 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     //     alwaysShow: true
     // });
 
-    const filterTemplate = await loadTemplate('/templates/filter-list-template.html', false);
+    const filterTemplate = await loadTemplateText('/templates/filter-list-template.html');
 
     const filterLists = [
         {
@@ -100,13 +106,9 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         rc.append(p);
     });
     const config = await getConfig();
-    
-    // Get the result card template and populate it with data from the results
-    const resultCardTemplate = await loadTemplate('/templates/result-card-template.html');
 
-    if (typeof resultCardTemplate !== 'function') {
-        throw new Error('The loaded resultCardTemplate is not a valid Handlebars template function.');
-    }
+    // Get the result card template (precompiled)
+    const resultCardTemplate = getPrecompiledTemplate('result-card-template');
     
     const resultTemplate = async function (result) {
         let description = result.meta.rawContent;
@@ -154,6 +156,24 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     //     }
     //   }
     instance.add(resultList);
+
+    // Event delegation for "View on map" buttons
+    const resultsContainer = document.querySelector('#results');
+    if (resultsContainer) {
+        resultsContainer.addEventListener('click', (event) => {
+            const target = event.target as HTMLElement;
+            const viewButton = target.closest('a.view-button');
+            if (viewButton) {
+                event.preventDefault();
+                const locationStr = viewButton.getAttribute('data-location');
+                if (locationStr && window.map) {
+                    const location = JSON.parse(locationStr);
+                    window.map.flyTo({ center: location, zoom: 14 });
+                }
+            }
+        });
+    }
+
     return instance;
 }
 

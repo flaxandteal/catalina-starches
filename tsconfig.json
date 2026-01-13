@@ -20,5 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["static/js", "utils"]
+  "include": ["assets/**/*.ts", "static/js/**/*.ts"],
+  "exclude": ["utils", "node_modules"]
 }

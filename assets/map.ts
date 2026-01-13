@@ -284,12 +284,11 @@ async function loadBasemapsFromConfig(
       const result = await loader.load(map, basemap.id, basemap.config, insertBefore);
       results.push(result);
 
-      // Hide non-default basemaps
-      if (basemap.id !== config.defaultBasemap) {
-        for (const layerId of result.layerIds) {
-          if (map.getLayer(layerId)) {
-            map.setLayoutProperty(layerId, 'visibility', 'none');
-          }
+      // Show default basemap, hide others
+      const visibility = basemap.id === config.defaultBasemap ? 'visible' : 'none';
+      for (const layerId of result.layerIds) {
+        if (map.getLayer(layerId)) {
+          map.setLayoutProperty(layerId, 'visibility', visibility);
         }
       }
     } catch (e) {
@@ -401,17 +400,18 @@ class MapManager implements IMapManager {
     let overlayLayerMap = new Map<string, string>();
 
     if (mapConfig) {
-      // Load basemaps
-      basemapResults = await loadBasemapsFromConfig(map, mapConfig, layersBefore[0]);
+      // Load basemaps (don't use insertBefore to avoid hiding them under background)
+      basemapResults = await loadBasemapsFromConfig(map, mapConfig);
 
       // Load overlays
       overlayLayerMap = await loadOverlaysFromConfig(map, mapConfig);
 
       // Create basemap switcher control if we have basemaps
       if (mapConfig.basemaps.length > 0) {
+        const defaultBasemap = mapConfig.defaultBasemap || mapConfig.basemaps[0]?.id || 'vector';
         const basemapControl = new BasemapSwitchControl(
           basemapOptionsFromConfig(mapConfig.basemaps),
-          mapConfig.defaultBasemap
+          defaultBasemap
         );
         basemapControl.registerBasemapResults(basemapResults);
         map.addControl(basemapControl, 'top-left');

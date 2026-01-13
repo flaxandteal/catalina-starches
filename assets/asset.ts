@@ -15,7 +15,7 @@ import {
 } from './searchContext';
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
-import { loadTemplate } from 'handlebar-utils';
+import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
 import { initSwiper } from 'swiper';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -169,8 +169,14 @@ async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTempl
   const graphId = asset.__.wkrm.graphId;
   const config = MODEL_FILES[graphId];
   if (config?.template) {
-    const response = await fetch(config.template);
-    return Handlebars.compile(await response.text());
+    // Use precompiled template if available
+    try {
+      return getPrecompiledTemplate(config.template);
+    } catch (e) {
+      console.warn(`Precompiled template not found for ${config.template}, falling back to runtime compilation`);
+      const response = await fetch(config.template);
+      return Handlebars.compile(await response.text());
+    }
   }
 }
 

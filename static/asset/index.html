@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en" class="govuk-template "><head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="UTF-8">
+  <title>Heritage Asset</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/css/qld.bootstrap.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/banner_contained.css">
+
+  
+  <link rel="stylesheet" href="http://localhost:1313/css/theme.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/custom.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/js/qld.bootstrap.min.js"></script>
+
+</head>
+
+<body class="govuk-template__body js-enabled"><header class="qld-header" role="banner"><div class="qld-header-pre-header dark" data-palette="dark">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+
+                <a class="qld-header-link align-self-center" href="https://flaxandteal.co.uk">
+                    <span class="d-none d-lg-inline">flaxandteal.co.uk</span>
+
+                    
+                        <img class="qld-header-logo is-delivering-for-qld" alt="Queensland Government" src="http://localhost:1313/img/header-logo-qgov--light.svg">
+                    
+                </a>
+
+                
+                    <div class="d-none d-lg-flex align-items-baseline">
+                        
+                            
+                                <a class="qld-header-link ms-16" href="http://localhost:1313/contact"><span class="qld-icon qld-icon-phone qld-icon-sm qld-header-link-icon" aria-hidden="true"></span>Contact us</a>
+                            
+                        
+                            
+                                <div class="dropdown">
+                                    <a id="dropdownservices" role="button" data-bs-toggle="dropdown" aria-expanded="false" class="qld-header-link dropdown-toggle" href="#">Services</a>
+
+                                    
+                                        <ul class="dropdown-menu dropdown-menu-end">
+                                            
+                                                <li>
+                                                    <a class="qld-header-link dropdown-item" href="http://localhost:1313/services/service-1">Service 1</a>
+                                                </li>
+                                            
+                                                <li>
+                                                    <a class="qld-header-link dropdown-item" href="http://localhost:1313/services/service-2" target="_blank">Service 2</a>
+                                                </li>
+                                            
+
+                                            
+                                                <li>
+                                                    <a href="http://localhost:1313/services" class="qld-header-link dropdown-item border-bottom-0">View all services</a>
+                                                </li>
+                                            
+                                        </ul>
+                                    
+                                </div>
+                            
+                        
+                    </div>
+                
+
+                <div class="qld-header-mobile-controls">
+                    
+                        
+                    
+
+                    <button id="burgerBtn" class="qld-header-mobile-button is-menu-toggle" data-bs-toggle="collapse" data-bs-target="#main-nav" aria-controls="main-nav" aria-expanded="false" aria-label="Open menu">Menu</button>
+                </div>
+            </div>
+        </div>
+    </div><div class="qld-header-main default" data-palette="default">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col">
+                    <div class="qld-header-brand">
+    <a class="qld-header-link d-lg-inline-flex align-middle" href="http://localhost:1313/">
+        <div class="qld-header-brand-image align-self-center"><img src="http://localhost:1313/img/flaxteal.jpg" height="56" alt="Flax and Teal" /></div><div class="qld-header-secondary-content">
+            <span class="qld-header-site-title">
+                Starches Heritage
+            </span><span class="qld-header-subline">
+                This is the dev site
+            </span></div></a>
+</div>
+
+                </div>
+
+                
+            </div>
+        </div>
+    </div>
+</header>
+
+
+<script>
+(function(){
+    function applyPref(el){
+        try{
+            var pref = el.getAttribute('data-palette');
+            if(pref !== 'auto') return;
+            var isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+            var chosen = isDark ? 'dark' : 'default';
+            el.classList.remove('auto','default','dark','dark-alt');
+            el.classList.add(chosen);
+        }catch(e){ }
+    }
+    function init(){
+        var nodes = document.querySelectorAll('[data-palette="auto"]');
+        nodes.forEach(applyPref);
+        if(window.matchMedia){
+            var mq = window.matchMedia('(prefers-color-scheme: dark)');
+            var listener = function(){ nodes.forEach(applyPref); };
+            if(mq.addEventListener) mq.addEventListener('change', listener);
+            else if(mq.addListener) mq.addListener(listener);
+        }
+    }
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
+})();
+</script><div class="govuk-width-container ">
+        <main class="govuk-main-wrapper " id="main-content" role="main">
+            <div class="dashboard-container" id="top">
+
+                <div class="dashboard-nav">
+<nav class="sidebar-nav">
+
+        
+        
+        
+
+        
+        
+
+        <ul class="govuk-list">
+
+                
+                
+
+        </ul>
+
+        
+        
+
+</nav></div>
+                <div class="dashboard-content">
+  <div id="demo-warning">
+    This is a front-end demo with full datasets - if you see this banner, potentially-sensitive data will be loaded, even it is not displayed (<a href="#" id="swap-link"></a>)
+  </div>
+  
+  <div class="navigation-container">
+    <div class="nav-back">
+      <a href="http://localhost:1313/" class="govuk-button govuk-button--secondary back-link">Return to Search</a>
+      <button class="govuk-button govuk-button--secondary" data-module="govuk-button" onclick="navigator.clipboard.writeText(document.location.href)">
+        Copy link
+      </button>
+    </div>
+    <div class="asset-breadcrumbs" id="search-breadcrumbs">
+      <span id="breadcrumb-search-term"></span>
+      <span id="breadcrumb-filters"></span>
+      <span id="breadcrumb-geo"></span>
+    </div>
+  </div>
+  
+  <div class="modern-navigation" id="top-nav-container">
+    <div class="nav-position" id="position-counter-top">
+      
+    </div>
+    <div class="nav-buttons" id="top-navigation">
+      <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-top" style="display: none;">Previous</a>
+      <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-top" style="display: none;">Next</a>
+    </div>
+  </div>
+
+  <div id="map"></div>
+  <h1 id="asset-title"></h1>
+  
+  <div class="modern-navigation" id="bottom-nav-container">
+    <div class="nav-back">
+      <a href="http://localhost:1313/" class="govuk-back-link back-link">Return to Search</a>
+    </div>
+    <div class="nav-position" id="position-counter-bottom">
+      
+    </div>
+    <div class="nav-buttons" id="bottom-navigation">
+      <a href="#" class="govuk-button govuk-button--secondary" id="prev-asset-bottom" style="display: none;">Previous</a>
+      <a href="#" class="govuk-button govuk-button--secondary" id="next-asset-bottom" style="display: none;">Next</a>
+    </div>
+  </div>
+  
+  <article id="asset">
+  </article>
+  <link rel="stylesheet" href="http://localhost:1313/css/asset.css">
+  <link rel="stylesheet" href="http://localhost:1313/css/breadcrumbs.css">
+  <link href="https://unpkg.com/maplibre-gl@^5.3.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <style>
+     tr:nth-child(even) {
+       background: #f8f8ff
+     }
+     tr:nth-child(odd) {
+       background: #ffffff
+     }
+  </style>
+<script>
+  window.archesUrl = "http:\/\/localhost:8000\/";
+</script>
+<dialog id="asset-dialog" aria-labelledby="asset-dialog__heading">
+<div id="asset-dialog__heading"></div>
+
+<div id="asset-dialog__content"></div>
+
+<button class="govuk-button dialog-cancel" type="button" id="asset-dialog__cancel"
+    onclick="document.getElementById('asset-dialog').close()">Cancel</button>
+</dialog>
+
+
+
+
+<script
+  src="http://localhost:1313/asset.js"
+  
+  type="module"></script>
+
+<div id="legacy-record-container">
+<h2>Legacy Record</h2>
+
+<pre id="legacy-record">
+</pre>
+</div>
+
+                </div>
+            </div>
+            <div id="scroll-back">
+                <a class="govuk-link govuk-link--no-visited-state app-back-to-top__link" href="#top">
+                    <svg role="presentation" focusable="false" class="app-back-to-top__icon" xmlns="http://www.w3.org/2000/svg"
+                        width="13" height="17" viewBox="0 0 13 17">
+                        <path fill="currentColor" d="M6.5 0L0 6.5 1.4 8l4-4v12.7h2V4l4.3 4L13 6.4z"></path>
+                    </svg>Back to top
+                </a>
+            </div>
+        </main>
+    </div><footer class="qld-footer dark" role="contentinfo">
+  <div class="container">
+    
+    <div class="row">
+      <div class="col title">
+        <h2 class="footer-site-name">Starches</h2>
+      </div>
+    </div>
+    
+
+    <div class="row">
+
+      
+      <div class="col-12 col-lg-3 py-24 py-lg-0 footer-contact ">
+        <div class="row">
+          <div class="col col-lg-12">
+            <h3 class="footer-heading">Contact us</h3>
+
+            <div>
+              
+              <p>Get in touch for enquiries, feedback, complaints and compliments.</p>
+            </div>
+          </div>
+
+          <div class="col col-lg-12 contact-btn order-lg-last d-flex d-lg-block mt-lg-32">
+            <a href="https://www.qld.gov.au/contact-us" class="btn btn-outline-secondary">
+              Contact us
+            </a>
+          </div>
+
+          <div class="col-12">
+              <div class="footer-contact-item footer-contact-phone">
+                <span class="qld-icon qld-icon-phone" aria-hidden="true"></span>
+                <b>Phone:</b>
+                <a href="tel:137468" rel="noopener">13 123 456 789</a>
+              </div>
+
+              <div class="footer-contact-item footer-contact-email">
+                <span class="qld-icon qld-icon-email" aria-hidden="true"></span>
+                <b>Email:</b>
+                <a href="mailto:" rel="noopener"><span class="user-select-all">email@example.com</span></a>
+              </div>
+          </div>
+        </div>
+      </div>
+
+      
+      <div class="col-12 col-lg-2 " aria-label="footer-navigation">
+        <div class="footer-column pe-lg-16">
+          
+            <h3 class="footer-heading">Useful links</h3>
+            <ul class="nav footer-link-list flex-column pt-lg-2">
+                <li><a class="nav-link" href="" >Help</a></li>
+                <li><a class="nav-link" href="" >Copyright</a></li>
+                <li><a class="nav-link" href="" >Disclaimer</a></li>
+                <li><a class="nav-link" href="" >Privacy</a></li>
+                <li><a class="nav-link" href="" >Right to information</a></li>
+                <li><a class="nav-link" href="" >Accessibility</a></li>
+                <li><a class="nav-link" href=""  target="_blank">Jobs</a></li>
+                <li><a class="nav-link" href="" >Other languages</a></li>
+            </ul>
+          
+        </div>
+      </div>
+
+      
+      <div class="col crest">
+        <div class="footer-column">
+          <div class="footer-content">
+            <div class="footer-acknowledgements">
+              
+                
+                  <h3 class="footer-heading">Acknowledgement</h3>
+                  <p>We pay our respects to the Aboriginal and Torres Strait Islander ancestors of this land, their spirits and their legacy.</p>
+                
+              
+            </div>
+              <div class="footer-logo">
+                <img src="img/footer-logo.svg" alt="Footer logo" class="img-fluid" />
+              </div>
+            
+              <p class="copyright">© 2025</p>
+            
+              <p>
+                <a class="fw-semibold" href="https://www.qld.gov.au" rel="external">
+                  Starches
+                </a>
+              </p>
+            
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+<dialog id="map-dialog" aria-labelledby="map-dialog__heading">
+<div id="map-dialog__inner">
+    <div id="map-dialog__heading"></div>
+
+    <div id="map-dialog__content"></div>
+
+    <button class="govuk-button dialog-cancel" type="button" id="map-dialog__cancel"
+        onclick="document.getElementById('map-dialog').close()">
+        Cancel
+    </button>
+</div>
+</dialog>
+
+
+<style>
+  .govuk-cookie-banner {display: none; position: fixed; bottom: 0; background: #041e34; max-height: calc(100vh - 5rem); width: 100% }
+  .govuk-cookie-banner__heading { color: white; }
+  .govuk-cookie-banner .govuk-link { color: white; }
+  .govuk-cookie-banner .govuk-body { color: white; font-size: 120%; }
+
+  #consent-overlay {position: fixed; left: 0; top: 0; width: 100%; height: 100vh; display: none; background: rgba(0,0,0,0.75); z-index: 999999; overflow: auto; cursor: pointer;}
+  #consent-overlay.active {display: flex;}
+  #consent-overlay > div {background: white; width: 100%; max-width: 30rem; padding: 1.75rem; margin: auto; cursor: initial;}
+  #consent-overlay > div > div {display: flex; align-items: flex-start; margin-bottom: 1rem;}
+  #consent-overlay > div > div:last-child {margin: 0;}
+  #consent-overlay h3 {padding-top: 0;}
+  #consent-overlay input {margin-top: 0.3rem;}
+  #consent-overlay label {display: block;}
+  #consent-overlay .btn {margin-right: 0.5rem;}
+  #consent-overlay button.btn.save-consent {background: rgba(0,0,0,0.6); font-weight: normal;}
+
+  @media (max-width: 767px) {
+      #consent-overlay > div {padding: 1.75rem 1rem;}
+      .govuk-cookie-banner span {display: block; padding-top: 3px; margin-bottom: 1.5rem;}
+      .govuk-cookie-banner button.btn {position: relative; bottom: 4px;}
+  }
+</style>
+<div class="govuk-cookie-banner" data-nosnippet role="region" aria-label="Cookies on Historic Register">
+  <div class="govuk-cookie-banner__message govuk-width-container">
+    <div class="govuk-grid-row">
+      <div class="govuk-grid-column-two-thirds">
+        <h2 class="govuk-cookie-banner__heading govuk-heading-m">
+          Cookies on the Historic Register
+        </h2>
+        <div class="govuk-cookie-banner__content">
+          <p class="govuk-body">We use some essential cookies to make this service work.</p>
+          <p class="govuk-body">We’d like to set additional cookies so we can remember your settings, understand how people use the service and make improvements.</p>
+        </div>
+      </div>
+    </div>
+    <div class="govuk-button-group">
+      <button value="yes" class="govuk-button approve-consent" name="cookies[additional]" data-module="govuk-button">
+        Allow additional cookies
+      </button>
+      <button value="no" class="govuk-button deny-consent" name="cookies[additional]" data-module="govuk-button">
+        Reject additional cookies
+      </button>
+      <a class="govuk-link" href="#">View cookies</a>
+    </div>
+  </div>
+</div>
+
+  <div id="consent-overlay">
+  <div class="consent-list govuk-form-group">
+  <fieldset class="govuk-fieldset" aria-describedby="consent-hint">
+    <div id="consent-hint" class="govuk-hint">
+      Enable and disable non-functional (non-essential) cookies below and click "Save preferences" to update your choices for this browser.
+    </div>
+    <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+    
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" type="checkbox" id="item0" value="1" name="item0" checked disabled />
+            <label class="govuk-label govuk-checkboxes__label" for="item0">
+                <h3>Consent Settings (functional)</h3>
+                <p>This cookie records your consent settings, so that we do not ask you to recoonfirm on every visit.</p>
+            </label>
+        </div>
+    
+        <div class="govuk-checkboxes__item">
+            <input class="govuk-checkboxes__input" type="checkbox" id="item1" value="1" name="item1"  />
+            <label class="govuk-label govuk-checkboxes__label" for="item1">
+                <h3>Google Analytics</h3>
+                <p>This code gives us insight into the number of people that visit our website, where they are from and what they are clicking on.</p>
+            </label>
+        </div>
+    
+    <div>
+        <button class="govuk-button save-consent" data-consentvalue="0">Save preferences</button>
+        <button class="govuk-button govuk-button--secondary approve-consent">Allow all</button>
+        <button class="govuk-button govuk-button--secondary deny-consent">Deny all</button>
+        <button class="govuk-button govuk-button--secondary clear-consent">Clear preferences</button>
+    </div>
+  </fieldset>
+</div>
+
+  </div>
+</div>
+
+</footer>
+</body>
+
+</html>
