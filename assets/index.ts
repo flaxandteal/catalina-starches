@@ -11,7 +11,10 @@ interface BannerImagesConfig {
     images: BannerImage[];
 }
 
-const bannerConfig: BannerImagesConfig | undefined = params.banner_images;
+const bannerConfig: BannerImagesConfig | undefined = params.carousel;
+if (bannerConfig) {
+    bannerConfig.path = bannerConfig.path || 'img';
+}
 
 if (bannerConfig?.images) {
     initSwiper(bannerConfig.images, bannerConfig.path).then(() =>

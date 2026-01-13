@@ -1,5 +1,5 @@
 {{ define "main" }}
-{{- $params := (dict "banner_images" site.Params.banner_images) -}}
+{{- $params := .Params -}}
 {{- $opts := dict "params" $params -}}
 {{- $indexJS := resources.Get "index.ts" | js.Build $opts -}}
 

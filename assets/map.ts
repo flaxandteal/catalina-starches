@@ -272,6 +272,7 @@ async function loadBasemapsFromConfig(
   insertBefore?: string
 ): Promise<BasemapLoadResult[]> {
   const results: BasemapLoadResult[] = [];
+  const defaultBasemap = config.defaultBasemap ?? config.basemaps[0]?.id;
 
   for (const basemap of config.basemaps) {
     const loader = getBasemapLoader(basemap.config);
