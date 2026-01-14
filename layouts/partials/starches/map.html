@@ -1,14 +1,5 @@
 {{- if not (.Page.Store.Get "notice-style-loaded-flag") -}}
 
-{{- $mapUI := resources.Get "map-ui.ts" -}}
-{{ $sourceMap := cond hugo.IsProduction "" "inline" }}
-{{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2022" }}
-{{ $mapUI = $mapUI | js.Build $opts }}
-{{ if hugo.IsProduction }}
-  {{ $mapUI = $mapUI | fingerprint }}
-{{ end }}
-<script src="{{ $mapUI.RelPermalink }}" {{ if hugo.IsProduction }}integrity="{{ $mapUI.Data.Integrity }}"{{ end }}></script>
-
 {{ $baseAssets := (slice "map.ts" "search.ts") }}
 {{ range $baseAssets }}
 {{- $js := resources.Get . -}}

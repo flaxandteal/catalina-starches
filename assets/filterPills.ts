@@ -1,5 +1,6 @@
 import { FilterPills } from "@pagefind/modular-ui/components/filterPills";
 import El from "@pagefind/modular-ui/helpers/element-builder";
+import { addActiveFilter } from "./map-ui";
 
 interface CustomFilterPillsOptions {
     customTemplate?: string;
@@ -159,6 +160,8 @@ export class customFilterPills extends FilterPills {
                     }
                     this.update();
                     this.pushFilters();
+                    
+                    addActiveFilter(this.filter, val, val);
                 });
             }
 

@@ -7,6 +7,68 @@ interface ActiveFilter {
 
 const activeFilters: Map<string, ActiveFilter> = new Map();
 
+export function addActiveFilter(category: string, value: string, label: string): void {
+    if (value === 'All') {
+        activeFilters.delete(category);
+    } else {
+        activeFilters.set(category, { category, value, label });
+    }
+    updateActiveFiltersList();
+}
+
+export function renderFilters(categories: string[]): void {
+    const tabContainer = document.getElementById('filter-tabs-container');
+    const contentContainer = document.getElementById('tag-content');
+    const tabTemplate = document.getElementById('filter-tab-template') as HTMLTemplateElement;
+    const contentTemplate = document.getElementById('filter-content-template') as HTMLTemplateElement;
+
+    if (!tabContainer || !contentContainer || !tabTemplate || !contentTemplate) return;
+
+    tabContainer.innerHTML = '';
+    contentContainer.innerHTML = '';
+
+    categories.forEach((category, index) => {
+        const contentId = `filter-content-${category}`;
+        const mountPointId = `filter-${category}`;
+
+        // Clone and populate Tab
+        const tabClone = tabTemplate.content.cloneNode(true) as DocumentFragment;
+        const li = tabClone.querySelector('li');
+        const link = li?.querySelector('a');
+
+        if (li && link) {
+            li.setAttribute('data-content', contentId);
+            // Capitalize first letter for label
+            link.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            
+            if (index === 0) li.classList.add('selected');
+
+            // Attach click listener immediately
+            li.addEventListener('click', function(this: HTMLElement) {
+                document.querySelectorAll<HTMLElement>('.tag').forEach(t => t.classList.remove('selected'));
+                this.classList.add('selected');
+                document.querySelectorAll<HTMLElement>('.content-item').forEach(c => c.classList.remove('active'));
+                
+                const contentToShow = document.getElementById(contentId);
+                if (contentToShow) contentToShow.classList.add('active');
+            });
+            tabContainer.appendChild(tabClone);
+        }
+
+        // Clone and populate Content
+        const contentClone = contentTemplate.content.cloneNode(true) as DocumentFragment;
+        const div = contentClone.querySelector('.content-item');
+        const innerDiv = div?.querySelector('div');
+
+        if (div && innerDiv) {
+            div.id = contentId;
+            innerDiv.id = mountPointId; // This is where pagefind will mount the filter pills
+            if (index === 0) div.classList.add('active');
+            contentContainer.appendChild(contentClone);
+        }
+    });
+}
+
 function updateActiveFiltersList(): void {
     const filterList = document.querySelector('.tag-list.tag-dark.my-0');
     if (!filterList) return;
@@ -86,32 +148,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
             }
         });
     }
-
-    // Tag switching functionality
-    document.querySelectorAll<HTMLElement>('.tag').forEach((tag: HTMLElement): void => {
-        tag.addEventListener('click', function(this: HTMLElement): void {
-            document.querySelectorAll<HTMLElement>('.tag').forEach((t: HTMLElement): void => {
-                t.classList.remove('selected');
-            });
-
-            // Add 'selected' class to the clicked tag
-            this.classList.add('selected');
-
-            // Hide all content items
-            document.querySelectorAll<HTMLElement>('.content-item').forEach((content: HTMLElement): void => {
-                content.classList.remove('active');
-            });
-
-            // Show the content linked to the clicked tag
-            const contentId = this.getAttribute('data-content');
-            if (contentId) {
-                const contentToShow = document.getElementById(contentId);
-                if (contentToShow) {
-                    contentToShow.classList.add('active');
-                }
-            }
-        });
-    });
 
     // Help toggle functionality
     const helpToggle = document.getElementById('help-toggle');

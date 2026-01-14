@@ -5,6 +5,7 @@ import Handlebars from 'handlebars';
 
 import { makeSearchQuery } from "./searchContext";
 import { getConfig } from './managers';
+import { renderFilters } from "./map-ui";
 
 /**
  * Get a precompiled Handlebars template
@@ -51,51 +52,6 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     // });
 
     const filterTemplate = await loadTemplateText('/templates/filter-list-template.html');
-
-    const filterLists = [
-        {
-            "container": "filter-category", 
-            "filter": "Category",
-            "hardcodedFilters": [
-                ["All", 77],
-                ["Heritage Site", 15],
-                ["Historic Building", 23],
-                ["Archaeological Site", 8],
-                ["Monument", 12],
-                ["Conservation Area", 19]
-            ]
-        },
-        {
-            "container": "filter-record-type", 
-            "filter": "RecordType",
-            "hardcodedFilters": [
-                ["All", 77],
-                ["Option 1", 15],
-                ["Option 2", 23],
-                ["Option 3", 8],
-                ["Option 4", 12],
-                ["Option 5", 19]
-            ]
-        },
-    ]
-
-    for (let list of filterLists) {
-        const filters = new customFilterPills({
-            containerElement: `#${list.container}`,
-            filter: list.filter,
-            alwaysShow: true,
-            customTemplate: filterTemplate as string
-        });
-
-        // REMOVE just used for testing before we preindex filters
-        if (list.hardcodedFilters) {
-            filters.available = list.hardcodedFilters
-        }
-
-        instance.add(filters);
-        // Trigger initial render with hardcoded data
-        filters.update();
-    }
     
     instance.add(input);
     instance.on("loading", () => {
@@ -147,6 +103,9 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     const filterList = await instance.__pagefind__.filters() || {};
 
     if (Object.keys(filterList).length > 0) {
+        
+        renderFilters(Object.keys(filterList));
+
         for (let [key, items] of Object.entries(filterList)) {
             const filters = new customFilterPills({
                 containerElement: `#filter-${key}`,
