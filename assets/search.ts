@@ -74,7 +74,8 @@ async function handleResults(fg: FeatureCollection, results): Promise<FeatureCol
                         'slug': slug,
                         'title': re.meta.title,
                         'description': description,
-                        'url': url
+                        'url': url,
+                        'category': re.meta.category || null
                     },
                 };
                 fg.features.push(marker);

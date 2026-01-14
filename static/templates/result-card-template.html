@@ -1,0 +1,36 @@
+<div class="col">
+    <div class="card card-default default icon-left card-multi-action">
+        {{#if thumbnail}}
+        <div class="card-image">
+            <img src="/img/{{thumbnail}}" alt="{{ thumbnailAlt }}" />
+        </div>
+        {{else}}
+        <div class="card-icon-background">
+            <span class="qld-icon qld-icon-lg qld-icon-building icon-left" aria-hidden="true"></span>
+        </div>
+        {{/if}}
+        <div class="card-body result-card">
+            <h4 class="card-title">
+                <a href="{{url}}">{{title}}</a>
+            </h4>
+            <div class="card-text">
+                {{{excerpt}}}
+            </div>
+        </div>
+        <div class="card-footer">
+            <ul class="link-list">
+                <li class="link-item"><a class="link open-button" href="{{url}}" target="_self" aria-label="Open {{title}}">
+                        <span class="qld-icon qld-icon-md qld-icon-arrow-right leading" aria-hidden="true"></span>
+                        Open
+                    </a></li>
+                {{#if location}}
+                <li class="link-item"><a class="link view-button" href="#" onclick="event.preventDefault(); window.map.flyTo({center: [{{location}}], zoom: 14})" data-location="{{location}}" aria-label="View {{title}} on map">
+                        <span class="qld-icon qld-icon-md qld-icon-location leading" aria-hidden="true"></span>
+                        View on map
+                    </a></li>
+                {{/if}}
+            </ul>
+        </div>
+    </div>
+</div>
+

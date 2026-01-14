@@ -1,5 +1,7 @@
 {{ define "main" }}
-{{- $indexJS := resources.Get "index.ts" | js.Build -}}
+{{- $params := .Params -}}
+{{- $opts := dict "params" $params -}}
+{{- $indexJS := resources.Get "index.ts" | js.Build $opts -}}
 
 <section class="container radius">
   <div class="row">

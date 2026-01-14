@@ -12,7 +12,7 @@
 {{ $baseAssets := (slice "map.ts" "search.ts") }}
 {{ range $baseAssets }}
 {{- $js := resources.Get . -}}
-{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction ) }}
+{{ $params := (dict "search_config" $.Params.search_config "map_config" $.Params.map_config "map_config" $.Params.map_config "is_production" hugo.IsProduction ) }}
 {{ $sourceMap := cond hugo.IsProduction "" "inline" }}
 {{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2022" "params" $params }}
 {{ $js = $js | js.Build $opts }}
@@ -29,7 +29,7 @@
 {{- end -}}
 <div id="map-row" class="py-64">
 {{ if .Params.includeSearch }}
-    <script>window.STARCHES_HAS_SEARCH = true;</script>
+    <script src="{{ "js/search-flag.js" | relURL }}"></script>
     <div class="search-column col-lg-5 col-sm-12 pe-3 px-sm-12 px-md-24 position-relative">
         {{ partial "search-map.html" }}
         <div id="scrollable-content" class="overflow-auto flex-fill">

@@ -15,7 +15,7 @@ import {
 } from './searchContext';
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
-import { loadTemplate } from 'handlebar-utils';
+import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
 import { initSwiper } from 'swiper';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
@@ -76,41 +76,9 @@ declare global {
   }
 }
 
-// Handlebars setup
-function registerHandlebarsHelpers(): void {
+// Alizarin-specific setup (Handlebars helpers are registered in static/js/handlebars-helpers.js)
+function initializeAlizarinConfig(): void {
   viewModels.CUSTOM_DATATYPES.set("tm65centrepoint", "non-localized-string");
-
-  Handlebars.registerHelper("replace", (base, fm, to) => base ? base.replaceAll(fm, to) : base);
-  Handlebars.registerHelper("nl", (base, nl) => base ? base.replaceAll("\n", nl) : base);
-  Handlebars.registerHelper("plus", (a, b) => a + b);
-  Handlebars.registerHelper("default", (a, b) => a === undefined || a === null ? b : a);
-  Handlebars.registerHelper("defaulty", (a, b) => a != undefined && a != null && a != false ? a : b);
-  Handlebars.registerHelper("equal", (a, b) => a == b);
-  Handlebars.registerHelper("or", (a, b) => a || b);
-  Handlebars.registerHelper("join", (...args) => {
-    if (args.length == 3 && Array.isArray(args[0])) {
-      return args.join(args[1]);
-    }
-    return args.slice(0, args.length - 2).join(args[args.length - 2]);
-  });
-  Handlebars.registerHelper("and", (a, b) => a && b);
-  Handlebars.registerHelper("not", (a, b) => a != b);
-  Handlebars.registerHelper("in", (a, b) => Array.isArray(b) ? b.includes(a) : (a in b));
-  Handlebars.registerHelper("nospace", (a) => a.replaceAll(" ", "%20"));
-  Handlebars.registerHelper("escapeExpression", (a) => Handlebars.Utils.escapeExpression(a));
-  Handlebars.registerHelper("clean", (a) => {
-    if (a instanceof renderers.Cleanable) {
-      return a.__clean;
-    }
-    return a;
-  });
-  Handlebars.registerHelper("concat", (...args) => args.slice(0, args.length - 1).join(""));
-  Handlebars.registerHelper("array", (...args) => args);
-  Handlebars.registerHelper("dialogLink", (options) => {
-    return new Handlebars.SafeString(
-      `<button class="govuk-button dialog-link" data-dialog-id="${options.hash.id}">Show</button>`
-    );
-  });
 }
 
 // URL parameter parsing (distinct from search context params)
@@ -169,8 +137,14 @@ async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTempl
   const graphId = asset.__.wkrm.graphId;
   const config = MODEL_FILES[graphId];
   if (config?.template) {
-    const response = await fetch(config.template);
-    return Handlebars.compile(await response.text());
+    // Use precompiled template if available
+    try {
+      return getPrecompiledTemplate(config.template);
+    } catch (e) {
+      console.warn(`Precompiled template not found for ${config.template}, falling back to runtime compilation`);
+      const response = await fetch(config.template);
+      return Handlebars.compile(await response.text());
+    }
   }
 }
 
@@ -402,8 +376,9 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             let body = match[3].trim();
 
             // Parse fields - capture multi-line values until next [field] or end
+            // Use multiline mode with ^ to only match [label] at start of line
             const fields: NodeBlockField[] = [];
-            const fieldPattern = /\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/g;
+            const fieldPattern = /^\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/gm;
             let fieldMatch: RegExpExecArray | null;
 
             while ((fieldMatch = fieldPattern.exec(body)) !== null) {
@@ -495,11 +470,6 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
   const remainingContent = parsed.slice(lastIndex);
   if (remainingContent.trim()) {
     sections[activeSectionId] = (sections[activeSectionId] || '') + remainingContent;
-  }
-
-  // Sanitize each section
-  for (const sectionId of Object.keys(sections)) {
-    sections[sectionId] = dompurify.sanitize(sections[sectionId]);
   }
 
   // Remove empty default section if other sections exist
@@ -781,7 +751,7 @@ class AssetManager implements IAssetManager {
   private dialogs: Record<string, Dialog> = {};
 
   async initialize(): Promise<void> {
-    registerHandlebarsHelpers();
+    initializeAlizarinConfig();
     this.graphManager = await initializeAlizarin();
     debug("Alizarin initialized");
   }

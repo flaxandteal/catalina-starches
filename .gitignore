@@ -17,10 +17,7 @@ assets/jsconfig.json
 # Config generated from site-config.yaml
 config/_default/params.yaml
 
-# Data file for template access
-data/siteConfig.yaml
-
-# Content fetched from blob (optional - uncomment if using blob content)
-# content/_index.md
-# content/faq.md
-# content/feedback.md
+# Content fetched from blob
+content/_index.md
+content/asset.md
+content/map.md

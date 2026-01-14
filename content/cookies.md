@@ -63,9 +63,7 @@ This site sets strictly necessary cookies to remember if you have received the c
 
 ## Cookies set by other services
 
-Related services, including those provided by the Department of Communities, are hosted and maintained separately from this site. These services may set more cookies and, if so, may have their own cookie policy.
-
-In particular, the [Feedback page](/feedback/) uses Google Forms, which sets additional cookies to function.
+Related services, including those provided by the Department, are hosted and maintained separately from this site. These services may set more cookies and, if so, may have their own cookie policy.
 
 | Name of cookie | Purpose | Expires |
 |----------------|---------|---------|
