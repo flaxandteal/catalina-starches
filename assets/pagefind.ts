@@ -103,7 +103,6 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     const filterList = await instance.__pagefind__.filters() || {};
 
     if (Object.keys(filterList).length > 0) {
-        
         renderFilters(Object.keys(filterList));
 
         for (let [key, items] of Object.entries(filterList)) {

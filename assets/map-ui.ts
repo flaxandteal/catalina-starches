@@ -109,12 +109,14 @@ function updateActiveFiltersList(): void {
 function removeFilter(category: string): void {
     activeFilters.delete(category);
     
-    // Reset to "All" option for this category
-    const allRadio = document.querySelector<HTMLInputElement>(
-        `input[name="${category}Option"][value="All"]`
-    );
-    if (allRadio) {
-        allRadio.checked = true;
+    // Find and click the "All" option for this category to reset the filter
+    const filterContainer = document.getElementById(`filter-${category}`);
+    if (filterContainer) {
+        const allInput = Array.from(filterContainer.querySelectorAll<HTMLInputElement>('input'))
+            .find(input => input.value === 'All');
+        if (allInput) {
+            allInput.click();
+        }
     }
     
     updateActiveFiltersList();
