@@ -1,7 +1,7 @@
 import * as PagefindModularUI from "@pagefind/modular-ui";
 import { marked } from 'marked';
 import { customFilterPills } from "filterPills";
-import Handlebars from 'handlebars';
+import * as params from '@params';
 
 import { makeSearchQuery } from "./searchContext";
 import { getConfig } from './managers';
@@ -73,7 +73,7 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
 
         const url = await makeSearchQuery(result.url);
         const location = result.meta.location ? JSON.parse(result.meta.location) : null;
-        const thumbnailURL  = 'https://stnonprodweb7zck.blob.core.windows.net/media/images/' + result.meta.thumbnailName;
+        const thumbnailURL  = params.blob_base_url + '/media/images/' + result.meta.thumbnailName;
 
         const templateData = {
             title: result.meta.title || 'Untitled',
