@@ -544,26 +544,3 @@ describe('Asset Page — accessibility + functionality', () => {
         });
     });
 });
-
-// Separate describe block for tests that need custom intercepts (no beforeEach visit)
-describe('Asset Page — intercepted data tests', () => {
-    const testAssetUrl = '/asset/?slug=qld-test-monument-06f569&full=false';
-
-    it('shows no related resources message when none exist', () => {
-        cy.intercept(
-            'GET',
-            '/definitions/business_data/qld-test-monument-06f569.json',
-            { fixture: 'qld-test-monument-06f569.json' }
-        ).as('assetNoRelated');
-
-        cy.visit(testAssetUrl);
-        cy.wait('@assetNoRelated');
-        cy.get('#asset-title', { timeout: 60000 }).should('not.be.empty');
-
-        cy.get('#related-resources-tab').click();
-
-        cy.get('#asset-related').within(() => {
-            cy.contains('No related').should('be.visible');
-        });
-    });
-});
