@@ -1,4 +1,4 @@
-Place ID {{ ha.system_reference_numbers.uuid.resourceid }}
+{{ ha.system_reference_numbers.uuid.resourceid }}
 
 {{#each ha.location_data.addresses }}
 {{ street.street_value }} , {{ town_or_city.town_or_city_value }} , {{ postcode.postcode_value }}
@@ -9,10 +9,8 @@ Place ID {{ ha.system_reference_numbers.uuid.resourceid }}
 
 {{ title }}
 
-$$$
-
-TEST
 {{ title }}
+
 {{#each ha.monument_names }}
 - {{ monument_name }}
 {{/each}}

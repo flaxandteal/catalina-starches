@@ -74,7 +74,7 @@
     "test:cy:dev": "start-server-and-test start http://127.0.0.1:1313 cy:run",
     "test": "npm run test:lint:css && npm run test:cy:dev",
     "dev": "HUGO_MODULE_WORKSPACE=hugo.work dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
-    "precompile:templates": "npx tsx utils/precompile-templates.ts",
+    "precompile:templates": "npx ts-node utils/precompile-templates.ts",
     "build": "npm run precompile:templates",
     "build:full": "npm run fetch:all && npm run build && hugo --minify",
     "preview": "dotenv vite preview",

@@ -904,9 +904,22 @@ window.__PRECOMPILED_TEMPLATES['heritage-asset-public-hb'].template = Handlebars
     };
 
   return "[Related] "
-    + ((stack1 = container.lambda(((stack1 = (depth0 != null ? lookupProperty(depth0,"associated_actor") : depth0)) != null ? lookupProperty(stack1,"actor") : stack1), depth0)) != null ? stack1 : "")
+    + ((stack1 = lookupProperty(helpers,"if").call(depth0 != null ? depth0 : (container.nullContext || {}),((stack1 = (depth0 != null ? lookupProperty(depth0,"associated_actor") : depth0)) != null ? lookupProperty(stack1,"actor") : stack1),{"name":"if","hash":{},"fn":container.program(35, data, 0),"inverse":container.program(37, data, 0),"data":data,"loc":{"start":{"line":92,"column":10},"end":{"line":92,"column":100}}})) != null ? stack1 : "")
     + "\n";
-},"36":function(container,depth0,helpers,partials,data) {
+},"35":function(container,depth0,helpers,partials,data) {
+    var stack1, lookupProperty = container.lookupProperty || function(parent, propertyName) {
+        if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
+          return parent[propertyName];
+        }
+        return undefined
+    };
+
+  return " "
+    + ((stack1 = container.lambda(((stack1 = (depth0 != null ? lookupProperty(depth0,"associated_actor") : depth0)) != null ? lookupProperty(stack1,"actor") : stack1), depth0)) != null ? stack1 : "")
+    + " ";
+},"37":function(container,depth0,helpers,partials,data) {
+    return " (untilted) ";
+},"39":function(container,depth0,helpers,partials,data) {
     return "<h3>No related resources</h3>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, alias1=container.lambda, alias2=container.escapeExpression, alias3=depth0 != null ? depth0 : (container.nullContext || {}), lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -934,7 +947,7 @@ window.__PRECOMPILED_TEMPLATES['heritage-asset-public-hb'].template = Handlebars
     + "\n<!--section:asset-location-->\n\n::Address::\n"
     + ((stack1 = lookupProperty(helpers,"each").call(alias3,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"ha") : depth0)) != null ? lookupProperty(stack1,"location_data") : stack1)) != null ? lookupProperty(stack1,"addresses") : stack1),{"name":"each","hash":{},"fn":container.program(28, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":71,"column":0},"end":{"line":84,"column":9}}})) != null ? stack1 : "")
     + "::end::\n\n<!--section:asset-related-->\n\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias3,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"ha") : depth0)) != null ? lookupProperty(stack1,"associated_actors") : stack1)) != null ? lookupProperty(stack1,"length") : stack1),{"name":"if","hash":{},"fn":container.program(33, data, 0),"inverse":container.program(36, data, 0),"data":data,"loc":{"start":{"line":89,"column":0},"end":{"line":97,"column":7}}})) != null ? stack1 : "")
+    + ((stack1 = lookupProperty(helpers,"if").call(alias3,((stack1 = ((stack1 = (depth0 != null ? lookupProperty(depth0,"ha") : depth0)) != null ? lookupProperty(stack1,"associated_actors") : stack1)) != null ? lookupProperty(stack1,"length") : stack1),{"name":"if","hash":{},"fn":container.program(33, data, 0),"inverse":container.program(39, data, 0),"data":data,"loc":{"start":{"line":89,"column":0},"end":{"line":97,"column":7}}})) != null ? stack1 : "")
     + "\n";
 },"useData":true});
 
