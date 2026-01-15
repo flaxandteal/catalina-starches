@@ -6,12 +6,12 @@ import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, vie
 import '@alizarin/filelist';
 import { addMarkerImage } from 'map-tools';
 import {
-  getSearchUrlWithContext,
   getNavigation,
   hasSearchContext,
   getAssetUrlWithContext,
   getSearchParams as getSearchContextParams,
-  updateBreadcrumbs
+  updateBreadcrumbs,
+  makeSearchQuery
 } from './searchContext';
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
@@ -885,10 +885,15 @@ function setupSwapLink(slug: string, publicView: boolean): void {
   }
 }
 
-async function setupBackLinks(): Promise<void> {
-  const backUrl = await getSearchUrlWithContext('');
-  document.querySelectorAll<HTMLAnchorElement>('a.back-link').forEach(elt => {
-    elt.href = backUrl;
+async function setupBackLinks(currentSlug: string): Promise<void> {
+  // Get search params from localStorage and append to the HTML's base path
+  const searchParams = await getSearchContextParams();
+  document.querySelectorAll<HTMLAnchorElement>('a.back-link').forEach(async elt => {
+    const basePath = new URL(elt.href, window.location.origin).pathname;
+    let url = await makeSearchQuery(basePath, searchParams);
+    // Add focusResult param so the search page can scroll to this result
+    url += (url.includes('?') ? '&' : '?') + `focusResult=${encodeURIComponent(currentSlug)}`;
+    elt.href = url;
   });
 }
 
@@ -990,7 +995,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   await Promise.all([
     assetManagerInstance.render(publicView),
     setupRegistryInfo(asset),
-    setupBackLinks()
+    setupBackLinks(slug)
   ]);
 
   setupAssetTitle(asset.meta.title);

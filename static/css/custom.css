@@ -62,7 +62,7 @@
     border-right-width: 0.125rem;
 }
 
-.qld-search-input button[type="reset"] {
+.qld-search-input #search-clear {
     display: none;
     position: absolute;
     right: 1rem;
@@ -75,17 +75,32 @@
     background-color: var(--qld-icon-color);
 }
 
-.qld-search-input input:not(:placeholder-shown) + button[type="reset"] {
+.qld-search-input input:not(:placeholder-shown) + #search-clear {
     display: block;
 }
 
-.qld-search-input input:not(:placeholder-shown) + button[type="reset"]:hover {
+.qld-search-input input:not(:placeholder-shown) + #search-clear:hover {
     background-color: var(--qld-light-action-primary-hover)
 }
 
 /* ==========================================================================
    3. CARD COMPONENTS
    ========================================================================== */
+
+.result-focused {
+    animation: result-highlight 3s ease-out;
+}
+
+@keyframes result-highlight {
+    0% {
+        outline: 3px solid var(--qld-light-action-primary, #09549f);
+        outline-offset: 2px;
+    }
+    100% {
+        outline: 3px solid transparent;
+        outline-offset: 2px;
+    }
+}
 
 /* Equal-height card helpers (apply by adding `equal-height` to the .row) */
 .qld-card-grid .row.equal-height > [class*="col-"] {
@@ -137,9 +152,12 @@
 
 .card-image object {
     height: 100%;
-    width: auto;
+    width: 100%;
     object-fit: cover;
     object-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 

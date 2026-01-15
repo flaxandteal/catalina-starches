@@ -196,8 +196,10 @@ class SearchManager {
       const geoBounds = this.fb && this.fb.bounds;
 
       if (term) {
-          const input = document.getElementById("pfmod-input-0");
-          input.value = term;
+          const input = document.getElementById("search") as HTMLInputElement;
+          if (input) {
+              input.value = term;
+          }
           if (instance) {
               instance.searchTerm = term;
           }

@@ -45,6 +45,17 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     const input = new PagefindModularUI.Input({
         inputElement: "#search",
     });
+
+    // Handle clear button click
+    const clearButton = document.getElementById('search-clear');
+    const searchInput = document.getElementById('search') as HTMLInputElement;
+    if (clearButton && searchInput) {
+        clearButton.addEventListener('click', () => {
+            searchInput.value = '';
+            searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+    }
+
     // const designationFilters = new PagefindModularUI.FilterPills({
     //     containerElement: "#filter-designation",
     //     filter: "designations",
@@ -83,6 +94,7 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
             thumbnailURL,
             thumbnailAlt: result.meta.thumbnailAltText ?? '',
             icon: result.meta.icon || 'building',
+            slug: result.meta.slug || '',
         };
 
         // Render the Handlebars template
@@ -141,6 +153,26 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
                 }
             }
         });
+    }
+
+    // Scroll to focused result when returning from asset page
+    const urlParams = new URLSearchParams(window.location.search);
+    const focusResult = urlParams.get('focusResult');
+    if (focusResult) {
+        // Use MutationObserver to detect when results are rendered
+        const observer = new MutationObserver(() => {
+            const targetCard = document.querySelector(`[data-slug="${focusResult}"]`);
+            if (targetCard) {
+                observer.disconnect();
+                // Scroll the card into view
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                // Add highlight class
+                targetCard.classList.add('result-focused');
+                // Remove highlight after a delay
+                setTimeout(() => targetCard.classList.remove('result-focused'), 3000);
+            }
+        });
+        observer.observe(document.getElementById('results'), { childList: true, subtree: true });
     }
 
     return instance;
