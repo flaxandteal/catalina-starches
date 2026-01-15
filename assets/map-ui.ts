@@ -7,6 +7,68 @@ interface ActiveFilter {
 
 const activeFilters: Map<string, ActiveFilter> = new Map();
 
+export function addActiveFilter(category: string, value: string, label: string): void {
+    if (value === 'All') {
+        activeFilters.delete(category);
+    } else {
+        activeFilters.set(category, { category, value, label });
+    }
+    updateActiveFiltersList();
+}
+
+export function renderFilters(categories: string[]): void {
+    const tabContainer = document.getElementById('filter-tabs-container');
+    const contentContainer = document.getElementById('tag-content');
+    const tabTemplate = document.getElementById('filter-tab-template') as HTMLTemplateElement;
+    const contentTemplate = document.getElementById('filter-content-template') as HTMLTemplateElement;
+
+    if (!tabContainer || !contentContainer || !tabTemplate || !contentTemplate) return;
+
+    tabContainer.innerHTML = '';
+    contentContainer.innerHTML = '';
+
+    categories.forEach((category, index) => {
+        const contentId = `filter-content-${category}`;
+        const mountPointId = `filter-${category}`;
+
+        // Clone and populate Tab
+        const tabClone = tabTemplate.content.cloneNode(true) as DocumentFragment;
+        const li = tabClone.querySelector('li');
+        const link = li?.querySelector('a');
+
+        if (li && link) {
+            li.setAttribute('data-content', contentId);
+            // Capitalize first letter for label
+            link.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+            
+            if (index === 0) li.classList.add('selected');
+
+            // Attach click listener immediately
+            li.addEventListener('click', function(this: HTMLElement) {
+                document.querySelectorAll<HTMLElement>('.tag').forEach(t => t.classList.remove('selected'));
+                this.classList.add('selected');
+                document.querySelectorAll<HTMLElement>('.content-item').forEach(c => c.classList.remove('active'));
+                
+                const contentToShow = document.getElementById(contentId);
+                if (contentToShow) contentToShow.classList.add('active');
+            });
+            tabContainer.appendChild(tabClone);
+        }
+
+        // Clone and populate Content
+        const contentClone = contentTemplate.content.cloneNode(true) as DocumentFragment;
+        const div = contentClone.querySelector('.content-item');
+        const innerDiv = div?.querySelector('div');
+
+        if (div && innerDiv) {
+            div.id = contentId;
+            innerDiv.id = mountPointId; // This is where pagefind will mount the filter pills
+            if (index === 0) div.classList.add('active');
+            contentContainer.appendChild(contentClone);
+        }
+    });
+}
+
 function updateActiveFiltersList(): void {
     const filterList = document.querySelector('.tag-list.tag-dark.my-0');
     if (!filterList) return;
@@ -47,32 +109,16 @@ function updateActiveFiltersList(): void {
 function removeFilter(category: string): void {
     activeFilters.delete(category);
     
-    // Reset to "All" option for this category
-    const allRadio = document.querySelector<HTMLInputElement>(
-        `input[name="${category}Option"][value="All"]`
-    );
-    if (allRadio) {
-        allRadio.checked = true;
-    }
-    
-    updateActiveFiltersList();
-}
-
-function handleRadioChange(category: string, input: HTMLInputElement): void {
-    const label = input.nextElementSibling?.textContent?.trim();
-    if (input.value === 'All' || label === 'All') {
-        // "All" selected, remove filter
-        activeFilters.delete(category);
-    } else {
-        // Specific option selected, add filter
-        if (label) {
-            activeFilters.set(category, {
-                category,
-                value: input.value,
-                label: label
-            });
+    // Find and click the "All" option for this category to reset the filter
+    const filterContainer = document.getElementById(`filter-${category}`);
+    if (filterContainer) {
+        const allInput = Array.from(filterContainer.querySelectorAll<HTMLInputElement>('input'))
+            .find(input => input.value === 'All');
+        if (allInput) {
+            allInput.click();
         }
     }
+    
     updateActiveFiltersList();
 }
 
@@ -104,32 +150,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
             }
         });
     }
-
-    // Tag switching functionality
-    document.querySelectorAll<HTMLElement>('.tag').forEach((tag: HTMLElement): void => {
-        tag.addEventListener('click', function(this: HTMLElement): void {
-            document.querySelectorAll<HTMLElement>('.tag').forEach((t: HTMLElement): void => {
-                t.classList.remove('selected');
-            });
-
-            // Add 'selected' class to the clicked tag
-            this.classList.add('selected');
-
-            // Hide all content items
-            document.querySelectorAll<HTMLElement>('.content-item').forEach((content: HTMLElement): void => {
-                content.classList.remove('active');
-            });
-
-            // Show the content linked to the clicked tag
-            const contentId = this.getAttribute('data-content');
-            if (contentId) {
-                const contentToShow = document.getElementById(contentId);
-                if (contentToShow) {
-                    contentToShow.classList.add('active');
-                }
-            }
-        });
-    });
 
     // Help toggle functionality
     const helpToggle = document.getElementById('help-toggle');
@@ -172,18 +192,6 @@ document.addEventListener('DOMContentLoaded', (): void => {
             subtree: true
         });
     }
-
-    // Radio button change listeners for filters - using event delegation to handle dynamically added elements
-    document.addEventListener('change', (event: Event): void => {
-        const target = event.target as HTMLInputElement;
-        // Check if the changed element is a radio button with name ending in "Option"
-        if (target && target.type === 'radio' && target.name && target.name.endsWith('Option')) {
-            const name = target.name;
-            // Extract category name (e.g., "recordType" or "category" from "recordTypeOption" or "categoryOption")
-            const category = name.replace('Option', '');
-            handleRadioChange(category, target);
-        }
-    });
 
     // Initialize: hide the filter label if no filters are active
     const firstFilterItem = document.querySelector('.tag-list.tag-dark.my-0 li:first-child');

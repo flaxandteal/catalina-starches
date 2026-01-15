@@ -10,14 +10,17 @@ interface CustomFilterPillsOptions {
     selectMultiple?: boolean;
     pillInner?: (val: string, count: number) => string;
     makeFilterElement?: () => El;
+    onFilterSelect?: (category: string, value: string, label: string) => void;
 }
 
 export class customFilterPills extends FilterPills {
     customTemplate: string | null;
+    onFilterSelect?: (category: string, value: string, label: string) => void;
 
     constructor(opts: CustomFilterPillsOptions = {}) {
         super(opts);
         this.customTemplate = opts.customTemplate || null;
+        this.onFilterSelect = opts.onFilterSelect;
 
         if (this.customTemplate) {
             this.processTemplate(this.customTemplate);
@@ -119,23 +122,24 @@ export class customFilterPills extends FilterPills {
     }
 
     renderNew() {
-        this.available.forEach(([val, count]) => {
+        this.available.forEach(([val, count], index) => {
             // Clone the pillContainer template for each pill
             const newPillContainer = this.pillContainer.cloneNode(true) as HTMLElement;
+
+            const pillId = `radio_${this.filter}_${index}`;
 
             // Update the input element
             const input = newPillContainer.querySelector("input");
             if (input) {
                 input.value = val;
-                input.name = `${this.filter}Option`
-                input.id = `radio_${val}_${this.filter}`;
+                input.id = pillId;
                 input.checked = this.selected.includes(val);
             }
 
             // Update the label element
             const label = newPillContainer.querySelector("label");
             if (label) {
-                label.setAttribute("for", `radio_${val}_${this.filter}`);
+                label.setAttribute("for", pillId);
                 label.textContent = `${val} (${count})`;
             }
 
@@ -158,6 +162,8 @@ export class customFilterPills extends FilterPills {
                     }
                     this.update();
                     this.pushFilters();
+                    
+                    this.onFilterSelect?.(this.filter, val, val);
                 });
             }
 
