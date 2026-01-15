@@ -1,6 +1,6 @@
 <head>
   <meta charset="UTF-8">
-  <title>{{ .Title }}</title>
+  <title>{{ .Params.tabTitle | default .Site.Title }}</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="{{ "css/map.css" | relURL }}">
   <link rel="stylesheet" href="{{ "css/map-controls.css" | relURL }}">
   <link rel="stylesheet" href="{{ "pagefind/pagefind-modular-ui.css" | relURL }}" />
+  <link rel="icon" href="{{ .Site.Params.favicon | relURL }}" type="image/svg+xml">
 
   <script src="https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@qld-gov-au/qgds-bootstrap5@2.0.9/dist/assets/js/qld.bootstrap.min.js"></script>

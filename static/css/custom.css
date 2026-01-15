@@ -62,6 +62,26 @@
     border-right-width: 0.125rem;
 }
 
+.qld-search-input button[type="reset"] {
+    display: none;
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    height: 1.5rem;
+    width: 1.5rem;
+    transform: translateY(-50%);
+    border: none;
+    cursor: pointer;
+    background-color: var(--qld-icon-color);
+}
+
+.qld-search-input input:not(:placeholder-shown) + button[type="reset"] {
+    display: block;
+}
+
+.qld-search-input input:not(:placeholder-shown) + button[type="reset"]:hover {
+    background-color: var(--qld-light-action-primary-hover)
+}
 
 /* ==========================================================================
    3. CARD COMPONENTS
