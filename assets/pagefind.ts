@@ -5,7 +5,7 @@ import * as params from '@params';
 
 import { makeSearchQuery } from "./searchContext";
 import { getConfig } from './managers';
-import { renderFilters } from "./map-ui";
+import { renderFilters, addActiveFilter } from "./map-ui";
 
 /**
  * Get a precompiled Handlebars template
@@ -110,7 +110,8 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
                 containerElement: `#filter-${key}`,
                 filter: key,
                 alwaysShow: true,
-                customTemplate: filterTemplate as string
+                customTemplate: filterTemplate as string,
+                onFilterSelect: addActiveFilter
             });
 
             const filterEntries = Object.entries(items as Record<string, number>);

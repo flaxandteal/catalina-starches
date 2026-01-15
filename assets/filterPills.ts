@@ -1,6 +1,5 @@
 import { FilterPills } from "@pagefind/modular-ui/components/filterPills";
 import El from "@pagefind/modular-ui/helpers/element-builder";
-import { addActiveFilter } from "./map-ui";
 
 interface CustomFilterPillsOptions {
     customTemplate?: string;
@@ -11,14 +10,17 @@ interface CustomFilterPillsOptions {
     selectMultiple?: boolean;
     pillInner?: (val: string, count: number) => string;
     makeFilterElement?: () => El;
+    onFilterSelect?: (category: string, value: string, label: string) => void;
 }
 
 export class customFilterPills extends FilterPills {
     customTemplate: string | null;
+    onFilterSelect?: (category: string, value: string, label: string) => void;
 
     constructor(opts: CustomFilterPillsOptions = {}) {
         super(opts);
         this.customTemplate = opts.customTemplate || null;
+        this.onFilterSelect = opts.onFilterSelect;
 
         if (this.customTemplate) {
             this.processTemplate(this.customTemplate);
@@ -161,7 +163,7 @@ export class customFilterPills extends FilterPills {
                     this.update();
                     this.pushFilters();
                     
-                    addActiveFilter(this.filter, val, val);
+                    this.onFilterSelect?.(this.filter, val, val);
                 });
             }
 
