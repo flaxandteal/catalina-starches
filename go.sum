@@ -10,7 +10,11 @@ github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260113113519-4e2ac9
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260113113519-4e2ac9c6a964/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260114132132-701a110dea9e h1:SgV7IXG4AfuEiLKOI+FsNpnkFrdyMtEZp4WXrr0xDeo=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260114132132-701a110dea9e/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260115122857-e2b67249396f h1:hfHnJBrxTnrhLTFOH9/2llD51X4ACAQzMZIm9zLTLYQ=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260115122857-e2b67249396f/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
 github.com/flaxandteal/starches v0.2.1-alpha.12 h1:r+9SE/P5oGWojBpCF37MpSmRHVOgzNwrGvnHLb923Ig=
 github.com/flaxandteal/starches v0.2.1-alpha.12/go.mod h1:JR95EEIqvxXM5DC0yBnpPi5hXcwXPLW3/qZK1saapyc=
 github.com/flaxandteal/starches v0.2.1-alpha.15 h1:dZHumQAkcoRcqhFk/pcX54zDooxwK239ACQBI0g/K3o=
 github.com/flaxandteal/starches v0.2.1-alpha.15/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.16 h1:KdNGt5NFCuv57X+wj3q98FPTS2BLebHznINoiTFis9s=
+github.com/flaxandteal/starches v0.2.1-alpha.16/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
