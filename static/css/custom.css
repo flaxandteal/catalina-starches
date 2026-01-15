@@ -96,6 +96,7 @@
         outline: 3px solid var(--qld-light-action-primary, #09549f);
         outline-offset: 2px;
     }
+    
     100% {
         outline: 3px solid transparent;
         outline-offset: 2px;
