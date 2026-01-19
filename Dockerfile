@@ -31,9 +31,9 @@ RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  star
 
 RUN npx starches-builder index --site docs --include-private
 
-RUN hugo mod get && hugo
-
 RUN npm run precompile:templates
+
+RUN hugo mod get && hugo
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
