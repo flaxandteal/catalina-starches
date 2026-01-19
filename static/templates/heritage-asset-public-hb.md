@@ -50,6 +50,14 @@
 {{/each}}
 ::end::
 
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Summary") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
 ::Criteria::
 {{#each ha.designation_and_protection_assignment }}
 {{#if local_heritage_list_criteria_type }}
@@ -65,7 +73,39 @@
 ::end::
 
 {{#each ha.descriptions}}
-{{#if description }}
+{{#if (equal (clean description_type) "History") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Description") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Reference") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Boundary Description") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Process Statement") }}
 :: {{ clean description_type }} ::
 {{{ description }}}
 ::end::
