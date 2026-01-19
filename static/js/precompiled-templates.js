@@ -460,14 +460,14 @@ window.__PRECOMPILED_TEMPLATES['result-card-template'].template = Handlebars.tem
         return undefined
     };
 
-  return "        <div class=\"card-image\">\n            <img src=\"/img/"
-    + alias4(((helper = (helper = lookupProperty(helpers,"thumbnail") || (depth0 != null ? lookupProperty(depth0,"thumbnail") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"thumbnail","hash":{},"data":data,"loc":{"start":{"line":5,"column":27},"end":{"line":5,"column":40}}}) : helper)))
-    + "\" alt=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"thumbnailAlt") || (depth0 != null ? lookupProperty(depth0,"thumbnailAlt") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"thumbnailAlt","hash":{},"data":data,"loc":{"start":{"line":5,"column":47},"end":{"line":5,"column":65}}}) : helper)))
-    + "\" />\n        </div>\n";
+  return "                <object data=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"thumbnailURL") || (depth0 != null ? lookupProperty(depth0,"thumbnailURL") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"thumbnailURL","hash":{},"data":data,"loc":{"start":{"line":6,"column":30},"end":{"line":6,"column":46}}}) : helper)))
+    + "\" aria-label=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"thumbnailAlt") || (depth0 != null ? lookupProperty(depth0,"thumbnailAlt") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"thumbnailAlt","hash":{},"data":data,"loc":{"start":{"line":6,"column":60},"end":{"line":6,"column":78}}}) : helper)))
+    + "\">\n                    <span class=\"qld-icon qld-icon-lg qld-icon-"
+    + alias4(((helper = (helper = lookupProperty(helpers,"icon") || (depth0 != null ? lookupProperty(depth0,"icon") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"icon","hash":{},"data":data,"loc":{"start":{"line":7,"column":63},"end":{"line":7,"column":73}}}) : helper)))
+    + " icon-left\" aria-hidden=\"true\"></span>\n                </object>\n";
 },"3":function(container,depth0,helpers,partials,data) {
-    return "        <div class=\"card-icon-background\">\n            <span class=\"qld-icon qld-icon-lg qld-icon-building icon-left\" aria-hidden=\"true\"></span>\n        </div>\n";
-},"5":function(container,depth0,helpers,partials,data) {
     var helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
         if (Object.prototype.hasOwnProperty.call(parent, propertyName)) {
           return parent[propertyName];
@@ -475,12 +475,12 @@ window.__PRECOMPILED_TEMPLATES['result-card-template'].template = Handlebars.tem
         return undefined
     };
 
-  return "                <li class=\"link-item\"><a class=\"link view-button\" href=\"#\" onclick=\"event.preventDefault(); window.map.flyTo({center: ["
-    + alias4(((helper = (helper = lookupProperty(helpers,"location") || (depth0 != null ? lookupProperty(depth0,"location") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"location","hash":{},"data":data,"loc":{"start":{"line":27,"column":135},"end":{"line":27,"column":147}}}) : helper)))
-    + "], zoom: 14})\" data-location=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"location") || (depth0 != null ? lookupProperty(depth0,"location") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"location","hash":{},"data":data,"loc":{"start":{"line":27,"column":177},"end":{"line":27,"column":189}}}) : helper)))
+  return "                <li class=\"link-item\"><a class=\"link view-button\" href=\"#\"\n                        onclick=\"event.preventDefault(); window.map.flyTo({center: ["
+    + alias4(((helper = (helper = lookupProperty(helpers,"location") || (depth0 != null ? lookupProperty(depth0,"location") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"location","hash":{},"data":data,"loc":{"start":{"line":29,"column":84},"end":{"line":29,"column":96}}}) : helper)))
+    + "], zoom: 14})\"\n                        data-location=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"location") || (depth0 != null ? lookupProperty(depth0,"location") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"location","hash":{},"data":data,"loc":{"start":{"line":30,"column":39},"end":{"line":30,"column":51}}}) : helper)))
     + "\" aria-label=\"View "
-    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":27,"column":208},"end":{"line":27,"column":217}}}) : helper)))
+    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":30,"column":70},"end":{"line":30,"column":79}}}) : helper)))
     + " on map\">\n                        <span class=\"qld-icon qld-icon-md qld-icon-location leading\" aria-hidden=\"true\"></span>\n                        View on map\n                    </a></li>\n";
 },"compiler":[8,">= 4.3.0"],"main":function(container,depth0,helpers,partials,data) {
     var stack1, helper, alias1=depth0 != null ? depth0 : (container.nullContext || {}), alias2=container.hooks.helperMissing, alias3="function", alias4=container.escapeExpression, lookupProperty = container.lookupProperty || function(parent, propertyName) {
@@ -490,21 +490,23 @@ window.__PRECOMPILED_TEMPLATES['result-card-template'].template = Handlebars.tem
         return undefined
     };
 
-  return "<div class=\"col\">\n    <div class=\"card card-default default icon-left card-multi-action\">\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"thumbnail") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.program(3, data, 0),"data":data,"loc":{"start":{"line":3,"column":8},"end":{"line":11,"column":15}}})) != null ? stack1 : "")
-    + "        <div class=\"card-body result-card\">\n            <h4 class=\"card-title\">\n                <a href=\""
-    + alias4(((helper = (helper = lookupProperty(helpers,"url") || (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data,"loc":{"start":{"line":14,"column":25},"end":{"line":14,"column":32}}}) : helper)))
+  return "<div class=\"col\" data-slug=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"slug") || (depth0 != null ? lookupProperty(depth0,"slug") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"slug","hash":{},"data":data,"loc":{"start":{"line":1,"column":28},"end":{"line":1,"column":36}}}) : helper)))
+    + "\">\n    <div class=\"card card-default default icon-left card-multi-action\">\n        <div class=\"card-body pb-0 d-flex align-items-start\">\n            <div class=\"card-image\">\n"
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"thumbnailURL") : depth0),{"name":"if","hash":{},"fn":container.program(1, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":5,"column":16},"end":{"line":9,"column":23}}})) != null ? stack1 : "")
+    + "            </div>\n            <div class=\"card-body pt-0 result-card\">\n                <h4 class=\"card-title\">\n                    <a href=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"url") || (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data,"loc":{"start":{"line":13,"column":29},"end":{"line":13,"column":36}}}) : helper)))
     + "\">"
-    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":14,"column":34},"end":{"line":14,"column":43}}}) : helper)))
-    + "</a>\n            </h4>\n            <div class=\"card-text\">\n                "
-    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"excerpt") || (depth0 != null ? lookupProperty(depth0,"excerpt") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"excerpt","hash":{},"data":data,"loc":{"start":{"line":17,"column":16},"end":{"line":17,"column":29}}}) : helper))) != null ? stack1 : "")
-    + "\n            </div>\n        </div>\n        <div class=\"card-footer\">\n            <ul class=\"link-list\">\n                <li class=\"link-item\"><a class=\"link open-button\" href=\""
+    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":13,"column":38},"end":{"line":13,"column":47}}}) : helper)))
+    + "</a>\n                </h4>\n                <div class=\"card-text\">\n                    "
+    + ((stack1 = ((helper = (helper = lookupProperty(helpers,"excerpt") || (depth0 != null ? lookupProperty(depth0,"excerpt") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"excerpt","hash":{},"data":data,"loc":{"start":{"line":16,"column":20},"end":{"line":16,"column":33}}}) : helper))) != null ? stack1 : "")
+    + "\n                </div>\n            </div>\n        </div>\n        <div class=\"card-footer\">\n            <ul class=\"link-list\">\n                <li class=\"link-item\"><a class=\"link open-button\" href=\""
     + alias4(((helper = (helper = lookupProperty(helpers,"url") || (depth0 != null ? lookupProperty(depth0,"url") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"url","hash":{},"data":data,"loc":{"start":{"line":22,"column":72},"end":{"line":22,"column":79}}}) : helper)))
-    + "\" target=\"_self\" aria-label=\"Open "
-    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":22,"column":113},"end":{"line":22,"column":122}}}) : helper)))
+    + "\" target=\"_self\"\n                        aria-label=\"Open "
+    + alias4(((helper = (helper = lookupProperty(helpers,"title") || (depth0 != null ? lookupProperty(depth0,"title") : depth0)) != null ? helper : alias2),(typeof helper === alias3 ? helper.call(alias1,{"name":"title","hash":{},"data":data,"loc":{"start":{"line":23,"column":41},"end":{"line":23,"column":50}}}) : helper)))
     + "\">\n                        <span class=\"qld-icon qld-icon-md qld-icon-arrow-right leading\" aria-hidden=\"true\"></span>\n                        Open\n                    </a></li>\n"
-    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"location") : depth0),{"name":"if","hash":{},"fn":container.program(5, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":26,"column":16},"end":{"line":31,"column":23}}})) != null ? stack1 : "")
-    + "            </ul>\n        </div>\n    </div>\n</div>\n\n";
+    + ((stack1 = lookupProperty(helpers,"if").call(alias1,(depth0 != null ? lookupProperty(depth0,"location") : depth0),{"name":"if","hash":{},"fn":container.program(3, data, 0),"inverse":container.noop,"data":data,"loc":{"start":{"line":27,"column":16},"end":{"line":34,"column":23}}})) != null ? stack1 : "")
+    + "            </ul>\n        </div>\n    </div>\n</div>";
 },"useData":true});
 
 // Component: filter-list-template
