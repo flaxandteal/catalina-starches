@@ -69,9 +69,6 @@
 
 {{{ designation_names.designation_name }}}
 
-{{#if designation_names.designation_name_use_type }}
-<h4>{{{ designation_names.designation_name_use_type }}}</h4>
-{{/if}}
 {{/each}}
 ::end::
 
