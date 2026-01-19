@@ -6,9 +6,12 @@
 
 ::Names::
 {{#each ha.monument_names}}
-{{#if @first}}
+{{#if (equal monument_name_type "Primary")}}
 [@monument_name] {{{ monument_name }}}
-{{else}}
+{{/if}}
+{{/each}}
+{{#each ha.monument_names}}
+{{#if (not monument_name_type "Primary")}}
 [Alternate Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
