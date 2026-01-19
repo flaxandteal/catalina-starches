@@ -156,9 +156,11 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     }
 
     // Scroll to focused result when returning from asset page
-    const urlParams = new URLSearchParams(window.location.search);
-    const focusResult = urlParams.get('focusResult');
+    const focusResult = sessionStorage.getItem('lastViewedAsset');
     if (focusResult) {
+        // Clear the sessionStorage to avoid applying on future visits
+        sessionStorage.removeItem('lastViewedAsset');
+        
         // Use MutationObserver to detect when results are rendered
         const observer = new MutationObserver(() => {
             const targetCard = document.querySelector(`[data-slug="${focusResult}"]`);

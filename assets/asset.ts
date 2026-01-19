@@ -886,15 +886,15 @@ function setupSwapLink(slug: string, publicView: boolean): void {
 }
 
 async function setupBackLinks(currentSlug: string): Promise<void> {
-  // Get search params from localStorage and append to the HTML's base path
+  // Add search params from sessionStorage to back link URLs to restore search context
+  // The lastViewedAsset in sessionStorage handles the focus/scroll behavior separately
   const searchParams = await getSearchContextParams();
-  document.querySelectorAll<HTMLAnchorElement>('a.back-link').forEach(async elt => {
+  const backLinks = document.querySelectorAll<HTMLAnchorElement>('a.back-link')
+  for (const elt of Array.from(backLinks)) {
     const basePath = new URL(elt.href, window.location.origin).pathname;
-    let url = await makeSearchQuery(basePath, searchParams);
-    // Add focusResult param so the search page can scroll to this result
-    url += (url.includes('?') ? '&' : '?') + `focusResult=${encodeURIComponent(currentSlug)}`;
+    const url = await makeSearchQuery(basePath, searchParams);
     elt.href = url;
-  });
+  }
 }
 
 function setupAssetTitle(title: string): void {
@@ -1008,6 +1008,9 @@ window.addEventListener('DOMContentLoaded', async () => {
 
   // Navigation setup with slight delay for localStorage availability
   setTimeout(() => setupAssetNavigation(slug), 100);
+
+  // Store current slug for browser back button focus behavior
+  sessionStorage.setItem('lastViewedAsset', slug);
 
   history.pushState({}, "", `?slug=${slug}&full=${!publicView}`);
 }, { once: true });
