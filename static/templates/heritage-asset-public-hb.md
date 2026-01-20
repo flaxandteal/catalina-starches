@@ -5,16 +5,28 @@
 ::end::
 
 ::Names::
+{{#if (includes ha.monument_names "monument_name_use_type" "Primary")}}
+{{! Primary name exists - use it }}
 {{#each ha.monument_names}}
-{{#if (equal monument_name_type "Primary")}}
+{{#if (equal monument_name_use_type "Primary")}}
 [@monument_name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
 {{#each ha.monument_names}}
-{{#if (not monument_name_type "Primary")}}
+{{#if (not monument_name_use_type "Primary")}}
 [Alternate Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
+{{else}}
+{{! No primary found - use first as primary, rest as alternates }}
+{{#each ha.monument_names}}
+{{#if @first}}
+[@monument_name] {{{ monument_name }}}
+{{else}}
+[Alternate Name] {{{ monument_name }}}
+{{/if}}
+{{/each}}
+{{/if}}
 ::end::
 
 {{#each ha.construction_phases}}
