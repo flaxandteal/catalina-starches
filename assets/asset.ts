@@ -3,7 +3,8 @@ import dompurify from 'dompurify';
 import * as Handlebars from 'handlebars';
 import { Map as MLMap } from 'maplibre-gl';
 import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin';
-import '@alizarin/filelist';
+import '@alizarin/filelist'; // Registers file-list type (images)
+import '@alizarin/clm'; // Registers reference type
 import { addMarkerImage } from 'map-tools';
 import {
   getNavigation,
@@ -558,14 +559,20 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   }
 
   // This is a sample list of images
-  const imageArray = ((await asset.asset.images) || [[]])
+  let imageArray = ((await asset.asset.images) || [[]]);
+  imageArray = await Promise.all(imageArray);
+  imageArray = imageArray.flat();
+  // RMV: TODO - this is not picking up visibility
+  imageArray = await imageArray.filter(async (i) => {
+    return await i.visibility && await i._file && "Public" in (await i.visibility) && Number.isInteger(await i._file.index);
+  });
   const testImages = [];
   await Promise.all(imageArray.map(async (i) => {
     for (const image of (await i)) {
       testImages.push({
-        name: await image.name,
-        url: await image.url,
-        alt: (await image._file.alt_text) || (await image.name)
+        name: await image.name || "",
+        url: await image.url || "",
+        alt: (await image._file && await image._file.alt_text) || (await image.name) || ""
       });
     }
   }));
