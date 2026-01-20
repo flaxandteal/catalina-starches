@@ -5,7 +5,7 @@
             "graph": "HeritageItem",
             "type": "array",
             "dynamic": true,
-            "path": "construction_phases.*.phase_classification.monument_type"
+            "path": "construction_phases.*.phase_classification.monument_type.0.parent"
         }
     ],
     "indexTemplates": {
