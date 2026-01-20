@@ -1,8 +1,7 @@
 <!--section:asset-overview-->
 
 ::IDs::
-[Resource ID] {{ meta.resourceinstanceid }}
-[Place ID] {{ ha.system_reference_numbers.uuid.resourceid }}
+[Place Reference] {{ ha.system_reference_numbers.uuid.resourceid }}
 ::end::
 
 ::Names::
@@ -14,6 +13,14 @@
 {{/if}}
 {{/each}}
 ::end::
+
+{{#each ha.construction_phases}}
+::Item Type::
+{{#if phase_classification.monument_type }}
+[@monument_type] {{{ phase_classification.monument_type }}}
+{{/if}}
+::end::
+{{/each}}
 
 ::Address::
 {{#each ha.location_data.addresses }}

@@ -1,4 +1,13 @@
 {
+    "filters": [
+        {
+            "name": "Category",
+            "graph": "HeritageItem",
+            "type": "array",
+            "dynamic": true,
+            "path": "construction_phases.*.phase_classification.monument_type"
+        }
+    ],
     "indexTemplates": {
         "HeritageItem": "heritage-asset-index-hb.md",
         "_unknown": "_unknown-index-hb.md"

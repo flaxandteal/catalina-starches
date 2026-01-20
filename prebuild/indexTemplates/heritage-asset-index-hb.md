@@ -34,7 +34,7 @@ $$$
 | **ID:**             | {{ ha.system_reference_numbers.uuid.resourceid }}                                                                                                              |
 {{#each ha.location_data.addresses }}
 {{#if county.county_value }}
-| **LGD:** | {{ county.county_value }} |
+| **LGA:** | {{ county.county_value }} |
 {{/if}}
 {{/each}}
 {{#each ha.designation_and_protection_assignments }}
