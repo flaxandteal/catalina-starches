@@ -20,6 +20,6 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["assets/**/*.ts", "static/js/**/*.ts"],
-  "exclude": ["utils", "node_modules"]
+  "include": ["assets/**/*.ts", "static/js/**/*.ts", "node_modules/starches/assets/**/*.ts"],
+  "exclude": ["utils"]
 }

@@ -13,6 +13,7 @@
     "@esri/maplibre-arcgis": "^1.0.0",
     "@maplibre/maplibre-gl-geocoder": "^1.8.0",
     "@maplibre/maplibre-gl-leaflet": "^0.1.0",
+    "@pagefind/modular-ui": "https://github.com/flaxandteal/pagefind/releases/download/v1.3.0-map-compatibility.5/pagefind-modular-ui-v1.3.0-map-compatibility.5.tar.gz",
     "@turf/helpers": "^7.2.0",
     "@turf/nearest-point": "^7.2.0",
     "@turf/points-within-polygon": "^7.2.0",
@@ -35,7 +36,6 @@
     "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.16",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
