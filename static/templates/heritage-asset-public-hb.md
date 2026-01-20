@@ -5,6 +5,20 @@
 ::end::
 
 ::Names::
+{{#if (includes ha.monument_names "monument_name_use_type" "Primary")}}
+{{! Primary name exists - use it }}
+{{#each ha.monument_names}}
+{{#if (equal monument_name_use_type "Primary")}}
+[@monument_name] {{{ monument_name }}}
+{{/if}}
+{{/each}}
+{{#each ha.monument_names}}
+{{#if (not monument_name_use_type "Primary")}}
+[Alternate Name] {{{ monument_name }}}
+{{/if}}
+{{/each}}
+{{else}}
+{{! No primary found - use first as primary, rest as alternates }}
 {{#each ha.monument_names}}
 {{#if @first}}
 [@monument_name] {{{ monument_name }}}
@@ -12,6 +26,7 @@
 [Alternate Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
+{{/if}}
 ::end::
 
 {{#each ha.construction_phases}}
@@ -50,6 +65,14 @@
 {{/each}}
 ::end::
 
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Summary") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
 ::Criteria::
 {{#each ha.designation_and_protection_assignment }}
 {{#if local_heritage_list_criteria_type }}
@@ -58,14 +81,43 @@
 
 {{{ designation_names.designation_name }}}
 
-{{#if designation_names.designation_name_use_type }}
-<h4>{{{ designation_names.designation_name_use_type }}}</h4>
-{{/if}}
 {{/each}}
 ::end::
 
 {{#each ha.descriptions}}
-{{#if description }}
+{{#if (equal (clean description_type) "History") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Description") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Reference") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Boundary Description") }}
+:: {{ clean description_type }} ::
+{{{ description }}}
+::end::
+{{/if}}
+{{/each}}
+
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Process Statement") }}
 :: {{ clean description_type }} ::
 {{{ description }}}
 ::end::

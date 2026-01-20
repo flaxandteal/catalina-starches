@@ -24,6 +24,8 @@
         "images": true,
         "localities_administrative_areas": true,
         "location_data": true,
+        "area_assignments": true,
+        "area_assignment": true,
         "monument_names": true,
         "monument_type": true,
         "national_grid_references": true,
