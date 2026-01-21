@@ -3,7 +3,7 @@
     <ul class="nav footer-link-list footer-link-list--social">    
     {{- range $followLinks }}
       <li>
-          <a class="nav-link" href="{{ .link }}"{{ if .target }} target="{{ .target }}"{{ end }}>
+          <a class="nav-link" href="{{ .link | safeURL }}"{{ if .target }} target="{{ .target }}"{{ end }}>
               <span class="qld-icon qld-icon-md qld-icon-{{ .icon }} d-lg-none" aria-hidden="true"></span>
               <span class="qld-icon qld-icon-sm qld-icon-{{ .icon }} d-none d-lg-block" aria-hidden="true"></span>
               <span class="nav-link-label d-none d-lg-block">{{ .label }}</span>
