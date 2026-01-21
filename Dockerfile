@@ -27,9 +27,9 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/test_data.json --prefix qld- --include-private --summary
+RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix qld- --summary
 
-RUN npx starches-builder index --site docs --include-private
+RUN npx starches-builder index --site docs
 
 RUN npm run precompile:templates
 
