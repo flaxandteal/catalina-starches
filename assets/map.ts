@@ -93,7 +93,7 @@ async function resultFunction(map: TargetingMap, e: MapMouseEvent & { features?:
       coordinates[0] += lngLat.lng > coordinates[0] ? 360 : -360;
     }
 
-    new Popup()
+    new Popup({ maxWidth: '320px' })
       .setLngLat(coordinates as [number, number])
       .setHTML(renderedHtml)
       .addTo(window.map);
