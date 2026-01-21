@@ -76,7 +76,7 @@
 ::Criteria::
 {{#each ha.designation_and_protection_assignment }}
 {{#if local_heritage_list_criteria_type }}
-<h3>Criteria {{ local_heritage_list_criteria_type }}</h3>
+<h3>Criterion {{ local_heritage_list_criteria_type }}</h3>
 {{/if}}
 
 {{{ designation_names.designation_name }}}
