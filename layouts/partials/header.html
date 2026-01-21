@@ -33,7 +33,7 @@
                     {{- end -}}
                 </a>
 
-                {{ if not hugo.IsProduction }}<span class="align-self-center">v{{ .Site.Params.version }}</span>{{ end}}
+                {{ if ne .Site.Params.environment "production" }}<span class="align-self-center">v{{ .Site.Params.version }}</span>{{ end}}
 
                 {{ with $pre.actions }}
                     <div class="d-none d-lg-flex align-items-center">
