@@ -561,20 +561,21 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   // This is a sample list of images
   let imageArray = ((await asset.asset.images) || [[]]);
   imageArray = await Promise.all(imageArray);
-  imageArray = imageArray.flat();
+  console.log(imageArray);
   // RMV: TODO - this is not picking up visibility
   imageArray = await imageArray.filter(async (i) => {
-    return await i.visibility && await i._file && "Public" in (await i.visibility) && Number.isInteger(await i._file.index);
+    console.log(await i[0]._file.index, await i._.visibility);
+    return (await i._.visibility).includes("Public") && await i[0]._file && Number.isInteger(await i[0]._file.index);
   });
+  console.log(imageArray);
   const testImages = [];
-  await Promise.all(imageArray.map(async (i) => {
-    for (const image of (await i)) {
-      testImages.push({
-        name: await image.name || "",
-        url: await image.url || "",
-        alt: (await image._file && await image._file.alt_text) || (await image.name) || ""
-      });
-    }
+  await Promise.all(imageArray.map(async (imageList) => {
+    const image = imageList[0];
+    testImages.push({
+      name: await image.name,
+      url: (await imageList._.preview[0]?.url) ?? (await image.url),
+      alt: (await image._file && await image._file.alt_text) || (await image.name)
+    });
   }));
 
   console.log("testImages", testImages);

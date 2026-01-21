@@ -7,8 +7,8 @@
     "doc": "docs"
   },
   "dependencies": {
-    "@alizarin/clm": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.18/alizarin-clm-0.2.1-alpha.18.tgz",
-    "@alizarin/filelist": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.18/alizarin-filelist-0.2.1-alpha.18.tgz",
+    "@alizarin/clm": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.19/alizarin-clm-0.2.1-alpha.19.tgz",
+    "@alizarin/filelist": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.19/alizarin-filelist-0.2.1-alpha.19.tgz",
     "@drustack/leaflet.resetview": "^1.9.2",
     "@esri/maplibre-arcgis": "^1.0.0",
     "@maplibre/maplibre-gl-geocoder": "^1.8.0",
@@ -20,7 +20,7 @@
     "@types/geojson": "^7946.0.16",
     "@types/leaflet": "^1.9.17",
     "@types/leaflet.markercluster": "^1.5.5",
-    "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.18/alizarin-0.2.1-alpha.18.tgz",
+    "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.19/alizarin-0.2.1-alpha.19.tgz",
     "dompurify": "^3.2.5",
     "flatbush": "^4.4.0",
     "flatgeobuf": "^4.0.1",
@@ -36,7 +36,7 @@
     "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.18",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.19",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
