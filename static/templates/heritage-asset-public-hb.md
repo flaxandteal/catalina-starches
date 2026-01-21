@@ -9,21 +9,21 @@
 {{! Primary name exists - use it }}
 {{#each ha.monument_names}}
 {{#if (equal monument_name_use_type "Primary")}}
-[@monument_name] {{{ monument_name }}}
+[Place Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
 {{#each ha.monument_names}}
 {{#if (not monument_name_use_type "Primary")}}
-[Alternate Name] {{{ monument_name }}}
+[Alternative Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
 {{else}}
 {{! No primary found - use first as primary, rest as alternates }}
 {{#each ha.monument_names}}
 {{#if @first}}
-[@monument_name] {{{ monument_name }}}
+[Place Name] {{{ monument_name }}}
 {{else}}
-[Alternate Name] {{{ monument_name }}}
+[Alternative Name] {{{ monument_name }}}
 {{/if}}
 {{/each}}
 {{/if}}
@@ -43,13 +43,13 @@
 [Local Government Area] {{{ county.county_value }}}
 {{/if}}
 {{#if street.street_value }}
-[@street_value] {{{ street.street_value }}}
+[Street] {{{ street.street_value }}}
 {{/if}}
 {{#if town_or_city.town_or_city_value }}
 [Suburb] {{{ town_or_city.town_or_city_value }}}
 {{/if}}
 {{#if postcode.postcode_value }}
-[@postcode_value] {{ postcode.postcode_value }}
+[Postcode] {{ postcode.postcode_value }}
 {{/if}}
 {{/each}}
 ::end::
