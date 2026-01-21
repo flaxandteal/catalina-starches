@@ -398,7 +398,7 @@ export async function makeSearchQuery(url: string, searchParams?: SearchParams) 
   if (url.includes("?")) {
     fullUrl += "&";
   } else {
-    fullUrl += "?";
+    fullUrl += "/?";
   }
 
   const params = new URLSearchParams();
