@@ -1,28 +1,13 @@
 import Swiper from 'swiper/bundle';
 
-interface ImageInput {
+export interface ImageInput {
   name: string;
   alt: string;
-  url?: string;
+  previewUrl?: string;
+  originalUrl?: string;
 }
 
-interface ImageData {
-  url: string;
-  alt: string;
-}
-
-function buildImageURLs(imageList: ImageInput[], baseUrl: string, path: string): ImageData[] {
-  return imageList.map(image => {
-    const lastDot = image.name.lastIndexOf('.');
-    const name = image.name.substring(0, lastDot);
-    return {
-      url: image.url || `${baseUrl}/${path}/${name}_web.jpg`,
-      alt: image.alt || 'Heritage site image'
-    };
-  });
-}
-
-function getRandomImages(images: ImageData[], amount: number): ImageData[] {
+function getRandomImages(images: ImageInput[], amount: number): ImageInput[] {
   const sortedImages = images.sort(() => Math.random() - 0.5);
   return sortedImages.slice(0, amount);
 }
@@ -75,14 +60,15 @@ function createSwiper(config: string): any {
   return new Swiper('.swiper', carouselConfig);
 }
 
-function populateSlides(wrapper: Element, images: ImageData[], config: string): Promise<void> {
+function populateSlides(wrapper: Element, images: ImageInput[], config: string): Promise<void> {
   wrapper.innerHTML = '';
-  return new Promise((resolve) => {
+  return new Promise((resolve) => { 
     images.forEach((imageData, index) => {
+      
       const slide = document.createElement('div');
       slide.className = `swiper-slide ${config}`;
       const img = document.createElement('img');
-      img.src = imageData.url;
+      img.src = imageData.previewUrl;
       img.alt = imageData.alt;
       img.style.cursor = 'pointer';
 
@@ -106,26 +92,9 @@ function populateSlides(wrapper: Element, images: ImageData[], config: string): 
   });
 }
 
-async function downloadImage(e: Event, type: string, extensions: { name: string; ext: string }[] = null): Promise<void> {
+async function downloadImage(e: Event, url: string): Promise<void> {
     e.preventDefault();
-    const img = document.querySelector('#modal-img') as HTMLImageElement;
-    let url = img.src.split('_web')[0]
-
-    if(type === 'reduced'){
-      url = `${url}_download.jpg`;
-    }
-
-    if(type === 'original' && extensions){
-      const filename = img.src.split('/').pop();
-      const imgName = filename.substring(0, filename.indexOf('_web'));
-      const extObj = extensions.find(ext => ext.name === imgName);
-      if(extObj){
-        url = `${url}.${extObj.ext}`;
-      }
-    }
-
-    console.log("Downloading from URL:", url)
-
+    
     if (!url) return;
 
     try {
@@ -146,7 +115,7 @@ async function downloadImage(e: Event, type: string, extensions: { name: string;
     }
 }
 
-function setupModal(extensions: { name: string; ext: string }[]): void {
+function setupModal(imageList: ImageInput[]): void {
   const modal = document.getElementById('image-modal') as HTMLElement;
   const modalImg = document.getElementById('modal-img') as HTMLImageElement;
   const modalCaption = document.getElementById('modal-caption') as HTMLElement;
@@ -161,11 +130,15 @@ function setupModal(extensions: { name: string; ext: string }[]): void {
 
   // Handle download button click
   if (downloadOriginalLink) {
-    downloadOriginalLink.addEventListener('click', (e) => downloadImage(e, 'original', extensions));
+   
+    downloadOriginalLink.addEventListener('click', (e) => {
+      const originalImageURL = imageList.find(img => img.previewUrl === modalImg.src)?.originalUrl || '';
+      downloadImage(e, originalImageURL)
+    });
   }
 
   if (downloadReducedLink) {
-    downloadReducedLink.addEventListener('click', (e) => downloadImage(e, 'reduced'));
+    downloadReducedLink.addEventListener('click', (e) => downloadImage(e, modalImg.src));
   }
 
   document.querySelectorAll('.swiper-slide img').forEach(img => {
@@ -202,30 +175,24 @@ export async function initSwiper(imageList: ImageInput[], path: string): Promise
     return;
   }
 
-  const { blobUrl, config = 'hero', showModal, count } = container.dataset;
-  let images = buildImageURLs(imageList, blobUrl, path);
+  const { config = 'hero', showModal, count } = container.dataset;
 
-  // Store the original extensions for download links
-  const extensions = imageList.map(image => {
-    const lastDot = image.name.lastIndexOf('.');
-    return {
-      name: image.name.substring(0, lastDot),
-      ext: image.name.substring(lastDot + 1)
-    };
-  });
+  console.log("preview images:", imageList);
+
+  let previewImages = imageList
 
   if (count) {
-    images = getRandomImages(images, parseInt(count));
+    previewImages = getRandomImages(previewImages, parseInt(count));
   }
 
-  await populateSlides(wrapper, images, config);
+  await populateSlides(wrapper, previewImages, config);
 
   // Create swiper AFTER slides are populated
   const swiper = createSwiper(config);
   if (!swiper) return;
 
   if (showModal === 'true') {
-    setupModal(extensions);
+    setupModal(imageList);
   }
 
   container.classList.add('loaded');

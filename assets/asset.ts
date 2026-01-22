@@ -17,14 +17,13 @@ import {
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
-import { initSwiper } from 'swiper';
+import { initSwiper, ImageInput, ImageSet } from 'swiper';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { markdownToPdf } from 'pdf-make';
 
 pdfMake.vfs = pdfFonts.vfs;
-import * as params from '@params';
+
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -527,6 +526,22 @@ function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string
   pdfMake.createPdf(pdf).download(`${title}.pdf`);
 }
 
+async function extractImageList(imageList: any[]): Promise<ImageInput[]> {
+  const images: ImageInput[] = [];
+
+  await Promise.all(imageList.map(async (imageList) => {
+    const image = imageList[0];
+    images.push({
+      name: await image.name,
+      previewUrl: (await imageList._.preview[0]?.url) ?? (await image.url),
+      originalUrl: await image.url,
+      alt: (await image._file && await image._file.alt_text) || (await image.name)
+    });
+  }));
+
+  return images;
+}
+
 async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): Promise<Record<string, Dialog>> {
   const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
   const nonstaticAsset = await alizarinRenderer.render(asset.asset);
@@ -558,29 +573,16 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
 
-  // This is a sample list of images
   let imageArray = ((await asset.asset.images) || [[]]);
   imageArray = await Promise.all(imageArray);
   console.log(imageArray);
   // RMV: TODO - this is not picking up visibility
   imageArray = await imageArray.filter(async (i) => {
-    console.log(await i[0]._file.index, await i._.visibility);
     return (await i._.visibility).includes("Public") && await i[0]._file && Number.isInteger(await i[0]._file.index);
   });
-  console.log(imageArray);
-  const testImages = [];
-  await Promise.all(imageArray.map(async (imageList) => {
-    const image = imageList[0];
-    testImages.push({
-      name: await image.name,
-      url: (await imageList._.preview[0]?.url) ?? (await image.url),
-      alt: (await image._file && await image._file.alt_text) || (await image.name)
-    });
-  }));
+  const assetImages = await extractImageList(imageArray);
 
-  console.log("testImages", testImages);
-
-  initSwiper(testImages, 'media/images')
+  initSwiper(assetImages, 'media/images')
 
   injectSections(sections);
 
