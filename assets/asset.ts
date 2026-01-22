@@ -563,13 +563,12 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
     }
   );
 
-  console.log("META", asset.meta);
-
   const nodes = asset.asset.__.getNodeObjectsByAlias();
 
   const sections = await renderToHtml(markdown, nodes, false);
 
-  const downloadPDF = () => {
+  const downloadPDF = (e: Event) => {
+    e.preventDefault();
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
 
@@ -589,7 +588,7 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const downloadPdfButton = document.getElementById('asset-download');
   if (downloadPdfButton) {
-    downloadPdfButton.addEventListener('click', downloadPDF);
+    downloadPdfButton.addEventListener('click', (e) => downloadPDF(e));
   }
 
   addAssetToMap(asset);
@@ -792,7 +791,6 @@ class AssetManager implements IAssetManager {
     }
 
     const template = await fetchTemplate(this.asset.asset);
-    console.log("Template loaded:", template, !!template, "publicView:", publicView);
 
     this.dialogs = (publicView && template)
       ? await renderAsset(this.asset, template)
