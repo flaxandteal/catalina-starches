@@ -573,13 +573,14 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
     renderPDFAsset(markdown, nodes, asset.meta.title);
   }
 
-  let imageArray = ((await asset.asset.images) || [[]]);
-  imageArray = await Promise.all(imageArray);
-  console.log(imageArray);
-  // RMV: TODO - this is not picking up visibility
-  imageArray = await imageArray.filter(async (i) => {
-    return (await i._.visibility).includes("Public") && await i[0]._file && Number.isInteger(await i[0]._file.index);
-  });
+  let imageArray = (await Promise.all(((await asset.asset.images) || [[]]).map(async (i) => {
+    if (!i || !i[0] || !(await i[0])) {
+      return false;
+    }
+    const isPublic = (await i._.visibility).includes("Public");
+    const webOrder = await i[0]._file && Number.isInteger(await i[0]._file.index);
+    return isPublic && webOrder ? i : null;
+  }))).filter(a => a !== null).sort((a: Object, b: Object) => a[0]._file.index - b[0]._file.index);
   const assetImages = await extractImageList(imageArray);
 
   initSwiper(assetImages, 'media/images')

@@ -221,7 +221,7 @@ class SearchManager {
       }
 
       var target = document.querySelector('div#results')
-      var instructions = document.querySelector('div#instructions')
+      var instructions = document.querySelector('div#map-instructions')
       var observer = new MutationObserver(() => {
           if (target.childNodes.length === 0) {
               instructions.classList = "";
