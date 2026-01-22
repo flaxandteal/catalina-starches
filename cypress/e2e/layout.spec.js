@@ -224,12 +224,12 @@ describe('Main layout (header, main, footer) — accessibility + CSS', () => {
       });
   });
 
-  it('contains Useful Links section with correct heading and links', () => {
+  it('contains Useful Information section with correct heading and links', () => {
     cy.get('[data-cy="useful-links"]').should('be.visible').within(() => {
       // Check heading
       cy.get('[data-cy="useful-links-heading"]')
         .should('be.visible')
-        .should('contain.text', 'Useful Links');
+        .should('contain.text', 'Useful Information');
 
       // Check links list exists
       cy.get('[data-cy="links-list"]').should('exist');
