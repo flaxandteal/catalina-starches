@@ -29,6 +29,7 @@
     "gray-matter": "^4.0.3",
     "handlebars": "^4.7.8",
     "handlebars-async-helpers-ts": "^2.0.2",
+    "html-to-pdfmake": "^2.5.32",
     "leaflet": "^1.9.4",
     "leaflet.markercluster": "^1.5.3",
     "mapbox-gl-arcgis-featureserver": "^0.0.8",
@@ -45,6 +46,7 @@
   "devDependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
+    "@types/html-to-pdfmake": "^2.4.4",
     "@types/jest": "^30.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.14.0",

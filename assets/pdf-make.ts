@@ -1,121 +1,35 @@
 import { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
+import htmlToPdfmake from "html-to-pdfmake";
 
 function formatNodeLabel(keyString: string, nodes: Map<string, any>): string {
     const isNodeAlias = keyString.startsWith('@');
     const alias = isNodeAlias ? keyString.substring(1) : null;
     const resolvedNode = alias ? nodes.get(alias) : null;
-    const nodeLabel = resolvedNode && typeof resolvedNode.name === 'string' ? resolvedNode.name : keyString;
-
-    return nodeLabel;
+    return resolvedNode && typeof resolvedNode.name === 'string' ? resolvedNode.name : keyString;
 }
 
-function decodeHtmlEntities(text: string): string {
-    return text
-        .replace(/&amp;/g, '&')
-        .replace(/&rsquo;/g, "'")
-        .replace(/&lt;/g, '<')
-        .replace(/&gt;/g, '>')
-        .replace(/&quot;/g, '"')
-        .replace(/&#39;/g, "'")
-        .replace(/&nbsp;/g, ' ');
-}
+// Default styles matching the page design, adjust these for any HTML elements in the content
+const defaultStyles = {
+    b: { bold: true },
+    strong: { bold: true },
+    i: { italics: true },
+    em: { italics: true },
+    u: { decoration: 'underline' as const },
+    a: { color: '#1976d2', decoration: 'underline' as const },
+    p: { fontSize: 11, color: '#444444', margin: [12, 0, 0, 0] as [number, number, number, number] },
+    h1: { fontSize: 18, color: '#19315a', margin: [12, 6, 0, 4] as [number, number, number, number] },
+    h2: { fontSize: 16, color: '#19315a', margin: [12, 5, 0, 3] as [number, number, number, number] },
+    h3: { fontSize: 14, color: '#19315a', margin: [12, 4, 0, 2] as [number, number, number, number] },
+    h4: { fontSize: 12, color: '#19315a', margin: [12, 3, 0, 2] as [number, number, number, number] },
+    ul: { fontSize: 11, color: '#444444', margin: [24, 2, 0, 0] as [number, number, number, number] },
+    ol: { fontSize: 11, color: '#444444', margin: [24, 2, 0, 0] as [number, number, number, number] },
+    li: { fontSize: 11, color: '#444444' },
+};
 
-interface RichTextContent {
-    text: string | any[];
-    bold?: boolean;
-    italics?: boolean;
-    decoration?: string;
-    link?: string;
-    color?: string;
-    style?: string;
-    margin?: number[];
-    fontSize?: number;
-}
-
-// Convert HTML to pdfmake rich text object, preserving basic styling
-function htmlToRichText(html: string): RichTextContent {
-    const result: any[] = [];
-    const remaining = html.trim();
-
-    // Pattern to match HTML tags and their content
-    const tagPattern = /<(strong|b|em|i|u|a|span|br|time|p|h1|h2|h3)([^>]*)>([\s\S]*?)<\/\1>|<(br)\s*\/?>|([^<]+)/gi;
-    let match: RegExpExecArray | null;
-
-    while ((match = tagPattern.exec(remaining)) !== null) {
-        const [, tagName, attrs, innerContent, selfClosingTag, plainText] = match;
-
-        if (selfClosingTag === 'br') {
-            result.push({ text: '\n' });
-        } else if (plainText) {
-            const decoded = decodeHtmlEntities(plainText.trim());
-            if (decoded) {
-                result.push({ text: decoded });
-            }
-        } else if (tagName) {
-            const tag = tagName.toLowerCase();
-            const content = decodeHtmlEntities(innerContent.replace(/<[^>]*>/g, '').trim());
-
-            if (!content) continue;
-
-            switch (tag) {
-                case 'strong':
-                case 'b':
-                    result.push({ text: content, bold: true });
-                    break;
-                case 'em':
-                case 'i':
-                    result.push({ text: content, italics: true });
-                    break;
-                case 'u':
-                    result.push({ text: content, decoration: 'underline' });
-                    break;
-                case 'a':
-                    const hrefMatch = attrs.match(/href=["']([^"']+)["']/);
-                    if (hrefMatch) {
-                        result.push({ text: content, link: hrefMatch[1], color: '#1976d2', decoration: 'underline' });
-                    } else {
-                        result.push({ text: content });
-                    }
-                    break;
-                case 'time':
-                    // Format date if it's a time element
-                    const datetimeMatch = attrs.match(/datetime=["']([^"']+)["']/);
-                    if (datetimeMatch) {
-                        try {
-                            const date = new Date(datetimeMatch[1]);
-                            result.push({ text: date.toLocaleDateString() });
-                        } catch {
-                            result.push({ text: content });
-                        }
-                    } else {
-                        result.push({ text: content });
-                    }
-                    break;
-                case 'p':
-                    result.push({ text: content + '\n' });
-                    break;
-                case 'h1':
-                    result.push({ text: '\n' +content + '\n' , fontSize: 18, bold: true });
-                    break;
-                case 'h2':
-                    result.push({ text: '\n' + content + '\n', fontSize: 16, bold: true });
-                    break;
-                case 'h3':
-                    result.push({ text: '\n' + content + '\n', fontSize: 14, bold: true });
-                    break;
-                default:
-                    result.push({ text: content });
-            }
-        }
-    }
-
-    // If no HTML was found, return plain text
-    if (result.length === 0) {
-        const plainText = decodeHtmlEntities(html.replace(/<[^>]*>/g, '').trim());
-        return { text: plainText || '' };
-    }
-
-    return { text: result };
+// Convert HTML to pdfmake content
+function htmlToContent(html: string): any {
+    if (!html.trim()) return [];
+    return htmlToPdfmake(html, { defaultStyles });
 }
 
 export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: string): TDocumentDefinitions {
@@ -132,61 +46,62 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
     while ((blockMatch = nodeBlockPattern.exec(markdown)) !== null) {
         const sectionTitle = blockMatch[1].trim();
 
-        // Skip duplicate sections (only for titled sections)
-        if (sectionTitle && seenSections.has(sectionTitle)) {
-            continue;
-        }
-        if (sectionTitle) {
-            seenSections.add(sectionTitle);
-        }
+        // Skip duplicate sections
+        if (sectionTitle && seenSections.has(sectionTitle)) continue;
+        if (sectionTitle) seenSections.add(sectionTitle);
 
         const body = blockMatch[3].trim();
 
-        // Parse fields from the body - handle multi-line values
-        const fields: { label: string; value: RichTextContent }[] = [];
-        const plainTextParts: RichTextContent[] = [];
-        const fieldPattern = /\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/g;
+        // Parse fields: [Label] value (only at start of line)
+        const fields: { label: string; value: any }[] = [];
+        const plainTextParts: any[] = [];
+        const fieldPattern = /(?:^|\n)\[([^\]]+)\]\s+([\s\S]*?)(?=\n\[|$)/g;
         let fieldMatch: RegExpExecArray | null;
         let lastIndex = 0;
 
         while ((fieldMatch = fieldPattern.exec(body)) !== null) {
-            // Capture any plain text before this field
+            // Capture plain text before this field
             const textBefore = body.slice(lastIndex, fieldMatch.index).trim();
             if (textBefore) {
-                const richText = htmlToRichText(textBefore);
-                if (richText) {
-                    plainTextParts.push(richText);
+                const converted = htmlToContent(textBefore);
+                if (Array.isArray(converted)) {
+                    plainTextParts.push(...converted);
+                } else if (converted) {
+                    plainTextParts.push(converted);
                 }
             }
             lastIndex = fieldMatch.index + fieldMatch[0].length;
 
             const label = fieldMatch[1].trim();
             const rawValue = fieldMatch[2].trim();
-            // Convert HTML to rich text for PDF output
-            const value = htmlToRichText(rawValue);
+            const value = htmlToContent(rawValue);
 
             if (value) {
                 fields.push({
                     label: formatNodeLabel(label, nodes),
-                    value
+                    value: Array.isArray(value) ? { stack: value } : value
                 });
             }
         }
 
-        // Capture any remaining text after the last field
+        // Capture remaining text after last field
         const remainingText = body.slice(lastIndex).trim();
         if (remainingText) {
-            const richText = htmlToRichText(remainingText);
-            if (richText) {
-                plainTextParts.push(richText);
+            const converted = htmlToContent(remainingText);
+            if (Array.isArray(converted)) {
+                plainTextParts.push(...converted);
+            } else if (converted) {
+                plainTextParts.push(converted);
             }
         }
 
-        // If no fields found, treat entire body as plain text
+        // If no fields found, treat entire body as content
         if (fields.length === 0 && plainTextParts.length === 0) {
-            const richBody = htmlToRichText(body);
-            if (richBody) {
-                plainTextParts.push(richBody);
+            const converted = htmlToContent(body);
+            if (Array.isArray(converted)) {
+                plainTextParts.push(...converted);
+            } else if (converted) {
+                plainTextParts.push(converted);
             }
         }
 
@@ -207,19 +122,15 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
                     paddingLeft: () => 12,
                     paddingRight: () => 12
                 },
-                margin: [0, 15, 0, 0]
+                margin: [0, 15, 0, 10]
             });
 
-            // Plain text content (without labels)
-            for (const text of plainTextParts) {
-                content.push({
-                    ...text,
-                    style: 'fieldValue',
-                    margin: [12, 8, 12, 0]
-                });
+            // Section content (no labels)
+            for (const item of plainTextParts) {
+                content.push(item);
             }
 
-            // Section content (fields with labels)
+            // Field content (label: value pairs)
             for (const field of fields) {
                 content.push({
                     columns: [
@@ -234,15 +145,15 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
 
     const styles: StyleDictionary = {
         documentTitle: {
-            fontSize: 20,
+            fontSize: 18,
             bold: true,
-            color: '#1a1a1a',
-            margin: [0, 0, 0, 10]
+            color: '#19315a',
+            margin: [0, 0, 0, 8]
         },
         sectionHeader: {
             fontSize: 14,
             bold: true,
-            color: '#1976d2'
+            color: '#19315a'
         },
         fieldLabel: {
             bold: true,
@@ -251,10 +162,9 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
         },
         fieldValue: {
             fontSize: 11,
-            color: '#666666'
+            color: '#444444'
         }
     };
 
     return { content, styles };
 }
-
