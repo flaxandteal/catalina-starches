@@ -75,7 +75,7 @@ async function handleResults(fg: FeatureCollection, results): Promise<FeatureCol
                         'title': re.meta.title,
                         'description': description,
                         'url': url,
-                        'category': re.meta.category || null
+                        'category': JSON.parse(re.meta.Category || "[]")[0] || null
                     },
                 };
                 fg.features.push(marker);

@@ -25,7 +25,7 @@ import { ensureFlatbushLoaded, FlatbushManager } from './fbwrapper';
 import { getFlatbushManager, getMap, getSearchManager, resolvePrimaryMapWith, resolveMapManagerWith, IMapManager, ILayerManager } from './managers';
 import { loadTemplate } from './handlebar-utils';
 import { debug, debugWarn } from './debug';
-import { buildIconConfig, preloadCategoryIcons, IconConfig, buildCategoryIconExpressionWithFallback } from './map-icons';
+import { buildIconConfig, preloadCategoryIcons, IconConfig, buildCategoryIconExpression } from './map-icons';
 
 // Get map config from Hugo params, with fallback
 const mapConfig: MapConfig | undefined = params.map_config;
@@ -522,7 +522,7 @@ class MapManager implements IMapManager {
       'minzoom': config.minSearchZoom,
       'layout': {
         // Use category-based icons if available, fallback to default marker
-        'icon-image': buildCategoryIconExpressionWithFallback(iconConfig, 'category', 'marker-new'),
+        'icon-image': buildCategoryIconExpression(iconConfig, 'category'),
         'icon-allow-overlap': true,
         'text-allow-overlap': true,
         'text-offset': [0, 1.25],
