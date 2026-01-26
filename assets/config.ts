@@ -3,7 +3,7 @@ import { StarchesConfiguration, resolveConfigurationWith, getConfig } from './ma
 function makeDefaultConfiguration(): Partial<StarchesConfiguration> {
   return {
     showGeolocateControl: false,
-    minSearchZoom: 13,
+    minSearchZoom: 3,
     minSearchLength: 4,
     maxMapPoints: 300,
     timeToShowLoadingMs: 50,
