@@ -1,4 +1,4 @@
-import { Map as MLMap } from 'maplibre-gl';
+import { Map as MLMap, Marker } from 'maplibre-gl';
 
 /**
  * Heritage category to Material Icon mapping
@@ -13,6 +13,30 @@ export interface IconConfig {
   categories: Record<string, CategoryIconConfig>;
   defaultIcon: string;
   defaultColor: string;
+}
+
+/** Default marker color */
+const DEFAULT_MARKER_COLOR = '#09549f';
+
+/**
+ * Cache for the base marker SVG from MapLibre
+ */
+let cachedMarkerSvg: string | null = null;
+
+/**
+ * Get the base marker SVG from a MapLibre Marker
+ * This is the teardrop pin shape
+ */
+function getMarkerSvg(): string {
+  if (cachedMarkerSvg) {
+    return cachedMarkerSvg;
+  }
+
+  const marker = new Marker();
+  const markerSvg = marker._element.firstChild as SVGElement;
+  cachedMarkerSvg = new XMLSerializer().serializeToString(markerSvg);
+  marker.remove();
+  return cachedMarkerSvg;
 }
 
 /**
@@ -141,25 +165,59 @@ function colorSvg(svg: string, color: string): string {
   return svg.replace(/<svg([^>]*)>/, `<svg$1 fill="${color}">`);
 }
 
-/**
- * Convert SVG string to an Image suitable for MapLibre
- */
-async function svgToImage(svg: string, size: number = 24): Promise<HTMLImageElement> {
-  const img = new Image(size, size);
+// Marker dimensions (MapLibre default marker)
+const MARKER_WIDTH = 27;
+const MARKER_HEIGHT = 41;
+const MARKER_VIEWBOX = `0 0 ${MARKER_WIDTH} ${MARKER_HEIGHT}`;
+const ICON_SIZE = 14;
+const ICON_X = 6.5;  // Centered in marker head: (27/2) - (14/2)
+const ICON_Y = 5;    // Centered in marker head: 12 - (14/2)
+
+/** Extract viewBox attribute from SVG string */
+const getViewBox = (svg: string, fallback: string): string =>
+  svg.match(/viewBox="([^"]+)"/)?.[1] ?? fallback;
+
+/** Extract inner content from SVG (strip outer tags) */
+const getSvgContent = (svg: string): string =>
+  svg.replace(/<svg[^>]*>/, '').replace(/<\/svg>/, '');
+
+/** Replace all fill colors in SVG */
+const recolorSvg = (svg: string, color: string): string =>
+  svg.replace(/fill="#[0-9a-fA-F]{3,6}"/g, `fill="${color}"`)
+     .replace(/fill="rgb\([^)]+\)"/g, `fill="${color}"`);
+
+/** Convert SVG string to an Image suitable for MapLibre */
+async function svgToImage(svg: string, width: number, height: number): Promise<HTMLImageElement> {
+  const img = new Image(width, height);
   img.src = `data:image/svg+xml;base64,${btoa(svg)}`;
   await img.decode();
   return img;
 }
 
+/** Create a composite SVG with the Material icon inside a marker pin */
+function createCompositeMarkerSvg(markerSvg: string, iconSvg: string, pinColor: string, iconColor: string): string {
+  const viewBox = getViewBox(markerSvg, MARKER_VIEWBOX);
+  const markerContent = getSvgContent(recolorSvg(markerSvg, pinColor));
+  const iconViewBox = getViewBox(iconSvg, '0 -960 960 960');
+  const iconContent = getSvgContent(iconSvg);
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${MARKER_WIDTH}" height="${MARKER_HEIGHT}">
+    ${markerContent}
+    <svg x="${ICON_X}" y="${ICON_Y}" width="${ICON_SIZE}" height="${ICON_SIZE}" viewBox="${iconViewBox}" fill="${iconColor}">
+      ${iconContent}
+    </svg>
+  </svg>`;
+}
+
 /**
- * Add a category icon to the map
- * Follows the same pattern as the existing addMarkerImage
+ * Add a category icon to the map as a composite marker pin
+ * The icon is embedded inside the teardrop marker shape
  */
 export async function addCategoryIcon(
   map: MLMap,
   category: string,
   config: IconConfig,
-  color?: string
+  pinColor?: string
 ): Promise<string> {
   const imageName = `category-${category.toLowerCase().replace(/[^a-z0-9]/g, '-')}`;
 
@@ -168,15 +226,55 @@ export async function addCategoryIcon(
   }
 
   const categoryConfig = config.categories[category] || { icon: config.defaultIcon };
-  const iconColor = color || categoryConfig.color || config.defaultColor;
+  const markerColor = pinColor || categoryConfig.color || config.defaultColor;
+  const iconColor = '#ffffff'; // White icon on colored pin
 
-  let svg = await fetchMaterialIconSvg(categoryConfig.icon);
-  svg = colorSvg(svg, iconColor);
+  // Get the base marker SVG and the category icon
+  const markerSvg = getMarkerSvg();
+  const iconSvg = await fetchMaterialIconSvg(categoryConfig.icon);
 
-  const img = await svgToImage(svg, 32);
+  // Create composite marker with icon inside
+  const compositeSvg = createCompositeMarkerSvg(markerSvg, iconSvg, markerColor, iconColor);
+
+  const img = await svgToImage(compositeSvg, MARKER_WIDTH, MARKER_HEIGHT);
   map.addImage(imageName, img);
 
   return imageName;
+}
+
+/** Name for the fallback marker (no icon, just pin) */
+export const FALLBACK_MARKER_NAME = 'category-fallback';
+
+/** Create a plain marker pin without any icon inside */
+function createPlainMarkerSvg(markerSvg: string, pinColor: string): string {
+  const viewBox = getViewBox(markerSvg, MARKER_VIEWBOX);
+  const markerContent = getSvgContent(recolorSvg(markerSvg, pinColor));
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" width="${MARKER_WIDTH}" height="${MARKER_HEIGHT}">
+    ${markerContent}
+  </svg>`;
+}
+
+/**
+ * Add a plain fallback marker (no icon) to the map
+ */
+export async function addFallbackMarker(
+  map: MLMap,
+  config: IconConfig,
+  pinColor?: string
+): Promise<string> {
+  if (map.hasImage(FALLBACK_MARKER_NAME)) {
+    return FALLBACK_MARKER_NAME;
+  }
+
+  const markerColor = pinColor || config.defaultColor;
+  const markerSvg = getMarkerSvg();
+  const plainSvg = createPlainMarkerSvg(markerSvg, markerColor);
+
+  const img = await svgToImage(plainSvg, MARKER_WIDTH, MARKER_HEIGHT);
+  map.addImage(FALLBACK_MARKER_NAME, img);
+
+  return FALLBACK_MARKER_NAME;
 }
 
 /**
@@ -190,6 +288,9 @@ export async function preloadCategoryIcons(
 ): Promise<Map<string, string>> {
   const categoriesToLoad = categories || Object.keys(config.categories);
   const iconMap = new Map<string, string>();
+
+  // Add the fallback marker first
+  await addFallbackMarker(map, config);
 
   await Promise.all(
     categoriesToLoad.map(async (category) => {
@@ -219,7 +320,7 @@ export function buildIconConfig(paramsConfig?: Partial<IconConfig>): IconConfig 
       ...(paramsConfig?.categories || {}),
     },
     defaultIcon: paramsConfig?.defaultIcon || 'place',
-    defaultColor: paramsConfig?.defaultColor || '#c41e3a', // Queensland maroon
+    defaultColor: paramsConfig?.defaultColor || DEFAULT_MARKER_COLOR,
   };
 }
 
@@ -232,12 +333,12 @@ export function buildIconConfig(paramsConfig?: Partial<IconConfig>): IconConfig 
  *
  * @param config - The icon configuration
  * @param propertyName - The feature property containing the category (default: 'category')
- * @param fallbackIcon - Icon to use if category not matched (default: 'marker-new')
+ * @param fallbackIcon - Icon to use if category not matched (default: FALLBACK_MARKER_NAME)
  */
 export function buildCategoryIconExpression(
   config: IconConfig,
   propertyName: string = 'category',
-  fallbackIcon: string = 'marker-new'
+  fallbackIcon: string = FALLBACK_MARKER_NAME
 ): any[] {
   // Build match expression: ['match', ['get', 'category'], 'Cat1', 'icon1', 'Cat2', 'icon2', ..., 'fallback']
   const expression: any[] = ['match', ['get', propertyName]];
@@ -263,7 +364,7 @@ export function buildCategoryIconExpression(
 export function buildCategoryIconExpressionWithFallback(
   config: IconConfig,
   propertyName: string = 'category',
-  fallbackIcon: string = 'marker-new'
+  fallbackIcon: string = FALLBACK_MARKER_NAME
 ): any[] {
   return [
     'coalesce',
