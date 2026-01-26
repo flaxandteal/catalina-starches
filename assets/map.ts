@@ -397,16 +397,14 @@ class MapManager implements IMapManager {
   }
 
   async onMapLoad(map: TargetingMap, resolve: (map: TargetingMap) => void, defaultCenter: [number, number], defaultZoom: number, bounds?: [number, number, number, number]) {
-    // Track layers before adding basemap (for insertion ordering)
-    const layersBefore = map.getStyle().layers.map(l => l.id);
-
     // Load basemaps and overlays from config
     let basemapResults: BasemapLoadResult[] = [];
     let overlayLayerMap = new Map<string, string>();
 
     if (mapConfig) {
-      // Load basemaps
-      basemapResults = await loadBasemapsFromConfig(map, mapConfig, layersBefore[0]);
+      // Load basemaps - don't pass insertBefore so they go on top of the background layer
+      // (passing 'background' as insertBefore would put raster basemaps BELOW the background)
+      basemapResults = await loadBasemapsFromConfig(map, mapConfig);
 
       // Load overlays
       overlayLayerMap = await loadOverlaysFromConfig(map, mapConfig);
