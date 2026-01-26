@@ -84,7 +84,8 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
 
         const url = await makeSearchQuery(result.url);
         const location = result.meta.location ? JSON.parse(result.meta.location) : null;
-        const thumbnailURL  = params.blob_base_url + '/media/images/' + result.meta.thumbnailName;
+        const thumbnailURL = result.meta.thumbnailUrl;
+        // const thumbnailURL  = params.blob_base_url + '/media/images/' + result.meta.thumbnailName;
 
         const templateData = {
             title: result.meta.title || 'Untitled',

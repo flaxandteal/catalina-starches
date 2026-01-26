@@ -46,7 +46,7 @@
     "thumbnail": [
         {
             "graph": "HeritageItem",
-            "path": "images.0._"
+            "path": "images"
         }
     ]
 }
