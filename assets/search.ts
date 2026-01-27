@@ -1,11 +1,12 @@
 import { utils } from 'alizarin';
 const { slugify } = utils;
 import { getConfig } from './managers';
-import { getFilters, getTerm, updateSearchParams } from './searchContext';
+import { getFilters, getTerm, updateSearchParams, getSelectionPolygon } from './searchContext';
 import { debug, debugWarn, debugError } from './debug';
 import { buildPagefind } from './pagefind';
 import { saveSearchResults, makeSearchQuery } from "./searchContext";
 import { resolveSearchManagerWith, getMap, getMapManager, getFlatbushManager } from './managers';
+import booleanPointInPolygon from "@turf/boolean-point-in-polygon";
 
 let resolveSearchManager;
 const searchManager: Promise<SearchManager> = new Promise((resolve) => { resolveSearchManager = resolve });
@@ -168,25 +169,28 @@ class SearchManager {
                   
                   this.fb = await getFlatbushManager();
                   const geoBounds = this.fb && this.fb.bounds;
+                  const selectionPolygon = await getSelectionPolygon();
 
                   collectSlugs().then(slugs => {
                     debug("Extracted slugs for navigation:", slugs);
-                    
+
                     const searchContextParams: SearchParams = {
                       searchTerm: this.lastTerm,
                       geoBounds: geoBounds,
-                      searchFilters: this.lastFilters
+                      searchFilters: this.lastFilters,
+                      selectionPolygon
                     };
-                    
+
                     saveSearchResults(slugs, searchContextParams);
                     debug("Saved search context with " + slugs.length + " slugs", slugs);
                   });
 
                   console.log('UPDATING', this.lastTerm, this.lastFilters, geoBounds);
                   await updateSearchParams({
-                    searchTerm: this.lastTerm, 
+                    searchTerm: this.lastTerm,
                     searchFilters: this.lastFilters,
-                    geoBounds
+                    geoBounds,
+                    selectionPolygon
                   });
               })
           });
@@ -194,6 +198,7 @@ class SearchManager {
 
       this.fb = await getFlatbushManager();
       const geoBounds = this.fb && this.fb.bounds;
+      const selectionPolygon = await getSelectionPolygon();
 
       if (term) {
           const input = document.getElementById("search") as HTMLInputElement;
@@ -213,7 +218,8 @@ class SearchManager {
       updateSearchParams({
           searchTerm: term,
           searchFilters,
-          geoBounds
+          geoBounds,
+          selectionPolygon
       });
 
       if ((term || searchFilters) && instance) {
@@ -248,10 +254,12 @@ class SearchManager {
   async searchAction(pagefind, term: string, settings: SearchFilters) {
     const mapManager = await getMapManager();
     if (settings && settings.filters) {
+        const selectionPolygon = await getSelectionPolygon();
         updateSearchParams({
             searchTerm: term,
             searchFilters: settings.filters,
-            geoBounds: this.fb && this.fb.bounds
+            geoBounds: this.fb && this.fb.bounds,
+            selectionPolygon
         });
         if (settings.filters.tags) {
             const registers = settings.filters.tags.map(t => slugify(t));
@@ -324,6 +332,28 @@ class SearchManager {
           results.results = results.results.filter(r => filtered.has(r.id));
       }
     }
+
+    // Filter by selection polygon if set
+    const selectionPolygon = await getSelectionPolygon();
+    if (selectionPolygon && results.results) {
+      const polygonFiltered = await Promise.all(
+        results.results.map(async (r) => {
+          try {
+            const data = await r.data();
+            if (data.meta?.location) {
+              const loc = JSON.parse(data.meta.location);
+              const point: GeoJSON.Point = { type: 'Point', coordinates: [loc[0], loc[1]] };
+              return booleanPointInPolygon(point, selectionPolygon) ? r : null;
+            }
+          } catch (e) {
+            debugWarn('Error checking point in polygon:', e);
+          }
+          return null;
+        })
+      );
+      results.results = polygonFiltered.filter((r): r is NonNullable<typeof r> => r !== null);
+    }
+
     this.lastTerm = term;
     // Ensure we have an independent copy
     this.lastFilters = JSON.parse(JSON.stringify(settings && settings.filters));

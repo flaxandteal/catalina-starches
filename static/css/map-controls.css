@@ -21,3 +21,24 @@
     padding: 10px !important;
     background: white !important;
 }
+
+/* Draw control buttons in nav control - use mapbox-gl-draw icons */
+.maplibregl-ctrl-group .mapbox-gl-draw_polygon,
+.maplibregl-ctrl-group .mapbox-gl-draw_trash {
+    cursor: pointer;
+    width: 29px;
+    height: 29px;
+    background-size: 20px 20px;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.maplibregl-ctrl-group .mapbox-gl-draw_polygon.active {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Crosshair cursor when drawing */
+.maplibregl-canvas-container.mode-draw_polygon {
+    cursor: crosshair;
+}
+

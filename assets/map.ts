@@ -1,8 +1,9 @@
 import { Popup, Map as MLMap, NavigationControlOptions, NavigationControl, GeolocateControl, StyleSpecification, MapMouseEvent } from 'maplibre-gl';
+import MapboxDraw from '@mapbox/mapbox-gl-draw';
 import type { FeatureCollection } from 'geojson';
 import { deserialize as fgbDeserialize } from 'flatgeobuf/lib/mjs/geojson';
 import * as params from '@params';
-import { getGeoBounds } from './searchContext';
+import { getGeoBounds, updateSearchParams, getSearchParams, getSelectionPolygon } from './searchContext';
 import { isTouch } from './utils';
 import { getConfig } from './managers';
 import {
@@ -105,6 +106,10 @@ class ResetViewControl extends NavigationControl {
   defaultZoom: number;
   fb: FlatbushManager;
   _resetButton!: HTMLButtonElement;
+  _drawButton!: HTMLButtonElement;
+  _clearButton!: HTMLButtonElement;
+  _draw?: MapboxDraw;
+  _onDrawClear?: () => void;
 
   constructor(defaultLatLng: [number, number], defaultZoom: number, fb: FlatbushManager, options?: NavigationControlOptions) {
     super(options);
@@ -113,20 +118,59 @@ class ResetViewControl extends NavigationControl {
     this.fb = fb;
   }
 
+  setDraw(draw: MapboxDraw, onClear: () => void) {
+    this._draw = draw;
+    this._onDrawClear = onClear;
+
+    // Listen for mode changes to update button active state
+    this._map.on('draw.modechange', (e: any) => {
+      const isDrawing = e.mode === 'draw_polygon';
+      this._drawButton.classList.toggle('active', isDrawing);
+    });
+  }
+
   onAdd(map: MLMap) {
     const container = super.onAdd(map);
-    this._resetButton = this._createButton('maplibregl-ctrl-fullscreen', (e) => this.resetView());
-    const el = window.document.createElement('span');
-    el.className = 'maplibregl-ctrl-icon';
-    this._resetButton.appendChild(el);
+
+    // Reset view button
+    this._resetButton = this._createButton('maplibregl-ctrl-fullscreen', () => this.resetView());
+    const resetIcon = document.createElement('span');
+    resetIcon.className = 'maplibregl-ctrl-icon';
+    this._resetButton.appendChild(resetIcon);
+
+    // Draw polygon button - uses mapbox-gl-draw icon class
+    this._drawButton = this._createButton('mapbox-gl-draw_polygon', () => this.startDraw());
+    this._drawButton.title = 'Draw selection polygon';
+
+    // Clear polygon button - uses mapbox-gl-draw icon class
+    this._clearButton = this._createButton('mapbox-gl-draw_trash', () => this.clearDraw());
+    this._clearButton.title = 'Clear selection polygon';
+
     return container;
   }
 
   resetView() {
+    // Clear any selection polygon when resetting view
+    this.clearDraw();
     this.fb && this.fb.setFiltered(false);
     this._map.setCenter(this.defaultLatLng);
     this._map.setZoom(this.defaultZoom);
-  };
+  }
+
+  startDraw() {
+    if (this._draw) {
+      // Delete any existing polygon before drawing new one
+      this._draw.deleteAll();
+      this._draw.changeMode('draw_polygon');
+    }
+  }
+
+  clearDraw() {
+    if (this._draw) {
+      this._draw.deleteAll();
+      this._onDrawClear?.();
+    }
+  }
 }
 
 class LayerManager implements ILayerManager {
@@ -304,6 +348,58 @@ async function loadBasemapsFromConfig(
   return results;
 }
 
+async function updateBounds(map: TargetingMap) {
+  const mapBounds = map.getBounds();
+  const fb = await getFlatbushManager();
+
+  if (fb && (await fb.getFiltered()) === false) {
+    fb.setFiltered(null);
+  } else {
+    const sw = mapBounds.getSouthWest();
+    const ne = mapBounds.getNorthEast();
+    let filterBounds: [number, number, number, number] = [sw.lng, sw.lat, ne.lng, ne.lat];
+
+    // Check for selection polygon and intersect bounding boxes
+    const polygon = await getSelectionPolygon();
+    if (polygon && polygon.coordinates && polygon.coordinates[0]) {
+      // Calculate polygon bounding box
+      let polyMinLng = Infinity, polyMinLat = Infinity, polyMaxLng = -Infinity, polyMaxLat = -Infinity;
+      for (const coord of polygon.coordinates[0]) {
+        polyMinLng = Math.min(polyMinLng, coord[0]);
+        polyMinLat = Math.min(polyMinLat, coord[1]);
+        polyMaxLng = Math.max(polyMaxLng, coord[0]);
+        polyMaxLat = Math.max(polyMaxLat, coord[1]);
+      }
+
+      // Intersect polygon bounds with map bounds
+      const intersectedBounds: [number, number, number, number] = [
+        Math.max(sw.lng, polyMinLng),
+        Math.max(sw.lat, polyMinLat),
+        Math.min(ne.lng, polyMaxLng),
+        Math.min(ne.lat, polyMaxLat)
+      ];
+
+      // Check if intersection is valid (polygon overlaps with map view)
+      if (intersectedBounds[0] < intersectedBounds[2] && intersectedBounds[1] < intersectedBounds[3]) {
+        filterBounds = intersectedBounds;
+      } else {
+        // No overlap - use empty bounds to return no results
+        fb && fb.setFiltered(new Set());
+        const sm = await getSearchManager();
+        const instance = await sm.getPagefindInstance();
+        instance.retriggerSearch();
+        return;
+      }
+    }
+
+    fb && fb.filter(filterBounds);
+  }
+
+  const sm = await getSearchManager();
+  const instance = await sm.getPagefindInstance();
+  instance.retriggerSearch();
+};
+
 /**
  * Load all overlays from config and return layer ID mapping
  */
@@ -377,18 +473,8 @@ class MapManager implements IMapManager {
     return new Promise<TargetingMap>((resolve) => {
       map.on('load', () => this.onMapLoad(map, resolve, center, zoom, geoBounds));
       const moveEnd = async function() {
-        var bounds = map.getBounds();
-        const fb = await getFlatbushManager();
-        if (fb && (await fb.getFiltered()) === false) {
-          fb.setFiltered(null);
-        } else {
-          const sw = bounds.getSouthWest();
-          const ne = bounds.getNorthEast();
-          fb && fb.filter([sw.lng, sw.lat, ne.lng, ne.lat]);
-        }
-        const sm = await getSearchManager();
-        const instance = await sm.getPagefindInstance();
-        instance.retriggerSearch();
+        const map = await getMap();
+        await updateBounds(map);
         map.targeting = false;
       };
       map.on('dragend', moveEnd);
@@ -470,6 +556,125 @@ class MapManager implements IMapManager {
 
     // @ts-expect-error No resetView on window
     window.resetView = resetViewControl.resetView.bind(resetViewControl);
+
+    // Add polygon draw control (no default UI - we use custom buttons)
+    // Fix MapboxDraw class constants for MapLibre compatibility
+    MapboxDraw.constants.classes.CANVAS = 'maplibregl-canvas';
+    MapboxDraw.constants.classes.CONTROL_BASE = 'maplibregl-ctrl';
+
+    const drawStyles = [
+      {
+        id: 'gl-draw-polygon-fill-inactive',
+        type: 'fill',
+        filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+        paint: { 'fill-color': '#09549f', 'fill-outline-color': '#09549f', 'fill-opacity': 0.1 }
+      },
+      {
+        id: 'gl-draw-polygon-fill-active',
+        type: 'fill',
+        filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
+        paint: { 'fill-color': '#09549f', 'fill-outline-color': '#09549f', 'fill-opacity': 0.1 }
+      },
+      {
+        id: 'gl-draw-polygon-stroke-inactive',
+        type: 'line',
+        filter: ['all', ['==', 'active', 'false'], ['==', '$type', 'Polygon'], ['!=', 'mode', 'static']],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#09549f', 'line-width': 2 }
+      },
+      {
+        id: 'gl-draw-polygon-stroke-active',
+        type: 'line',
+        filter: ['all', ['==', 'active', 'true'], ['==', '$type', 'Polygon']],
+        layout: { 'line-cap': 'round', 'line-join': 'round' },
+        paint: { 'line-color': '#09549f', 'line-dasharray': [0.2, 2], 'line-width': 2 }
+      },
+      {
+        id: 'gl-draw-polygon-midpoint',
+        type: 'circle',
+        filter: ['all', ['==', '$type', 'Point'], ['==', 'meta', 'midpoint']],
+        paint: { 'circle-radius': 3, 'circle-color': '#09549f' }
+      },
+      {
+        id: 'gl-draw-polygon-and-line-vertex-stroke-inactive',
+        type: 'circle',
+        filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+        paint: { 'circle-radius': 5, 'circle-color': '#fff' }
+      },
+      {
+        id: 'gl-draw-polygon-and-line-vertex-inactive',
+        type: 'circle',
+        filter: ['all', ['==', 'meta', 'vertex'], ['==', '$type', 'Point'], ['!=', 'mode', 'static']],
+        paint: { 'circle-radius': 3, 'circle-color': '#09549f' }
+      }
+    ];
+
+    const draw = new MapboxDraw({
+      displayControlsDefault: false,
+      controls: {},
+      styles: drawStyles
+    });
+    map.addControl(draw as any);
+
+    // Handle polygon selection - filter by bounding box
+    const updateSelection = async () => {
+      const data = draw.getAll();
+      const fb = await getFlatbushManager();
+      const sm = await getSearchManager();
+      const currentParams = await getSearchParams();
+
+      if (data.features.length > 0) {
+        // Get the first polygon
+        let firstPolygon: GeoJSON.Polygon | null = null;
+
+        for (const feature of data.features) {
+          if (feature.geometry.type === 'Polygon') {
+            if (!firstPolygon) {
+              firstPolygon = feature.geometry as GeoJSON.Polygon;
+              break;
+            }
+          }
+        }
+
+        // Store the polygon in search params (don't update geoBounds)
+        if (firstPolygon) {
+          await updateSearchParams({
+            ...currentParams,
+            selectionPolygon: firstPolygon
+          });
+
+          // Trigger re-search
+          const instance = await sm?.getPagefindInstance();
+          instance?.retriggerSearch();
+        }
+      } else {
+        // No polygons - clear selection polygon
+        await updateSearchParams({
+          ...currentParams,
+          selectionPolygon: null
+        });
+
+        // Trigger re-search
+        const instance = await sm?.getPagefindInstance();
+        instance?.retriggerSearch();
+      }
+    };
+    map.on('draw.create', updateSelection);
+    map.on('draw.update', updateSelection);
+    map.on('draw.delete', updateSelection);
+
+    // Wire draw to the navigation control
+    resetViewControl.setDraw(draw, updateSelection);
+
+    // Restore selection polygon from search params if present
+    const existingPolygon = await getSelectionPolygon();
+    if (existingPolygon) {
+      draw.add({
+        type: 'Feature',
+        properties: {},
+        geometry: existingPolygon
+      });
+    }
 
     if (bounds) {
       map.fitBounds([[bounds[0], bounds[1]], [bounds[2], bounds[3]]]);
