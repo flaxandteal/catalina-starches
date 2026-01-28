@@ -132,13 +132,13 @@
 [Local Government Area] {{{ county.county_value }}}
 {{/if}}
 {{#if street.street_value }}
-[@street_value] {{ street.street_value }}
+[Street] {{ street.street_value }}
 {{/if}}
 {{#if town_or_city.town_or_city_value }}
 [Suburb] {{ town_or_city.town_or_city_value }}
 {{/if}}
 {{#if postcode.postcode_value }}
-[@postcode_value] {{ postcode.postcode_value }}
+[Postcode] {{ postcode.postcode_value }}
 {{/if}}
 {{/each}}
 ::end::
