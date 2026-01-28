@@ -178,6 +178,7 @@ div.govuk-header__container {
 #results {
     flex: 1;
     min-height: 0;
+    max-height: 100%;
     flex-direction: column;
     overflow-y: auto;
 }
