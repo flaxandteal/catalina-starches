@@ -1,6 +1,6 @@
 {{ define "main" }}
 {{- $params := .Params -}}
-{{- $opts := dict "params" $params -}}
+{{- $opts := dict "params" $params "minify" hugo.IsProduction -}}
 {{- $indexJS := resources.Get "index.ts" | js.Build $opts -}}
 
 <section class="container radius">
