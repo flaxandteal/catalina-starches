@@ -161,16 +161,14 @@ div.govuk-header__container {
 }
 
 #map-row {
-  display: flex;
   flex-direction: column-reverse;
-  flex-wrap: wrap;
-  width: 100%;
 }
 
 .search-column {
     display: flex;
     flex-direction: column;
     height: 90vh;
+    overflow: hidden;
 }
 
 .search-column > *:not(#results) {
@@ -208,6 +206,7 @@ div.govuk-header__container {
 }
 
 .map {
+    box-sizing: border-box;
     height: 50vh;
     width: 100%;
     max-width: 100%;

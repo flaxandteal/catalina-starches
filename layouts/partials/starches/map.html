@@ -18,7 +18,7 @@
 {{ end }}
 {{- .Page.Store.Set "notice-style-loaded-flag" true -}}
 {{- end -}}
-<div id="map-row" class="py-64">
+<div id="map-row" class="py-64 row">
 {{ if .Params.includeSearch }}
     <script src="{{ "js/search-flag.js" | relURL }}"></script>
     <div class="search-column col-lg-5 col-sm-12 pe-3 px-sm-12 px-md-24 position-relative">
