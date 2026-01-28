@@ -10,7 +10,10 @@
         </div>
         {{ if $showImage }}
         <div class="col-sm-8 offset-sm-2 offset-lg-0 col-lg-6">
-            <img src="{{ .image }}" alt="{{ .imageAlt }}" width="100%" height="auto" data-cy="text-section-image">
+            <figure>
+                <img src="{{ .image }}" alt="{{ .imageAlt }}" width="100%" height="auto" data-cy="text-section-image">
+                <figcaption>{{ .imageAlt }}</figcaption>
+            </figure>
         </div>
         {{ end }}
     </div>
