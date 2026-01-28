@@ -73,6 +73,7 @@
     "fetch:content": "dotenv -e .env -- npx ts-node utils/fetch-content.ts",
     "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:local": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
+    "start:prod": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server --environment production --bind=127.0.0.1 --port=1313",
     "start:fetch": "npm run fetch:all && npm run start",
     "cy:open": "cypress open",
     "cy:run": "cypress run --config baseUrl=http://127.0.0.1:1313",
