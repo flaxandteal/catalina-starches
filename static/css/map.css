@@ -167,7 +167,7 @@ div.govuk-header__container {
 .search-column {
     display: flex;
     flex-direction: column;
-    height: 90vh;
+    height: 120vh;
     overflow: hidden;
 }
 
@@ -203,6 +203,7 @@ div.govuk-header__container {
     display: flex;
     flex-direction: column;
     flex-basis: 100%;
+    margin-bottom: 1rem;
 }
 
 .map {
@@ -212,19 +213,20 @@ div.govuk-header__container {
     max-width: 100%;
     border: 10px solid #fff;
 }
+
 @media screen and (min-width: 991.98px) {
   .map {
       height: 90vh;
       max-width: 75vw;
   }
 
-  #search-column {
-    flex: 1;
-    max-height: 100vh;
+  .search-column {
+    height: 90vh;
   }
 
   #map-column {
     flex: 3
+    
   }
 
   #map-row {
