@@ -61,7 +61,7 @@
 {{/if}}
 {{/each}}
 {{#each ha.location_data.area_assignments.area_assignment }}
-[Plan] {{{ area_reference.area_reference_value }}}
+[Lot on Plan] {{{ area_reference.area_reference_value }}}
 {{/each}}
 ::end::
 
@@ -102,7 +102,7 @@
 
 {{#each ha.descriptions}}
 {{#if (equal (clean description_type) "Reference") }}
-:: {{ clean description_type }} ::
+:: References ::
 {{{ description }}}
 ::end::
 {{/if}}
