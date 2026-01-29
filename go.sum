@@ -2,6 +2,10 @@ github.com/flaxandteal/hugo-cookies v0.1.1 h1:EbL0sDwSxJZNLXFyBy6hfM7os65g4ruBPe
 github.com/flaxandteal/hugo-cookies v0.1.1/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260115161819-cebf216d76ec h1:+9W790wattBqYvZfA340oRzzXbdqHxg6wvT899Q2uIE=
 github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260115161819-cebf216d76ec/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260127000009-23c0027204ec h1:+VplGK3Mf/IbXJbKnwV0Skz8H6bej3dfjTKHIWF/V2g=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260127000009-23c0027204ec/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260129161641-551fc4889bb9 h1:UlDiGRLyS9aZbZB8D2a176LiUIj+wKvyECzEGLOP/4Y=
+github.com/flaxandteal/hugo-theme-qld-design-system v0.0.0-20260129161641-551fc4889bb9/go.mod h1:pj9pgmvJuHEuFuRVkeehAeUzXTDyZmvMzS7wvFvcBkc=
 github.com/flaxandteal/starches v0.2.1-alpha.20 h1:ClsHrnMBsV5DA2z7PQ7ioyPr2XX1/0gI4dmZv3AUrrc=
 github.com/flaxandteal/starches v0.2.1-alpha.20/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
 github.com/flaxandteal/starches v0.2.1-alpha.21 h1:wiFXT45Rc6/VHr39ktP8GIJxgczQ2VXbfkOxlKrS+RI=
