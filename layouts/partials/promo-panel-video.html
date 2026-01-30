@@ -5,10 +5,7 @@
         <div class="row light content-right">
             <div class="image-panel">
                 {{- if $promo.video -}}
-                <video data-cy="promo-video" class="promo-panel-image" aria-label="{{ $promo.video.alt | default "Promotional Video" }}" {{ with $promo.video.poster }}poster="{{ . }}"{{ end }} {{ if $promo.video.autoplay }}autoplay muted{{ end }} {{ if $promo.video.loop }}loop{{ end }} {{ if $promo.video.controls | default true }}controls{{ end }} playsinline>
-                    <source src="{{ $promo.video.src }}" type="{{ $promo.video.type | default "video/mp4" }}">
-                    Your browser does not support the video tag.
-                </video>
+                {{ partial "video-player.html" $promo.video }}
                 {{- else -}}
                 <img data-cy="promo-image" class="promo-panel-image" src="{{ $promo.image | default "img/promo-image.jpg" }}" alt="{{ $promo.imageAlt | default "Promotional Image" }}">
                 {{- end -}}

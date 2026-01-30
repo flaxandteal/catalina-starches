@@ -1,0 +1,43 @@
+<section class="video not-ready col-12">
+    <div class="video-description px-5">
+        {{ .description }}
+    </div>
+        <!-- QGDS Component: Accordion -->
+{{ if .showTranscript }}
+<div class="accordion-group">
+    <div class="accordion" id="video-transcript-{{ .id }}">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{ .id }}">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ .id }}" aria-expanded="false" aria-controls="collapse-{{ .id }}">
+                    Show transcript
+                </button>
+            </h2>6
+
+            <div id="collapse-{{ .id }}" class="accordion-collapse collapse " aria-labelledby="heading-{{ .id }}" role="region">
+                <div class="accordion-body">
+                    <p>{{ .transcript }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+    <div class="video-player ratio ratio-16x9">
+        <a href="#" class="video-thumbnail video-controls" title="Play Video" 
+            aria-label="Watch video - duration {{ .duration }}">
+            <div class="video-thumbnail-image" style="background-image: url('{{ .thumbnailURL | relURL }}')"></div>
+            <div class="video-nav">
+                <div class="video-watch">
+                    <span class="icon"></span><span>Watch</span>
+                </div>
+                    <div title="Video duration" class="video-duration">
+                        <span class="icon"></span><span>{{ .duration }}</span>
+                    </div>
+            </div>
+        </a>
+        <div class="video-embed ratio ratio-16x9">
+                <iframe title="Custom video" class="embed-responsive-item video-youtube" allow="autoplay; fullscreen" allowfullscreen src="{{ .src }}"></iframe>
+        </div>
+    </div>
+</section>
