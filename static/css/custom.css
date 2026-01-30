@@ -350,20 +350,48 @@
 
 /* Crossfade animations */
 @keyframes slide-show-1 {
-    0%, 33% { opacity: 1; }
-    36%, 100% { opacity: 0; }
+    0%,
+    33% {
+        opacity: 1;
+    }
+
+    36%,
+    100% {
+        opacity: 0;
+    }
 }
 
 @keyframes slide-show-2 {
-    0%, 30% { opacity: 0; }
-    33%, 66% { opacity: 1; }
-    69%, 100% { opacity: 0; }
+    0%,
+    30% {
+        opacity: 0;
+    }
+
+    33%,
+    66% {
+        opacity: 1;
+    }
+
+    69%,
+    100% {
+        opacity: 0;
+    }
 }
 
 @keyframes slide-show-3 {
-    0%, 63% { opacity: 0; }
-    66%, 99% { opacity: 1; }
-    100% { opacity: 0; }
+    0%,
+    63% {
+        opacity: 0;
+    }
+
+    66%,
+    99% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+    }
 }
 
 
