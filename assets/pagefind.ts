@@ -40,7 +40,10 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         debounceTimeoutMs: 800,
         bundlePath: "./pagefind/",
         allowEmptySearch: true,
-        searchAction
+        searchAction,
+        ranking: {
+            termSimilarity: 2.5
+        }
     });
     const input = new PagefindModularUI.Input({
         inputElement: "#search",
