@@ -228,12 +228,35 @@
     border-bottom-right-radius: 2rem;
 }
 
+.image-panel section {
+    border-top-left-radius: 3rem;
+    border-bottom-left-radius: 3rem;
+    border-bottom-right-radius: 3rem;
+}
+
+.image-panel .video-embed,
+.image-panel .video-thumbnail-image {
+    border-top-left-radius: 3rem;
+}
+
 @media (max-width: 991.98px) {
+
     .radius .banner-container-with-image-slide,
     .radius .banner-radius,
     .radius .swiper {
         border-bottom-left-radius: 0rem;
         border-bottom-right-radius: 0rem;
+    }
+
+    .image-panel section {
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .image-panel .video-embed,
+    .image-panel .video-thumbnail-image {
+        border-top-left-radius: 0;
     }
 }
 
