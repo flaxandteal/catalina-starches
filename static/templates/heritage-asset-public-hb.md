@@ -55,13 +55,10 @@
 ::end::
 
 ::Parcel::
-{{#each ha.location_data.addresses }}
-{{#if building_name.building_name_value }}
-[Lot] {{{ building_name.building_name_value }}}
-{{/if}}
-{{/each}}
 {{#each ha.location_data.area_assignments.area_assignment }}
-[Lot on Plan] {{{ area_reference.area_reference_value }}}
+{{#each lot_on_plan }}
+[Lot-on-Plan] {{ lot }}/{{ plan }}
+{{/each}}
 {{/each}}
 ::end::
 
