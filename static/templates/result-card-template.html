@@ -3,9 +3,8 @@
         <div class="card-body pb-0 d-flex align-items-start">
             <div class="card-image">
                 {{#if thumbnailURL}}
-                <object data="{{thumbnailURL}}" aria-label="{{ thumbnailAlt }}">
-                    <span class="qld-icon qld-icon-lg qld-icon-{{ icon }} icon-left" aria-hidden="true"></span>
-                </object>
+                <img src="{{thumbnailURL}}" alt="{{ thumbnailAlt }}">
+                <span class="qld-icon qld-icon-lg qld-icon-{{ icon }} icon-left card-image-fallback" aria-hidden="true"></span>
                 {{/if}}
             </div>
             <div class="card-body pt-0 result-card">

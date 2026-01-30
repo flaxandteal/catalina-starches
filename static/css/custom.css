@@ -151,14 +151,23 @@
     overflow: hidden;
 }
 
-.card-image object {
+.card-image img {
     height: 100%;
     width: 100%;
     object-fit: cover;
     object-position: center;
+}
+
+.card-image .card-image-fallback {
+    display: none;
+}
+
+.card-image.no-thumbnail img {
+    display: none;
+}
+
+.card-image.no-thumbnail .card-image-fallback {
     display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 

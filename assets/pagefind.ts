@@ -136,9 +136,16 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     }
     
 
-    // Event delegation for "View on map" buttons
+    // Event delegation for thumbnail load errors
     const resultsContainer = document.querySelector('#results');
     if (resultsContainer) {
+        resultsContainer.addEventListener('error', (event) => {
+            const target = event.target as HTMLElement;
+            if (target.tagName === 'IMG' && target.closest('.card-image')) {
+                target.closest('.card-image').classList.add('no-thumbnail');
+            }
+        }, true);
+
         resultsContainer.addEventListener('click', (event) => {
             const target = event.target as HTMLElement;
             const viewButton = target.closest('a.view-button');
