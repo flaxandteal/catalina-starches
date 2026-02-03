@@ -53,9 +53,26 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
     const clearButton = document.getElementById('search-clear');
     const searchInput = document.getElementById('search') as HTMLInputElement;
     if (clearButton && searchInput) {
-        clearButton.addEventListener('click', () => {
+        clearButton.addEventListener('click', async () => {
             searchInput.value = '';
             searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+
+            // Clear map markers and reset layer visibility
+            if (window.map) {
+                const emptyFeatures: GeoJSON.FeatureCollection = {
+                    type: 'FeatureCollection',
+                    features: []
+                };
+                const source = window.map.getSource('assets');
+                if (source && 'setData' in source) {
+                    source.setData(emptyFeatures);
+                }
+                // Reset assets-flat layer visibility to none
+                const layer = window.map.getLayer('assets-flat');
+                if (layer) {
+                    window.map.setLayoutProperty('assets-flat', 'visibility', 'none');
+                }
+            }
         });
     }
 

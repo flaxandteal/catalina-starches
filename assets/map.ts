@@ -150,12 +150,27 @@ class ResetViewControl extends NavigationControl {
   }
 
   resetView() {
-    // Clear any selection polygon when resetting view
-    this.clearDraw();
     this.fb && this.fb.setFiltered(false);
     this._map.setCenter(this.defaultLatLng);
     this._map.setZoom(this.defaultZoom);
-  }
+
+    // Clear all popups
+    const popups = document.querySelectorAll('.maplibregl-popup');
+    popups.forEach(popup => popup.remove());
+
+    // Close offcanvas (touch devices)
+    const offcanvasEl = document.getElementById('map-offcanvas');
+    if (offcanvasEl) {
+      const offcanvas = bootstrap.Offcanvas.getOrCreateInstance(offcanvasEl);
+      offcanvas.hide();
+    }
+
+    // Clear map icons/markers by resetting the assets source
+    const source = this._map.getSource('assets');
+    if (source && 'setData' in source) {
+      (source as any).setData({ type: 'FeatureCollection', features: [] });
+    }
+  };
 
   startDraw() {
     if (this._draw) {
