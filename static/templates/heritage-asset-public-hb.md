@@ -32,7 +32,7 @@
 {{#each ha.construction_phases}}
 ::Item Type::
 {{#if phase_classification.monument_type }}
-[@monument_type] {{{ phase_classification.monument_type }}}
+[Place Type] {{{ phase_classification.monument_type }}}
 {{/if}}
 ::end::
 {{/each}}
@@ -43,7 +43,7 @@
 [Local Government Area] {{{ county.county_value }}}
 {{/if}}
 {{#if street.street_value }}
-[Street] {{{ street.street_value }}}
+[Street Address] {{{ street.street_value }}}
 {{/if}}
 {{#if town_or_city.town_or_city_value }}
 [Suburb] {{{ town_or_city.town_or_city_value }}}
@@ -57,7 +57,7 @@
 ::Parcel::
 {{#each ha.location_data.area_assignments.area_assignment }}
 {{#each lot_on_plan }}
-[Lot-on-Plan] {{ lot }}/{{ plan }}
+[Lot on Plan] {{ lot }}/{{ plan }}
 {{/each}}
 {{/each}}
 ::end::
@@ -129,7 +129,7 @@
 [Local Government Area] {{{ county.county_value }}}
 {{/if}}
 {{#if street.street_value }}
-[Street] {{ street.street_value }}
+[Street Address] {{ street.street_value }}
 {{/if}}
 {{#if town_or_city.town_or_city_value }}
 [Suburb] {{ town_or_city.town_or_city_value }}
