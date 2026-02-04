@@ -1,6 +1,12 @@
 import { StyleDictionary, TDocumentDefinitions } from "pdfmake/interfaces";
 import htmlToPdfmake from "html-to-pdfmake";
 
+export interface PdfImage {
+    dataUrl: string;
+    alt: string;
+    name: string;
+}
+
 function formatNodeLabel(keyString: string, nodes: Map<string, any>): string {
     const isNodeAlias = keyString.startsWith('@');
     const alias = isNodeAlias ? keyString.substring(1) : null;
@@ -38,7 +44,20 @@ function htmlToContent(html: string): any {
     return htmlToPdfmake(html, { defaultStyles });
 }
 
-export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: string): TDocumentDefinitions {
+function getImageDimensions(dataUrl: string): Promise<{ width: number; height: number }> {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            resolve({ width: img.width, height: img.height });
+        };
+        img.onerror = (err) => {
+            reject(err);
+        };
+        img.src = dataUrl;
+    });
+}
+
+export async function markdownToPdf(markdown: string, nodes: Map<string, any>, title: string, images?: PdfImage[]): Promise<TDocumentDefinitions> {
     const content: any[] = [];
     const seenSections = new Set<string>();
 
@@ -189,6 +208,44 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
         }
     }
 
+    // Image sections at the end of the document
+    if (images && images.length > 0) {
+        const illustrations = images.filter(img => !img.name.toLowerCase().includes('map'));
+        const boundaryMaps = images.filter(img => img.name.toLowerCase().includes('map'));
+
+        for (const { heading, items } of [
+            { heading: 'Illustrations', items: illustrations },
+            { heading: 'Boundary Maps', items: boundaryMaps }
+        ]) {
+            if (items.length === 0) continue;
+
+            content.push({
+                text: heading,
+                style: 'sectionHeader',
+                pageBreak: 'before' as const,
+                margin: [0, 0, 0, 10]
+            });
+
+            for (const img of items) {
+                const {width, height} = await getImageDimensions(img.dataUrl);
+                const isLandscape = width >= height;
+                const sizing = isLandscape ? { width: 400 } : { height: 500 };
+                content.push({
+                    image: img.dataUrl,
+                    ...sizing,
+                    alignment: 'center' as const,
+                    margin: [0, 5, 0, 2]
+                });
+                content.push({
+                    text: img.alt,
+                    style: 'imageCaption',
+                    alignment: 'center' as const,
+                    margin: [0, 0, 0, 15]
+                });
+            }
+        }
+    }
+
     const styles: StyleDictionary = {
         documentTitle: {
             fontSize: 18,
@@ -209,6 +266,11 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
         fieldValue: {
             fontSize: 11,
             color: '#444444'
+        },
+        imageCaption: {
+            fontSize: 10,
+            italics: true,
+            color: '#666666'
         }
     };
 

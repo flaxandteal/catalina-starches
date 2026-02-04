@@ -20,7 +20,7 @@ import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
 import { initSwiper, ImageInput, ImageSet } from 'swiper';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { markdownToPdf } from 'pdf-make';
+import { markdownToPdf, PdfImage } from 'pdf-make';
 
 pdfMake.vfs = pdfFonts.vfs;
 
@@ -521,8 +521,30 @@ interface ImageRef {
   index: number;
 }
 
-function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string) {
-  const pdf = markdownToPdf(markdown, nodes, title);
+async function fetchImageAsDataUrl(url: string): Promise<string> {
+  const response = await fetch(url);
+  const blob = await response.blob();
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result as string);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string, assetImages: ImageInput[]) {
+  const pdfImages: PdfImage[] = (await Promise.all(
+    assetImages.map(async (img) => {
+      try {
+        const dataUrl = await fetchImageAsDataUrl(img.previewUrl || img.originalUrl);
+        return { dataUrl, alt: img.alt, name: img.name };
+      } catch {
+        return null;
+      }
+    })
+  )).filter((img): img is PdfImage => img !== null);
+
+  const pdf = await markdownToPdf(markdown, nodes, title, pdfImages);
   pdfMake.createPdf(pdf).download(`${title}.pdf`);
 }
 
@@ -531,6 +553,8 @@ async function extractImageList(imageList: any[]): Promise<ImageInput[]> {
 
   await Promise.all(imageList.map(async (imageList) => {
     const image = imageList[0];
+
+    console.log("THIS IMAGE", await imageList);
     images.push({
       name: await image.name,
       previewUrl: (await imageList._.preview[0]?.url) ?? (await image.url),
@@ -567,11 +591,6 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const sections = await renderToHtml(markdown, nodes, false);
 
-  const downloadPDF = (e: Event) => {
-    e.preventDefault();
-    renderPDFAsset(markdown, nodes, asset.meta.title);
-  }
-
   let imageArray = (await Promise.all(((await asset.asset.images) || [[]]).map(async (i) => {
     if (!i || !i[0] || !(await i[0])) {
       return false;
@@ -588,7 +607,25 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
 
   const downloadPdfButton = document.getElementById('asset-download');
   if (downloadPdfButton) {
-    downloadPdfButton.addEventListener('click', (e) => downloadPDF(e));
+    downloadPdfButton.addEventListener('click', (e) => {
+      e.preventDefault();
+      const link = downloadPdfButton as HTMLAnchorElement;
+      const spinner = document.getElementById('asset-download-spinner');
+
+      // Disable link and hide its children
+      link.classList.add('disabled');
+      link.setAttribute('aria-disabled', 'true');
+      link.querySelectorAll<HTMLSpanElement>('span').forEach(s => s.hidden = true);
+      spinner?.removeAttribute('hidden');
+
+      renderPDFAsset(markdown, nodes, asset.meta.title, assetImages).finally(() => {
+        // Re-enable link and restore children
+        link.classList.remove('disabled');
+        link.removeAttribute('aria-disabled');
+        link.querySelectorAll<HTMLSpanElement>('span').forEach(s => s.hidden = false);
+        spinner?.setAttribute('hidden', 'true');
+      });
+    });
   }
 
   addAssetToMap(asset);
