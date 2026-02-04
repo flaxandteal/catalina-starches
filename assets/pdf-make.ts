@@ -8,6 +8,12 @@ function formatNodeLabel(keyString: string, nodes: Map<string, any>): string {
     return resolvedNode && typeof resolvedNode.name === 'string' ? resolvedNode.name : keyString;
 }
 
+// Column count for grouped fields (fields with repeated labels).
+// Labels not listed here default to a single stacked column.
+const groupedFieldColumns: Record<string, number> = {
+    'Lot on Plan': 3,
+};
+
 // Default styles matching the page design, adjust these for any HTML elements in the content
 const defaultStyles = {
     b: { bold: true },
@@ -130,15 +136,55 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
                 content.push(item);
             }
 
-            // Field content (label: value pairs)
+            // Group consecutive fields with the same label
+            const groupedFields: { label: string; values: any[] }[] = [];
             for (const field of fields) {
-                content.push({
-                    columns: [
-                        { text: field.label + ':', width: 140, style: 'fieldLabel' },
-                        { ...field.value, style: 'fieldValue' }
-                    ],
-                    margin: [12, 8, 12, 0]
-                });
+                const last = groupedFields[groupedFields.length - 1];
+                if (last && last.label === field.label) {
+                    last.values.push(field.value);
+                } else {
+                    groupedFields.push({ label: field.label, values: [field.value] });
+                }
+            }
+
+            // Field content (label: value pairs)
+            for (const group of groupedFields) {
+                if (group.values.length > 1 && group.label in groupedFieldColumns) {
+                    // Multi-value group: one label, values in columns
+                    const cols = groupedFieldColumns[group.label];
+                    const rows: any[][] = [];
+                    for (let i = 0; i < group.values.length; i += cols) {
+                        const row = [];
+                        for (let j = 0; j < cols; j++) {
+                            const val = group.values[i + j];
+                            row.push(val ? { ...val, style: 'fieldValue' } : { text: '' });
+                        }
+                        rows.push(row);
+                    }
+                    content.push({
+                        columns: [
+                            { text: group.label + ':', width: 140, style: 'fieldLabel' },
+                            {
+                                table: {
+                                    widths: Array(cols).fill('*'),
+                                    body: rows
+                                },
+                                layout: 'noBorders'
+                            }
+                        ],
+                        margin: [12, 8, 12, 0]
+                    });
+                } else {
+                    for (const val of group.values) {
+                        content.push({
+                            columns: [
+                                { text: group.label + ':', width: 140, style: 'fieldLabel' },
+                                { ...val, style: 'fieldValue' }
+                            ],
+                            margin: [12, 8, 12, 0]
+                        });
+                    }
+                }
             }
         }
     }
