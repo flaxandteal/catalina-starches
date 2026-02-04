@@ -26,6 +26,7 @@
 .maplibregl-ctrl-group .mapbox-gl-draw_polygon,
 .maplibregl-ctrl-group .mapbox-gl-draw_trash {
     cursor: pointer;
+    position: relative;
     width: 29px;
     height: 29px;
     background-size: 20px 20px;
@@ -33,8 +34,36 @@
     background-repeat: no-repeat;
 }
 
+/* Ensure buttons can anchor tooltips */
+.maplibregl-ctrl-group button {
+    position: relative;
+}
+
+/* CSS tooltips for all control buttons */
+.maplibregl-ctrl-group button[title]::after {
+    content: attr(title);
+    position: absolute;
+    right: calc(100% + 8px);
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.75);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.maplibregl-ctrl-group button[title]:hover::after {
+    opacity: 1;
+}
+
 .maplibregl-ctrl-group .mapbox-gl-draw_polygon.active {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(9, 84, 159, 0.15);
+    box-shadow: inset 0 0 0 2px rgba(9, 84, 159, 0.5);
 }
 
 /* Crosshair cursor when drawing */

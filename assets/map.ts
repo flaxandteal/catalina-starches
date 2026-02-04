@@ -122,10 +122,11 @@ class ResetViewControl extends NavigationControl {
     this._draw = draw;
     this._onDrawClear = onClear;
 
-    // Listen for mode changes to update button active state
+    // Listen for mode changes to update button active state and cursor
     this._map.on('draw.modechange', (e: any) => {
       const isDrawing = e.mode === 'draw_polygon';
       this._drawButton.classList.toggle('active', isDrawing);
+      this._map.getCanvas().style.cursor = isDrawing ? 'crosshair' : '';
     });
   }
 
@@ -134,6 +135,7 @@ class ResetViewControl extends NavigationControl {
 
     // Reset view button
     this._resetButton = this._createButton('maplibregl-ctrl-fullscreen', () => this.resetView());
+    this._resetButton.title = 'Reset view';
     const resetIcon = document.createElement('span');
     resetIcon.className = 'maplibregl-ctrl-icon';
     this._resetButton.appendChild(resetIcon);
@@ -179,7 +181,12 @@ class ResetViewControl extends NavigationControl {
       // Delete any existing polygon before drawing new one
       this._draw.deleteAll();
       this._draw.changeMode('draw_polygon');
-      this._drawButton.classList.add('active');
+      this._drawButton.classList.toggle('active');
+      if(this._map.getCanvas().style.cursor === 'crosshair') {
+        this._map.getCanvas().style.cursor = '';
+      } else {
+        this._map.getCanvas().style.cursor = 'crosshair';
+      }
     }
   }
 
@@ -187,6 +194,7 @@ class ResetViewControl extends NavigationControl {
     if (this._draw) {
       this._draw.deleteAll();
       this._drawButton.classList.remove('active');
+      this._map.getCanvas().style.cursor = '';
       this._onDrawClear?.();
     }
   }
