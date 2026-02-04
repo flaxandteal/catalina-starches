@@ -138,12 +138,14 @@ class ResetViewControl extends NavigationControl {
     resetIcon.className = 'maplibregl-ctrl-icon';
     this._resetButton.appendChild(resetIcon);
 
-    // Draw polygon button - uses mapbox-gl-draw icon class
+    // Draw polygon button - uses mapbox-gl-draw icon classes
     this._drawButton = this._createButton('mapbox-gl-draw_polygon', () => this.startDraw());
+    this._drawButton.classList.add('mapbox-gl-draw_ctrl-draw-btn');
     this._drawButton.title = 'Draw selection polygon';
 
-    // Clear polygon button - uses mapbox-gl-draw icon class
+    // Clear polygon button - uses mapbox-gl-draw icon classes
     this._clearButton = this._createButton('mapbox-gl-draw_trash', () => this.clearDraw());
+    this._clearButton.classList.add('mapbox-gl-draw_ctrl-draw-btn');
     this._clearButton.title = 'Clear selection polygon';
 
     return container;
@@ -177,12 +179,14 @@ class ResetViewControl extends NavigationControl {
       // Delete any existing polygon before drawing new one
       this._draw.deleteAll();
       this._draw.changeMode('draw_polygon');
+      this._drawButton.classList.add('active');
     }
   }
 
   clearDraw() {
     if (this._draw) {
       this._draw.deleteAll();
+      this._drawButton.classList.remove('active');
       this._onDrawClear?.();
     }
   }

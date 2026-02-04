@@ -45,7 +45,7 @@
         "40274e6f-2f50-5a42-99c7-331c05d57759": [
           {
             "accepted": false,
-            "altText": "this is the 1600x1600 example image",
+            "alt_text": "this is the 1600x1600 example image",
             "attribution": null,
             "content": null,
             "description": null,
@@ -66,7 +66,6 @@
         "46f25cd9-b6c7-11ea-8651-f875a44e0e11": [
           {
             "accepted": false,
-            "altText": null,
             "alt_text": "this is the 1200x600 example image",
             "attribution": null,
             "content": null,
@@ -88,7 +87,7 @@
         "7cbd24f9-cad2-52b9-8922-b3135d13281f": [
           {
             "accepted": false,
-            "altText": "this is the 800x800 example image",
+            "alt_text": "this is the 800x800 example image",
             "attribution": null,
             "content": null,
             "description": null,

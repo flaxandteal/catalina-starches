@@ -272,19 +272,17 @@ class SearchManager {
     const map = await getMap();
     const zoom = map && map.getZoom();
     const config = await getConfig();
+    const shortTerm = (!term || term.trim().length < config.minSearchLength);
 
     // if (!(settings && settings.filters && Object.keys(settings.filters).length) && term && term.length < MIN_SEARCH_LENGTH) {
     if (
         (!zoom || zoom < config.minSearchZoom || !config.changeMapLayerOnZoom) &&
-        (!term || term.trim().length < config.minSearchLength)
+        shortTerm
     ) {
         mapManager.setMapCover(true);
         return {results: []};
     }
     mapManager.setMapCover(false);
-    if (!term) {
-        term = null;
-    }
     let results;
     let filtersChanged = true;
     let hasFilters = settings && settings.filters && Object.values(settings.filters).reduce((acc, flt) => acc || flt.length > 0, false);
