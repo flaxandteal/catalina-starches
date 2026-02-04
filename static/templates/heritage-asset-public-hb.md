@@ -54,7 +54,7 @@
 {{/each}}
 ::end::
 
-::Parcel::
+::Real Property Description (Lot on Plan)::
 {{#each ha.location_data.area_assignments.area_assignment }}
 {{#each lot_on_plan }}
 [Lot on Plan] {{ lot }}/{{ plan }}
