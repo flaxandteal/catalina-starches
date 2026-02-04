@@ -151,9 +151,3 @@
   --QLD-font-size-mobile-xxl: 2rem;
   --QLD-font-size-mobile-xxxl: 2.5rem;
 }
-
-/* Map draw control active state */
-.mapbox-gl-draw_ctrl-draw-btn.active {
-  background-color: #09549f !important;
-  filter: invert(1);
-}
