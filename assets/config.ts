@@ -4,7 +4,7 @@ function makeDefaultConfiguration(): Partial<StarchesConfiguration> {
   return {
     showGeolocateControl: false,
     changeMapLayerOnZoom: false,
-    minSearchZoom: 3,
+    minSearchZoom: 6,
     minSearchLength: 3,
     maxMapPoints: 300,
     timeToShowLoadingMs: 50,
