@@ -35,7 +35,7 @@
     </div>
   </div>
 </div>
-{{ else if (equal title "Parcel") }}
+{{ else if (equal title "Real Property Description (Lot on Plan)") }}
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading-{{id}}">
     <button
@@ -56,13 +56,13 @@
     role="region"
   >
     <div class="accordion-body">
-      <div class="ms-4">
+      <div class="ms-md-4 w-md-50">
         {{#if fields}}
-        <div class="d-flex">
-          <strong class="me-3">{{fields.0.label}}:</strong>
+        <div class="d-flex flex-wrap flex-md-nowrap">
+          <strong class="col-md-2 mb-1">{{fields.0.label}}:</strong>
           <div class="row flex-grow-1">
             {{#each fields}}
-            <div class="col-sm-12 col-md-2">{{{value}}}</div>
+            <div class="col-6 col-md-4">{{{value}}}</div>
             {{/each}}
           </div>
         </div>
@@ -92,9 +92,12 @@
     role="region"
   >
     <div class="accordion-body">
-      <div class="ms-4">
+      <div class="ms-md-4 d-flex flex-column gap-3">
         {{#if fields}} {{#each fields}}
-        <p><strong>{{label}}:</strong> {{{value}}}</p>
+        <div class="d-md-flex">
+          <p class="me-md-2 mb-1"><strong>{{label}}:</strong></p>
+          <div>{{{value}}}</div>
+        </div>
         {{/each}} {{else}} {{{body}}} {{/if}}
       </div>
     </div>
