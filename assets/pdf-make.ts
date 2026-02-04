@@ -82,7 +82,7 @@ export function markdownToPdf(markdown: string, nodes: Map<string, any>, title: 
             const rawValue = fieldMatch[2].trim();
             const value = htmlToContent(rawValue);
 
-            if (value) {
+            if (rawValue && (!Array.isArray(value) || value.length > 0)) {
                 fields.push({
                     label: formatNodeLabel(label, nodes),
                     value: Array.isArray(value) ? { stack: value } : value
