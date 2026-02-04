@@ -275,7 +275,7 @@ class SearchManager {
 
     // if (!(settings && settings.filters && Object.keys(settings.filters).length) && term && term.length < MIN_SEARCH_LENGTH) {
     if (
-        (!zoom || config.changeMapLayerOnZoom && zoom < config.minSearchZoom) &&
+        (!zoom || zoom < config.minSearchZoom || !config.changeMapLayerOnZoom) &&
         (!term || term.trim().length < config.minSearchLength)
     ) {
         mapManager.setMapCover(true);

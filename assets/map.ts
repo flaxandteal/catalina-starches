@@ -295,7 +295,7 @@ class LayerManager implements ILayerManager {
         'layout': {
           'visibility': 'none',
         }
-      }, 'assets-flat');
+      }, this._config?.changeMapLayerOnZoom ? 'assets-flat' : 'assets');
       map.on('click', layerName, async (e: MapMouseEvent & { features?: any[] }) => {
         if (map.targeting) {
           console.warn("Refusing to search again while still moving to previous tapped location");
@@ -717,27 +717,29 @@ class MapManager implements IMapManager {
       },
       'filter': ['==', '$type', 'Polygon']
     });
-    map.addLayer({
-      'id': 'assets-flat',
-      'maxzoom': config.minSearchZoom,
-      'type': 'circle',
-      'source': 'assets',
-      'paint': {
-        'circle-color': '#ff8888',
-        'circle-radius': 12,
-        "circle-stroke-width": 1,
-        "circle-stroke-color": '#fff'
-      },
-      'layout': {
-        'visibility': 'none',
-      },
-      'filter': ['==', '$type', 'Point']
-    });
+    if (config.changeMapLayerOnZoom) {
+      map.addLayer({
+        'id': 'assets-flat',
+        'maxzoom': config.minSearchZoom,
+        'type': 'circle',
+        'source': 'assets',
+        'paint': {
+          'circle-color': '#ff8888',
+          'circle-radius': 12,
+          "circle-stroke-width": 1,
+          "circle-stroke-color": '#fff'
+        },
+        'layout': {
+          'visibility': 'none',
+        },
+        'filter': ['==', '$type', 'Point']
+      });
+    }
     map.addLayer({
       'id': 'assets',
       'type': 'symbol',
       'source': 'assets',
-      'minzoom': config.minSearchZoom,
+      'minzoom': config.changeMapLayerOnZoom ? config.minSearchZoom : 0,
       'layout': {
         // Use category-based icons if available, fallback to default marker
         'icon-image': buildCategoryIconExpression(iconConfig, 'category'),
@@ -750,7 +752,9 @@ class MapManager implements IMapManager {
     });
 
     map.on('click', 'assets', (e) => resultFunction(map, e));
-    map.on('click', 'assets-flat', (e) => resultFunction(map, e));
+    if (config.changeMapLayerOnZoom) {
+      map.on('click', 'assets-flat', (e) => resultFunction(map, e));
+    }
 
     map.on('mouseenter', 'assets', () => {
       map.getCanvas().style.cursor = 'pointer';
