@@ -3,7 +3,7 @@
 {{ $baseAssets := (slice "asset.ts") }}
 {{ range $baseAssets }}
 {{- $js := resources.Get . -}}
-{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction "blob_base_url" (getenv "BLOB_BASE_URL") "nodeConfig" $.Params.nodeConfig) }}
+{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction "blob_base_url" (getenv "BLOB_BASE_URL") "node_config" site.Params.nodeConfig) }}
 {{ $sourceMap := cond hugo.IsProduction "" "inline" }}
 {{ $opts := dict "sourceMap" $sourceMap "minify" false "target" "es2022" "params" $params }}
 {{ $js = $js | js.Build $opts }}
