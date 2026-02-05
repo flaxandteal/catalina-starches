@@ -375,7 +375,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const icon = match[2]?.trim();
             let body = match[3].trim();
             const id = `${slugify(title)}-${currentSectionId}`;
-            let initiallyCollapsed = params.nodeConfig.collapsednodes.includes(id);
+            let initiallyCollapsed = params.node_config?.collapsednodes?.includes(id);
 
             // Parse fields - capture multi-line values until next [field] or end
             // Use multiline mode with ^ to only match [label] at start of line
