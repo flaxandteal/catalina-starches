@@ -1,5 +1,5 @@
 import { marked, Token, Tokens } from 'marked';
-import dompurify from 'dompurify';
+import * as params from '@params';
 import * as Handlebars from 'handlebars';
 import { Map as MLMap } from 'maplibre-gl';
 import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin';
@@ -23,16 +23,6 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { markdownToPdf, PdfImage } from 'pdf-make';
 
 pdfMake.vfs = pdfFonts.vfs;
-
-const COLLAPSED_NODES = [
-  /* Leaving these until decided
-  "criteria-asset-overview",
-  "history-asset-overview",
-  "description-asset-overview",
-  "boundary-description-asset-overview"
-  */
-];
-
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -385,7 +375,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const icon = match[2]?.trim();
             let body = match[3].trim();
             const id = `${slugify(title)}-${currentSectionId}`;
-            let initiallyCollapsed = COLLAPSED_NODES.includes(id);
+            let initiallyCollapsed = params.nodeConfig.collapsednodes.includes(id);
 
             // Parse fields - capture multi-line values until next [field] or end
             // Use multiline mode with ^ to only match [label] at start of line
