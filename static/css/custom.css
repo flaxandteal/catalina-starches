@@ -657,6 +657,21 @@
     background-color: #e0e0e0;
 }
 
+@media (max-width: 991.98px) {
+    .banner-container-with-image-slide .swiper {
+        height: 200px;
+    }
+    .swiper-slide img{
+        height: 50%;
+    }
+    .slide-text {
+        right: 0.5rem;
+        top: 0.5rem;
+        bottom: unset;
+        font-size: 0.8rem;
+    }
+}
+
 /* Loading state */
 .swiper-loading {
     position: absolute;
