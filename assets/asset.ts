@@ -24,6 +24,15 @@ import { markdownToPdf, PdfImage } from 'pdf-make';
 
 pdfMake.vfs = pdfFonts.vfs;
 
+const COLLAPSED_NODES = [
+  /* Leaving these until decided
+  "criteria-asset-overview",
+  "history-asset-overview",
+  "description-asset-overview",
+  "boundary-description-asset-overview"
+  */
+];
+
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -308,6 +317,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
     body: string;
     fields: NodeBlockField[];
     tokens: Token[];
+    initiallyCollapsed: boolean;
     sectionId?: string;
   }
 
@@ -374,6 +384,8 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             const title = match[1].trim();
             const icon = match[2]?.trim();
             let body = match[3].trim();
+            const id = `${slugify(title)}-${currentSectionId}`;
+            let initiallyCollapsed = COLLAPSED_NODES.includes(id);
 
             // Parse fields - capture multi-line values until next [field] or end
             // Use multiline mode with ^ to only match [label] at start of line
@@ -416,6 +428,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
               body,
               fields,
               tokens: [],
+              initiallyCollapsed,
               sectionId: currentSectionId
             };
 
@@ -424,7 +437,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
         },
         renderer(token) {
           const nodeToken = token as NodeBlockToken;
-          const titleId = nodeToken.title.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+          const titleId = slugify(nodeToken.title);
           const sectionId = nodeToken.sectionId || 'default';
           const id = `${titleId}-${sectionId}`;
 
@@ -434,6 +447,7 @@ async function renderToHtml(markdown: string, nodes: Map<string, any>, showNodeD
             fields: nodeToken.fields,
             body: nodeToken.body,
             id: id,
+            initiallyExpanded: !nodeToken.initiallyCollapsed,
             sectionId: sectionId
           });
         }

@@ -7,7 +7,7 @@ use flatgeobuf::*;
 fn run() -> Result<(), Box<dyn std::error::Error>> {
 
     let mut fgb = FgbWriter::create_with_options(
-        "nihed-assets",
+        "global-assets",
         GeometryType::Point,
         FgbWriterOptions {
             description: Some("NI Historic Environment Division Public Assets (Crown Copyright, see site for license)"),
@@ -19,10 +19,10 @@ fn run() -> Result<(), Box<dyn std::error::Error>> {
             ..Default::default()
         }
     )?;
-    let mut fin = BufReader::new(File::open("nihed-assets-wo-index.fgb")?);
+    let mut fin = BufReader::new(File::open("global-assets-wo-index.fgb")?);
     let mut reader = FgbReader::open(&mut fin)?.select_all()?;
     reader.process_features(&mut fgb)?;
-    let mut fout = BufWriter::new(File::create("nihed-assets.fgb")?);
+    let mut fout = BufWriter::new(File::create("global-assets.fgb")?);
     fgb.write(&mut fout)?;
     Ok(())
 }

@@ -85,9 +85,6 @@ body {
     display: none; /* TODO: once there are entries, reopen this */
 }
 
-#logo.nihed-logo svg {
-    max-height: 86px;
-}
 @media screen and (max-width: 1024px) {
     html {
         font-size: 70%;
@@ -95,14 +92,6 @@ body {
 
     #mobile-nav-control.govuk-button {
         display: none !important; /* TODO: once there are entries, reopen this */
-    }
-
-    #logo.nihed-logo svg {
-        max-width: 90vw;
-    }
-
-    #logo.nihed-logo {
-        margin: 0 0.5rem 0 0.5rem;
     }
 }
 

@@ -79,7 +79,7 @@
       type="button"
       data-bs-toggle="collapse"
       data-bs-target="#collapse-{{id}}"
-      aria-expanded="true"
+      aria-expanded="{{!initiallyExpanded}}"
       aria-controls="collapse-{{id}}"
     >
       {{title}}
@@ -87,7 +87,7 @@
   </h2>
   <div
     id="collapse-{{id}}"
-    class="accordion-collapse collapse show"
+    class="accordion-collapse collapse {{#if initiallyExpanded}}show{{/if}}"
     aria-labelledby="heading-{{id}}"
     role="region"
   >

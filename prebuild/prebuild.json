@@ -48,5 +48,7 @@
             "graph": "HeritageItem",
             "path": "images"
         }
-    ]
+    ],
+    "indexCharacters": 2000,
+    "indexCharactersWarnOnly": true
 }

@@ -39,10 +39,6 @@ time[pubdate=""]:before {
     display: none; /* TODO: once there are entries, reopen this */
 }
 
-#logo.nihed-logo svg {
-    max-height: 86px;
-}
-
 .govuk-header__logotype {
     padding-right: 0;
 }

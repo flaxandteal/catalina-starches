@@ -180,12 +180,12 @@ function buildFlatbush(locpairs: [IndexEntry, Feature][]) {
       "features": features
     };
     fs.writeFileSync(
-        `${PUBLIC_FOLDER}/fgb/nihed-assets-wo-index.fgb`,
+        `${PUBLIC_FOLDER}/fgb/global-assets-wo-index.fgb`,
         fgbSerialize(geoJsonAll)
     );
     const starches_utils = spawn(STARCHES_UTILS_BIN, [
-        './nihed-assets-wo-index.fgb',
-        './nihed-assets.fgb'
+        './global-assets-wo-index.fgb',
+        './global-assets.fgb'
     ], {
         cwd: 'docs/fgb'
     });
