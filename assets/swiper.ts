@@ -35,7 +35,7 @@ const swiperConfigs = {
       prevEl: '.swiper-button-prev',
     },
     watchSlidesProgress: true,
-    slideToClickedSlide: true,
+    slideToClickedSlide: true
   },
   hero: {
     loop: true,
@@ -47,6 +47,7 @@ const swiperConfigs = {
       clickable: true,
       el: ".swiper-pagination",
     },
+    includeAltText: true,
   }
 }
 
@@ -62,11 +63,18 @@ function createSwiper(config: string): any {
 
 function populateSlides(wrapper: Element, images: ImageInput[], config: string): Promise<void> {
   wrapper.innerHTML = '';
+  const carouselConfig = swiperConfigs[config]
   return new Promise((resolve) => { 
     images.forEach((imageData, index) => {
       
       const slide = document.createElement('div');
       slide.className = `swiper-slide ${config}`;
+      const slideText = document.createElement('div');
+      if ('includeAltText' in carouselConfig && carouselConfig.includeAltText) {
+        slideText.className = 'slide-text';
+        slideText.textContent = imageData.alt;
+        slide.appendChild(slideText);
+      }
       const img = document.createElement('img');
       img.src = imageData.previewUrl;
       img.alt = imageData.alt;
@@ -176,8 +184,6 @@ export async function initSwiper(imageList: ImageInput[], path: string): Promise
   }
 
   const { config = 'hero', showModal, count } = container.dataset;
-
-  console.log("preview images:", imageList);
 
   let previewImages = imageList
 
