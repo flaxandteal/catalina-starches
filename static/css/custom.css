@@ -137,8 +137,8 @@
 }
 
 .card-image {
-	width: 4rem;
-	height: 4rem;
+	width: 6rem;
+	height: 6rem;
 	mask-size: 4rem;
 	background-size: 4rem;
 	background-color: var(--qld-card-icon-background-color);
@@ -161,6 +161,22 @@
     justify-content: center;
 }
 
+.link-list {
+    flex-direction: row !important;
+    gap: 3rem !important;
+}
+
+.card-footer .link-list .link-item a {
+    gap: 0.25rem;
+}
+
+.card-footer {
+    padding-bottom: 0.5rem;
+}
+
+.card-footer::before {
+    margin: 0.75rem 0;
+}
 
 /* ==========================================================================
    4. INDEX PAGE - HERO BANNER
