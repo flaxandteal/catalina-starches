@@ -768,6 +768,37 @@ class MapManager implements IMapManager {
       map.on('click', 'assets-flat', (e) => resultFunction(map, e));
     }
 
+    // cooperativeGestures blocks single-finger taps from becoming click events,
+    // so on touch devices we detect taps manually and query features directly.
+    if (isTouch()) {
+      const canvas = map.getCanvas();
+      let touchStart: { x: number; y: number; time: number } | null = null;
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+          touchStart = { x: e.touches[0].clientX, y: e.touches[0].clientY, time: Date.now() };
+        }
+      }, { passive: true });
+      canvas.addEventListener('touchend', (e) => {
+        if (!touchStart || e.changedTouches.length !== 1) { touchStart = null; return; }
+        const dx = e.changedTouches[0].clientX - touchStart.x;
+        const dy = e.changedTouches[0].clientY - touchStart.y;
+        const dt = Date.now() - touchStart.time;
+        touchStart = null;
+        if (Math.abs(dx) > 10 || Math.abs(dy) > 10 || dt > 300) return;
+        const rect = canvas.getBoundingClientRect();
+        const point: [number, number] = [
+          e.changedTouches[0].clientX - rect.left,
+          e.changedTouches[0].clientY - rect.top
+        ];
+        const layers = config.changeMapLayerOnZoom ? ['assets', 'assets-flat'] : ['assets'];
+        const features = map.queryRenderedFeatures(point, { layers });
+        if (features.length > 0) {
+          const lngLat = map.unproject(point);
+          resultFunction(map, { features, lngLat, point: { x: point[0], y: point[1] } } as any);
+        }
+      });
+    }
+
     map.on('mouseenter', 'assets', () => {
       map.getCanvas().style.cursor = 'pointer';
     });
