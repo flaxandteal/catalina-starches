@@ -203,6 +203,18 @@
     grid-column: none !important
 }
 
+.slide-text {
+    position: absolute;
+    bottom: 1.5rem;
+    right: 3rem;
+    color: white;
+    background: rgba(0,94,184, 0.8);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem 0.5rem 1rem 0.5rem;
+    text-shadow: 0 0 10px rgba(0,0,0,0.7);
+    z-index: 2;
+}
+
 
 /* ==========================================================================
    5. INDEX PAGE - BORDER RADIUS UTILITIES
