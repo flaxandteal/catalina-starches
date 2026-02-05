@@ -10,7 +10,7 @@ title: 'Heritage Register'  # Fallback title
 publishDir: "docs"
 
 params:
-  version: "0.3.4"
+  version: "0.3.6"
   environment: "uat"
 
 markup:
