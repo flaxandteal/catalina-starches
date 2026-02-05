@@ -74,7 +74,7 @@ async function handleResults(fg: FeatureCollection, results): Promise<FeatureCol
                     'properties': {
                         'slug': slug,
                         'title': re.meta.title,
-                        'description': description,
+                        'description': re.meta.rawContent,
                         'url': url,
                         'category': JSON.parse(re.meta.Category || "[]")[0] || null
                     },

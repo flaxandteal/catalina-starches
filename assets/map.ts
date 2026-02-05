@@ -27,6 +27,7 @@ import { getFlatbushManager, getMap, getSearchManager, resolvePrimaryMapWith, re
 import { loadTemplate } from './handlebar-utils';
 import { debug, debugWarn } from './debug';
 import { buildIconConfig, preloadCategoryIcons, IconConfig, buildCategoryIconExpression } from './map-icons';
+import { marked } from 'marked';
 
 // Get map config from Hugo params, with fallback
 const mapConfig: MapConfig | undefined = params.map_config;
@@ -59,6 +60,7 @@ async function resultFunction(map: TargetingMap, e: MapMouseEvent & { features?:
   const feature = e.features[0];
   const title = feature.properties.title;
   const description = feature.properties.description;
+  const excerpt = await marked.parse(description.trim());
   const coordinates: number[] = feature.geometry.coordinates.slice();
   const lngLat = e.lngLat;
 
@@ -72,7 +74,7 @@ async function resultFunction(map: TargetingMap, e: MapMouseEvent & { features?:
     return;
   }
   const url = feature.properties.url || '#';
-  const renderedHtml = mapDialogTemplate({ title, description, location: coordinates, url });
+  const renderedHtml = mapDialogTemplate({ title, excerpt, location: coordinates, url });
 
   if (touch) {
     const offcanvasContent = document.getElementById("map-offcanvas__content");
