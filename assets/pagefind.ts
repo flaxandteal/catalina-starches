@@ -174,7 +174,9 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
         resultsContainer.addEventListener('error', (event) => {
             const target = event.target as HTMLElement;
             if (target.tagName === 'IMG' && target.closest('.card-image')) {
-                target.closest('.card-image').classList.add('no-thumbnail');
+                target.classList.add('hidden');
+                const fallback = target.parentElement?.querySelector('.qld-icon');
+                fallback?.classList.remove('hidden');
             }
         }, true);
 
