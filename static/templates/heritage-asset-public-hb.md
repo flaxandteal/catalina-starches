@@ -140,6 +140,31 @@
 {{/each}}
 ::end::
 
+<!--section:asset-further-information-->
+
+::Type::
+::end::
+
+::Themes::
+::end::
+
+::Architect::
+::end::
+
+::Construction periods::
+::end::
+
+::Historical Period::
+{{#each ha.construction_phases }}
+{{#if construction_phase_type }}
+[Historical Period] {{ construction_phase_type }}
+{{/if}}
+{{/each}}
+::end::
+
+::Style::
+::end::
+
 <!--section:asset-related-->
 
 {{#if ha.associated_actors.length}}
