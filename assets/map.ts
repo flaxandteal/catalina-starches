@@ -49,7 +49,7 @@ declare global {
   };
 }
 
-type TargetingMap = MLMap & { targeting?: number[] | boolean };
+type TargetingMap = MLMap & { targeting?: number[] | boolean; resetViewControl?: ResetViewControl };
 
 async function resultFunction(map: TargetingMap, e: MapMouseEvent & { features?: any[] }) {
   if (!e.features || e.features.length === 0) {
@@ -176,6 +176,9 @@ class ResetViewControl extends NavigationControl {
     if (source && 'setData' in source) {
       (source as any).setData({ type: 'FeatureCollection', features: [] });
     }
+
+    // Clear selection polygon
+    this.clearDraw();
   };
 
   startDraw() {
@@ -184,11 +187,7 @@ class ResetViewControl extends NavigationControl {
       this._draw.deleteAll();
       this._draw.changeMode('draw_polygon');
       this._drawButton.classList.toggle('active');
-      if(this._map.getCanvas().style.cursor === 'crosshair') {
-        this._map.getCanvas().style.cursor = '';
-      } else {
-        this._map.getCanvas().style.cursor = 'crosshair';
-      }
+      this._map.getCanvas().style.cursor = 'crosshair';
     }
   }
 
@@ -585,6 +584,7 @@ class MapManager implements IMapManager {
 
     // @ts-expect-error No resetView on window
     window.resetView = resetViewControl.resetView.bind(resetViewControl);
+    map.resetViewControl = resetViewControl;
 
     // Add polygon draw control (no default UI - we use custom buttons)
     // Fix MapboxDraw class constants for MapLibre compatibility

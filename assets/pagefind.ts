@@ -72,6 +72,10 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
                 if (layer) {
                     window.map.setLayoutProperty('assets-flat', 'visibility', 'none');
                 }
+                // clear polygon selection
+                if (window.map.resetViewControl) {
+                    window.map.resetViewControl.clearDraw();
+                }
             }
         });
     }
