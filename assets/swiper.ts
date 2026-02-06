@@ -3,6 +3,7 @@ import Swiper from 'swiper/bundle';
 export interface ImageInput {
   name: string;
   alt: string;
+  caption: string;
   previewUrl?: string;
   originalUrl?: string;
 }
@@ -128,6 +129,8 @@ function setupModal(imageList: ImageInput[]): void {
   const modalImg = document.getElementById('modal-img') as HTMLImageElement;
   const modalCaption = document.getElementById('modal-caption') as HTMLElement;
   const closeModal = document.getElementById('close-modal') as HTMLElement;
+  const prevBtn = document.getElementById('modal-prev') as HTMLButtonElement;
+  const nextBtn = document.getElementById('modal-next') as HTMLButtonElement;
   const downloadOriginalLink = modal?.querySelector('#download-original-image') as HTMLAnchorElement;
   const downloadReducedLink = modal?.querySelector('#download-reduced-image') as HTMLAnchorElement;
 
@@ -136,9 +139,22 @@ function setupModal(imageList: ImageInput[]): void {
     return;
   }
 
+  let currentIndex = 0;
+
+  function showImage(index: number): void {
+    if (index < 0) index = imageList.length - 1;
+    if (index >= imageList.length) index = 0;
+    currentIndex = index;
+
+    const image = imageList[currentIndex];
+    modalImg.src = image.previewUrl || '';
+    modalImg.alt = image.caption || image.alt || '';
+    modalCaption.textContent = modalImg.alt;
+  }
+
   // Handle download button click
   if (downloadOriginalLink) {
-   
+
     downloadOriginalLink.addEventListener('click', (e) => {
       const originalImageURL = imageList.find(img => img.previewUrl === modalImg.src)?.originalUrl || '';
       downloadImage(e, originalImageURL)
@@ -149,14 +165,40 @@ function setupModal(imageList: ImageInput[]): void {
     downloadReducedLink.addEventListener('click', (e) => downloadImage(e, modalImg.src));
   }
 
-  document.querySelectorAll('.swiper-slide img').forEach(img => {
+  document.querySelectorAll('.swiper-slide img').forEach((img, index) => {
     img.addEventListener('click', function () {
-      const imgSrc = (this as HTMLImageElement).src;
-      modalImg.src = imgSrc;
-      modalImg.alt = img.getAttribute('alt') || '';
+      currentIndex = index;
+      showImage(currentIndex);
       modal.style.display = 'flex';
-      modalCaption.textContent = modalImg.alt;
     });
+  });
+
+  // Navigation buttons
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex - 1);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      showImage(currentIndex + 1);
+    });
+  }
+
+  // Keyboard navigation
+  document.addEventListener('keydown', (e) => {
+    if (modal.style.display !== 'flex') return;
+
+    if (e.key === 'ArrowLeft') {
+      showImage(currentIndex - 1);
+    } else if (e.key === 'ArrowRight') {
+      showImage(currentIndex + 1);
+    } else if (e.key === 'Escape') {
+      modal.style.display = 'none';
+    }
   });
 
   closeModal.addEventListener('click', () => {

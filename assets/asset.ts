@@ -558,12 +558,12 @@ async function extractImageList(imageList: any[]): Promise<ImageInput[]> {
   await Promise.all(imageList.map(async (imageList) => {
     const image = imageList[0];
 
-    console.log("THIS IMAGE", await imageList);
     images.push({
       name: await image.name,
       previewUrl: (await imageList._.preview[0]?.url) ?? (await image.url),
       originalUrl: await image.url,
-      alt: (await image._file && await image._file.alt_text) || (await image.name)
+      alt: (await image._file && await image._file.alt_text) || (await image.name),
+      caption: (await imageList._.captions.caption) 
     });
   }));
 
