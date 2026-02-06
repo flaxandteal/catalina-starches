@@ -5,7 +5,7 @@
             <ul class="nav col-vert-6" data-cy="links-list">
                 {{ range .links }}
                 <li class="nav-item" data-cy="link-item">
-                    <a class="nav-link" href="{{ .url | absURL }}" target="_blank">{{ .title | safeHTML }}</a>
+                    <a class="nav-link" href="{{ .url | absURL }}" target="_blank">{{ .title | markdownify }}</a>
                 </li>
                 {{ end }}
             </ul>
