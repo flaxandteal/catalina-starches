@@ -1,5 +1,5 @@
 <div class="col d-none d-md-flex" data-slug="{{slug}}">
-    <div class="card card-default default icon-left card-multi-action">
+    <div class="card card-default default icon-left card-multi-action result-card">
         <div class="card-body result-card pb-0 w-100">
             <h4 class="card-title">
                 <a href="{{url}}" target="_blank">{{title}}</a>
@@ -8,7 +8,7 @@
                 <div class="card-image d-flex">
                     {{#if thumbnailURL}}
                     <img src="{{thumbnailURL}}" alt="{{ thumbnailAlt }}">
-                    <span class="qld-icon qld-icon-lg qld-icon-{{ icon }} icon-left card-image-fallback"
+                    <span class="qld-icon qld-icon-lg qld-icon-{{ icon }} icon-left card-image-fallback hidden"
                         aria-hidden="true"></span>
                     {{/if}}
                 </div>
