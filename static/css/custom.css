@@ -668,7 +668,7 @@
     .banner-container-with-image-slide .swiper {
         height: 200px;
     }
-    .swiper-slide img{
+    .swiper-slide.hero img{
         height: 50%;
     }
     .slide-text {
@@ -907,3 +907,16 @@
 .accordion-group:not(:has(.accordion-item)) .accordion-toggle {
     display: none;
 }
+
+.sketchfab-embed-wrapper iframe {
+    width: 100vw;
+    height: 400px;
+}
+
+@media (max-width: 991.98px) {
+    .sketchfab-embed-wrapper iframe {
+        height: 300px;
+    }
+    .full-width-content {
+        min-height: unset;
+    }
