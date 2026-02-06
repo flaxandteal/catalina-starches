@@ -143,15 +143,33 @@
 <!--section:asset-further-information-->
 
 ::Type::
+{{#each ha.construction_phases }}
+{{#if phase_classification.monument_type }}
+[Type] {{ phase_classification.monument_type }}
+{{/if}}
+{{/each}}
 ::end::
 
 ::Themes::
+{{#each ha.use_phase }}
+{{#each use_phase_classification.functional_type }}
+[Theme] {{ . }}
+{{/each}}
+{{/each}}
 ::end::
 
 ::Architect::
+{{#if ha.associated_actors.associated_actor.actor }}
+[Architect] {{ ha.associated_actors.associated_actor.actor  }}
+{{/if}}
 ::end::
 
-::Construction periods::
+:: Construction Period ::
+{{#each ha.descriptions}}
+{{#if (equal (clean description_type) "Caption") }}
+{{{ description }}}
+{{/if}}
+{{/each}}
 ::end::
 
 ::Historical Period::
