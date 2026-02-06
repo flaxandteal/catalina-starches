@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import { customFilterPills } from "filterPills";
 import * as params from '@params';
 
-import { makeSearchQuery } from "./searchContext";
+import { makeSearchQuery, updateSearchParams } from "./searchContext";
 import { getConfig } from './managers';
 import { renderFilters, addActiveFilter } from "./map-ui";
 
@@ -72,9 +72,17 @@ export async function buildPagefind(searchAction: (term: string, settings: objec
                 if (layer) {
                     window.map.setLayoutProperty('assets-flat', 'visibility', 'none');
                 }
+                // Clear the search params as we avoid the call back in clearDraw due to a race condition 
+                // where the draw clear triggers a search before the input is cleared, causing an immediate re-population of the map with all results
+                await updateSearchParams({
+                    searchTerm: undefined,
+                    searchFilters: undefined,
+                    selectionPolygon: undefined
+                });
+
                 // clear polygon selection
                 if (window.map.resetViewControl) {
-                    window.map.resetViewControl.clearDraw();
+                    window.map.resetViewControl.clearDraw(true);
                 }
             }
         });

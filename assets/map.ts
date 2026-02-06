@@ -191,12 +191,14 @@ class ResetViewControl extends NavigationControl {
     }
   }
 
-  clearDraw() {
+  clearDraw(skipCallback = false) {
     if (this._draw) {
       this._draw.deleteAll();
       this._drawButton.classList.remove('active');
       this._map.getCanvas().style.cursor = '';
-      this._onDrawClear?.();
+      if (!skipCallback) {
+        this._onDrawClear?.();
+      }
     }
   }
 }
