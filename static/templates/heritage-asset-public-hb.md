@@ -70,7 +70,7 @@
 {{/if}}
 {{/each}}
 
-::Criteria::
+::Statement of Cultural Heritage Significance (Criteria)::
 {{#each ha.designation_and_protection_assignment }}
 {{#if local_heritage_list_criteria_type }}
 <h3>Criterion {{ local_heritage_list_criteria_type }}</h3>
