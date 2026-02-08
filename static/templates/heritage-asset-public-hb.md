@@ -158,7 +158,7 @@
 {{/each}}
 ::end::
 
-{{#if ha.construction_phases.length }}
+{{#if (any ha.construction_phases "construction_phase_timespan") }}
 :: Construction Period ::
 {{#each ha.construction_phases}}
 {{#if construction_phase_timespan }}
@@ -176,7 +176,7 @@
 ::end::
 {{/if}}
 
-{{#if ha.construction_phases.length }}
+{{#if (any ha.construction_phases "construction_phase_type") }}
 ::Historical Period::
 {{#each ha.construction_phases }}
 {{#if construction_phase_type }}
@@ -186,7 +186,7 @@
 ::end::
 {{/if}}
 
-{{#if ha.construction_phases.length }}
+{{#if (any ha.construction_phases "cultural_period") }}
 ::Style::
 {{#each ha.construction_phases }}
 {{#if cultural_period }}
