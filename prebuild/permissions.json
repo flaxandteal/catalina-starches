@@ -63,6 +63,7 @@
         "associated_license": true
     },
     "Person": {},
+    "Period": {},
     "Organization": {},
     "Licence": {
         "licence_number": true,

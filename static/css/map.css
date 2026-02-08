@@ -343,3 +343,12 @@ p.acknowledgement {
   border: none;
   box-shadow: none;
 }
+
+/* no useful filters currently */
+#filterToggle {
+    visibility: hidden
+}
+
+#filterContent {
+    visibility: hidden
+}

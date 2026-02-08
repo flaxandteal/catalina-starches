@@ -29,13 +29,13 @@
 {{/if}}
 ::end::
 
-{{#each ha.construction_phases}}
 ::Item Type::
+{{#each ha.construction_phases}}
 {{#if phase_classification.monument_type }}
 [Place Type] {{{ phase_classification.monument_type }}}
 {{/if}}
-::end::
 {{/each}}
+::end::
 
 ::Address::
 {{#each ha.location_data.addresses }}
@@ -158,37 +158,44 @@
 {{/each}}
 ::end::
 
-::Architect::
-{{#if ha.associated_actors.associated_actor.actor }}
-[Architect] {{ ha.associated_actors.associated_actor.actor  }}
-{{/if}}
-::end::
-
+{{#if ha.construction_phases.length }}
 :: Construction Period ::
-{{#each ha.descriptions}}
-{{#if (equal (clean description_type) "Caption") }}
-{{{ description }}}
+{{#each ha.construction_phases}}
+{{#if construction_phase_timespan }}
+{{#if construction_phase_timespan.construction_phase_start_date }}
+{{{ construction_phase_timespan.construction_phase_start_date }}} - {{{ construction_phase_timespan.construction_phase_end_date }}}
+{{else}}
+{{#if construction_phase_timespan.construction_phase_end_date }}
+{{{ construction_phase_timespan.construction_phase_start_date }}} - {{{ construction_phase_timespan.construction_phase_end_date }}}
 {{/if}}
+{{/if}}
+{{/if}}
+{{ phase_classification.phase_classification_description.phase_description }}<br/>
+
 {{/each}}
 ::end::
+{{/if}}
 
 ::Historical Period::
 {{#each ha.construction_phases }}
 {{#if construction_phase_type }}
-[Historical Period] {{ construction_phase_type }}
+[Historical Period] {{{ construction_phase_type }}}
 {{/if}}
 {{/each}}
 ::end::
 
 ::Style::
+{{#each ha.construction_phases }}
+{{#if cultural_period }}
+[Cultural Period] {{{ cultural_period }}}
+{{/if}}
+{{/each}}
 ::end::
 
-<!--section:asset-related-->
-
 {{#if ha.associated_actors.length}}
-::People{profile}::
+::People::
 {{#each ha.associated_actors }}
-[Related] {{#if associated_actor.actor }} {{{ associated_actor.actor }}} {{else}} (untilted) {{/if}}
+[{{#if associated_actor.role_type }} {{{ associated_actor.role_type }}} {{else}} Related Person {{/if}}] {{#if associated_actor.actor }} {{{ associated_actor.actor }}} {{else}} (untitled) {{/if}}
 {{/each}}
 ::end::
 {{else}}
