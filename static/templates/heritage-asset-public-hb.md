@@ -202,7 +202,5 @@
 [{{#if associated_actor.role_type }} {{{ associated_actor.role_type }}} {{else}} Related Person {{/if}}] {{#if associated_actor.actor }} {{{ associated_actor.actor }}} {{else}} (untitled) {{/if}}
 {{/each}}
 ::end::
-{{else}}
-<h3>No related resources</h3>
 {{/if}}
 
