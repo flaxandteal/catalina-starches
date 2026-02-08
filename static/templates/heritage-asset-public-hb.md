@@ -176,6 +176,7 @@
 ::end::
 {{/if}}
 
+{{#if ha.construction_phases.length }}
 ::Historical Period::
 {{#each ha.construction_phases }}
 {{#if construction_phase_type }}
@@ -183,7 +184,9 @@
 {{/if}}
 {{/each}}
 ::end::
+{{/if}}
 
+{{#if ha.construction_phases.length }}
 ::Style::
 {{#each ha.construction_phases }}
 {{#if cultural_period }}
@@ -191,6 +194,7 @@
 {{/if}}
 {{/each}}
 ::end::
+{{/if}}
 
 {{#if ha.associated_actors.length}}
 ::People::
