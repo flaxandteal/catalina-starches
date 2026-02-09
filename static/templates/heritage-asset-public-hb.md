@@ -140,6 +140,16 @@
 {{/each}}
 ::end::
 
+{{#each ha.location_data.geometry}}
+{{#if (equal (clean feature_shape) "Centroid") }}
+{{#if geospatial_coordinates }}
+::Geometry::
+[Coordinates] {{ pointToCoords geospatial_coordinates }}
+::end::
+{{/if}}
+{{/if}}
+{{/each}}
+
 <!--section:asset-further-information-->
 
 ::Type::

@@ -31,6 +31,7 @@
         "monument_type": true,
         "national_grid_references": true,
         "spatial_metadata_descriptions": true,
+        "spatial_record_compilation": true,
         "system_reference_numbers": true,
         "use_phase": true,
         "associated_actors": true

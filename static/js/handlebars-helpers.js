@@ -11,11 +11,17 @@
     return;
   }
 
+  Handlebars.registerHelper("pointToCoords", (point) => point.features[0].geometry.coordinates.map((c) => (c.toFixed(2))).join(", "));
   Handlebars.registerHelper("replace", (base, fm, to) => base ? base.replaceAll(fm, to) : base);
   Handlebars.registerHelper("nl", (base, nl) => base ? base.replaceAll("\n", nl) : base);
   Handlebars.registerHelper("plus", (a, b) => a + b);
-  Handlebars.registerHelper("any", (a, b) => {
-    return a.some(x => x[b]);
+  Handlebars.registerHelper("any", (a, b, c) => {
+    // Did we get one positional argument or two (the rightmost is a context object).
+    if (c) {
+      return a.some(x => x[b]);
+    } else {
+      return a.some(x => x);
+    }
   });
   Handlebars.registerHelper("default", (a, b) => a === undefined || a === null ? b : a);
   Handlebars.registerHelper("defaulty", (a, b) => a != undefined && a != null && a != false ? a : b);

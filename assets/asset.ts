@@ -2,7 +2,9 @@ import { marked, Token, Tokens } from 'marked';
 import * as params from '@params';
 import * as Handlebars from 'handlebars';
 import { Map as MLMap } from 'maplibre-gl';
-import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin';
+import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify } from 'alizarin/inline';
+// import { AlizarinModel, client, RDM, graphManager, staticStore, staticTypes, viewModels, renderers, wasmReady, slugify, setWasmURL } from 'alizarin';
+// setWasmURL('/wasm/alizarin_bg.wasm');
 import '@alizarin/filelist'; // Registers file-list type (images)
 import '@alizarin/clm'; // Registers reference type
 import { addMarkerImage } from 'map-tools';
@@ -18,11 +20,7 @@ import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
 import { initSwiper, ImageInput, ImageSet } from 'swiper';
-import pdfMake from 'pdfmake/build/pdfmake';
-import pdfFonts from 'pdfmake/build/vfs_fonts';
 import { markdownToPdf, PdfImage } from 'pdf-make';
-
-pdfMake.vfs = pdfFonts.vfs;
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -160,9 +158,12 @@ async function getAssetMetadata(asset: AlizarinModel<any>): Promise<AssetMetadat
       }
     }
 
-    if (await locationData.geometry && await locationData.geometry.geospatial_coordinates) {
-      geometry = await (await asset.location_data.geometry.geospatial_coordinates).forJson();
+    if (await locationData.geometry[0] && await locationData.geometry[0].geospatial_coordinates) {
+      geometry = await (await asset.location_data.geometry[0].geospatial_coordinates).forJson();
       location = extractCentrePoint(geometry);
+    }
+    if (await locationData.geometry[1] && await locationData.geometry[1].geospatial_coordinates) {
+      geometry = await (await asset.location_data.geometry[1].geospatial_coordinates).forJson();
     }
   }
 
@@ -536,17 +537,42 @@ async function fetchImageAsDataUrl(url: string): Promise<string> {
   });
 }
 
+function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (document.querySelector(`script[src="${src}"]`)) {
+      resolve();
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error(`Failed to load ${src}`));
+    document.head.appendChild(script);
+  });
+}
+
+async function ensurePdfMake(): Promise<typeof import('pdfmake/build/pdfmake')['default']> {
+  if (!(window as any).pdfMake) {
+    await loadScript('/js/pdfmake.min.js');
+    await loadScript('/js/vfs_fonts.js');
+  }
+  return (window as any).pdfMake;
+}
+
 async function renderPDFAsset(markdown: string, nodes: Map<string, any>, title: string, assetImages: ImageInput[]) {
-  const pdfImages: PdfImage[] = (await Promise.all(
-    assetImages.map(async (img) => {
-      try {
-        const dataUrl = await fetchImageAsDataUrl(img.previewUrl || img.originalUrl);
-        return { dataUrl, alt: img.alt, name: img.name };
-      } catch {
-        return null;
-      }
-    })
-  )).filter((img): img is PdfImage => img !== null);
+  const [pdfMake, pdfImages] = await Promise.all([
+    ensurePdfMake(),
+    Promise.all(
+      assetImages.map(async (img) => {
+        try {
+          const dataUrl = await fetchImageAsDataUrl(img.previewUrl || img.originalUrl);
+          return { dataUrl, alt: img.alt, name: img.name } as PdfImage;
+        } catch {
+          return null;
+        }
+      })
+    ).then(imgs => imgs.filter((img): img is PdfImage => img !== null)),
+  ]);
 
   const pdf = await markdownToPdf(markdown, nodes, title, pdfImages);
   pdfMake.createPdf(pdf).download(`${title}.pdf`);

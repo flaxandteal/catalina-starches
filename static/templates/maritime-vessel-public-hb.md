@@ -72,9 +72,9 @@
 | [{{{ clean area_type }}}](@localities_administrative_areas) | {{{ area_names.area_name }}} |
 {{/each}}
 
-[OS Map No.](@current_base_map_name): {{ defaulty ha.location_data.geometry.current_base_map.current_base_map_names.current_base_map_name "(none)"}}
+[OS Map No.](@current_base_map_name): {{ defaulty ha.location_data.geometry.0.current_base_map.current_base_map_names.current_base_map_name "(none)"}}
 
-[Geometric Properties](@spatial_metadata_notes): {{ defaulty ha.location_data.geometry.spatial_metadata_descriptions.spatial_metadata_notes "(none)"}}
+[Geometric Properties](@spatial_metadata_notes): {{ defaulty ha.location_data.geometry.0.spatial_metadata_descriptions.spatial_metadata_notes "(none)"}}
 
 [Grid Reference](@irish_grid_reference_tm65_): {{ defaulty ha.location_data.national_grid_references.irish_grid_reference_tm65_ "(none)"}}
 

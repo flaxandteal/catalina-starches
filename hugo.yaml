@@ -10,7 +10,7 @@ title: 'Heritage Register'  # Fallback title
 publishDir: "docs"
 
 params:
-  version: "0.3.7"
+  version: "0.3.8"
   environment: "uat"
 
 markup:
@@ -23,6 +23,11 @@ module:
     - path: 'github.com/flaxandteal/hugo-theme-qld-design-system'
     - path: 'github.com/flaxandteal/starches'
     - path: 'github.com/flaxandteal/hugo-cookies'
+  mounts:
+    - source: static
+      target: static
+    - source: node_modules/alizarin/dist/alizarin_bg.wasm
+      target: static/wasm/alizarin_bg.wasm
 
 security:
   funcs:
