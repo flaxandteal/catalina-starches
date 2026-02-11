@@ -141,7 +141,7 @@
 ::end::
 
 {{#each ha.location_data.geometry}}
-{{#if (equal (clean feature_shape) "Centroid") }}
+{{#if (or (equal (clean feature_shape) "Centroid") (equal (clean feature_shape) "Feature")) }}
 {{#if geospatial_coordinates }}
 ::Geometry::
 [Coordinates] {{ pointToCoords geospatial_coordinates }}
