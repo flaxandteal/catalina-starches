@@ -32,7 +32,7 @@
     <div class="video-player ratio ratio-16x9">
         <a href="#" class="video-thumbnail video-controls" title="Play Video" 
             aria-label="Watch video - duration {{ .duration }}">
-            <div class="video-thumbnail-image"></div>
+            <img class="video-thumbnail-image" src="{{ .thumbnailURL | relURL }}" alt="Video thumbnail"/>
             <div class="video-nav">
                 <div class="video-watch">
                     <span class="icon"></span><span>Watch</span>
