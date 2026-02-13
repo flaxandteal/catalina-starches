@@ -32,7 +32,9 @@
 ::Item Type::
 {{#each ha.construction_phases}}
 {{#if phase_classification.monument_type }}
-[Place Type] {{{ phase_classification.monument_type }}}
+{{#each phase_classification.monument_type}}
+[Place Type] {{{ . }}}
+{{/each}}
 {{/if}}
 {{/each}}
 ::end::
@@ -155,7 +157,9 @@
 ::Type::
 {{#each ha.construction_phases }}
 {{#if phase_classification.monument_type }}
-[Type] {{ phase_classification.monument_type }}
+{{#each phase_classification.monument_type }}
+[Type] {{{ . }}}
+{{/each}}
 {{/if}}
 {{/each}}
 ::end::
@@ -186,21 +190,21 @@
 ::end::
 {{/if}}
 
-{{#if (any ha.construction_phases "construction_phase_type") }}
+{{#if (any ha.construction_phases "cultural_period") }}
 ::Historical Period::
 {{#each ha.construction_phases }}
-{{#if construction_phase_type }}
-[Historical Period] {{{ construction_phase_type }}}
+{{#if cultural_period }}
+[Historical Period] {{{ cultural_period }}}
 {{/if}}
 {{/each}}
 ::end::
 {{/if}}
 
-{{#if (any ha.construction_phases "cultural_period") }}
+{{#if (any ha.construction_phases "style") }}
 ::Style::
 {{#each ha.construction_phases }}
-{{#if cultural_period }}
-[Cultural Period] {{{ cultural_period }}}
+{{#if style }}
+[Cultural Period] {{{ style }}}
 {{/if}}
 {{/each}}
 ::end::

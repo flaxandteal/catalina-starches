@@ -152,18 +152,14 @@ async function getAssetMetadata(asset: AlizarinModel<any>): Promise<AssetMetadat
   if (await asset.__has('location_data') && await asset.location_data) {
     const locationData = await asset.location_data;
 
-    if (await locationData.__has('statistical_output_areas') && await locationData.statistical_output_areas) {
-      for await (const outputArea of await locationData.statistical_output_areas) {
-        debug(outputArea);
-      }
-    }
-
     if (await locationData.geometry[0] && await locationData.geometry[0].geospatial_coordinates) {
       geometry = await (await asset.location_data.geometry[0].geospatial_coordinates).forJson();
       location = extractCentrePoint(geometry);
     }
-    if (await locationData.geometry[1] && await locationData.geometry[1].geospatial_coordinates) {
-      geometry = await (await asset.location_data.geometry[1].geospatial_coordinates).forJson();
+
+    const lastGeometry = (await locationData.geometry).length - 1; // Will be the polygon, if one.
+    if (await locationData.geometry[lastGeometry] && await locationData.geometry[lastGeometry].geospatial_coordinates) {
+      geometry = await (await asset.location_data.geometry[lastGeometry].geospatial_coordinates).forJson();
     }
   }
 
@@ -583,6 +579,11 @@ async function extractImageList(imageList: any[]): Promise<ImageInput[]> {
 
   await Promise.all(imageList.map(async (imageList) => {
     const image = imageList[0];
+
+    if (!image) {
+      console.warn("Missing image", imageList);
+      return;
+    }
 
     images.push({
       name: await image.name,

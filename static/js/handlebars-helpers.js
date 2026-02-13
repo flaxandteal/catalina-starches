@@ -18,9 +18,9 @@
   Handlebars.registerHelper("any", (a, b, c) => {
     // Did we get one positional argument or two (the rightmost is a context object).
     if (c) {
-      return a.some(x => x[b]);
+      return a.some(x => x[b] && (!Array.isArray(x[b]) || x[b].length > 0));
     } else {
-      return a.some(x => x);
+      return a.some(x => x && (!Array.isArray(x) || x.length > 0));
     }
   });
   Handlebars.registerHelper("default", (a, b) => a === undefined || a === null ? b : a);
