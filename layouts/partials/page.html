@@ -1,0 +1,32 @@
+{{- if not (.Page.Store.Get "asset-style-loaded-flag") -}}
+
+{{ $baseAssets := (slice "asset.ts") }}
+{{ range $baseAssets }}
+{{- $js := resources.Get . -}}
+{{ $params := (dict "search_config" site.Params.search_config "is_production" hugo.IsProduction "blob_base_url" (getenv "BLOB_BASE_URL") "node_config" site.Params.nodeConfig) }}
+{{ $sourceMap := cond hugo.IsProduction "" "inline" }}
+{{ $opts := dict "sourceMap" $sourceMap "minify" hugo.IsProduction "target" "es2022" "externals" (slice "pdfmake/build/pdfmake" "pdfmake/build/vfs_fonts") "params" $params }}
+{{ $js = $js | js.Build $opts }}
+<script src="{{ $js.RelPermalink }}"
+    type="module">
+    </script>
+{{ end }}
+{{- .Page.Store.Set "asset-style-loaded-flag" true -}}
+{{- end -}}
+
+<div class="container radius">
+    {{ partial "banner.html" . }}
+
+    <div class="row">
+      {{- $promo := .Params.promoPanel -}}
+      {{- if $promo -}}
+      <section class="container" data-cy="promo-panel">
+        {{ partial "video-player.html" $promo.video }}
+      </section>
+      {{- end -}}
+      <section class="container">
+      {{ .Content }}
+      {{ partial "terms.html" (dict "taxonomy" "tags" "page" .) }}
+      </section>
+    </div>
+</div>

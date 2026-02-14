@@ -1,14 +1,25 @@
-+++
-date = '2025-07-05T03:36:57-08:00'
-draft = false
-title = 'Frequently Asked Questions'
-+++
+---
+date: '2025-07-05T03:36:57-08:00'
+draft: false
+title: 'Frequently Asked Questions'
+promoPanel:
+  video:
+    id: "pinewood-landing-video"
+    showTranscript: false
+    duration: "2:46"
+    thumbnailURL: "https://stnonprodweb7zck.blob.core.windows.net/media/site_images/601175_north_pine_school_of_arts_and_tom_petrie_memorial.jpeg"
+    description: "Video demonstrating the usage of this website"
+    src: "https://stnonprodweb7zck.blob.core.windows.net/media/video/Placeholder video - QHR Website.mp4"
+    # type: "video/mp4"        # Optional, defaults to video/mp4
+    # poster: "img/poster.jpg" # Optional thumbnail before play
+    # autoplay: false          # Optional, autoplays muted if true
+    # loop: false              # Optional, loops video
+    # controls: true           # Optional, shows controls (default: true)
+  # image: "img/promo-image.jpg"   # Fallback if no video
+  # imageAlt: "Promotional Image"
+---
 
-The historic environment record is a detailed and nuanced repository
-of information, and this viewer attempts to ease the first steps of
-exploring it. It is not a full-featured, semantic search engine, but
-provides quick lookup functionality for casual users. Here, we answer
-some key questions.
+# Frequently Asked Questions
 
 ## What is the purpose of this viewer?
 
@@ -33,7 +44,3 @@ The meaning of markers and red dots is the same: there is a match at that locati
 
 For ease of understanding, this tool does not show different types of markers for different
 types of assets or entries.
-
-## What technologies does this use?
-
-A number of tools from the [Arches Project](https://www.archesproject.org/) ecosystem are used. The specific, alpha-level platform here is an [AGPL-licensed](https://www.gnu.org/licenses/agpl-3.0.html) tool called **Starches**, which combines [Hugo](https://gohugo.io/), [Pagefind](https://pagefind.app/), [Alizarin](https://github.com/flaxandteal/alizarin/), [Flatgeobuf](https://flatgeobuf.org/).org/) to create a performant, fully-static service. As it is static, we can serve large amounts of traffic with simple caching, the possibility of edge-caching and virtually no service-side processing. For technical users who are interested, you can explore each historic asset's data as a self-contained static JSON in Arches' resource format, which is rendered on its viewer page with [Alizarin](https://github.com/flaxandteal/alizarin/) - check your browser's web inspector.
