@@ -71,6 +71,7 @@
   "scripts": {
     "test:lint:css": "stylelint \"{static,themes}/**/*.css\" --allow-empty-input",
     "fetch:content": "dotenv -e .env -- npx ts-node utils/fetch-content.ts",
+    "fetch:prebuild": "dotenv -e .env -- npx ts-node utils/fetch-prebuild.ts",
     "start": "dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:local": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
     "start:prod": "SKIP_BLOB_FETCH=true dotenv -e .env -- hugo server --environment production --bind=127.0.0.1 --port=1313",
