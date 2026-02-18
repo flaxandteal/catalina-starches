@@ -1,3 +1,0 @@
-.video .video-thumbnail .video-thumbnail-image {
-    background-image: url('{{ .thumbnailURL | relURL }}')
-}

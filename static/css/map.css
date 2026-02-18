@@ -1,3 +1,39 @@
+/* Map layer style tokens — override these to retheme map features */
+:root {
+  /* Register (external dataset) layer */
+  --map-register-circle-color: #888888;
+  --map-register-circle-radius: 6;
+  --map-register-stroke-width: 10;
+  --map-register-stroke-color: rgba(0, 0, 0, 0);
+
+  /* Asset boundary polygons */
+  --map-boundary-fill-color: #888888;
+  --map-boundary-fill-opacity: 0.4;
+
+  /* Asset flat circles (low-zoom point layer) */
+  --map-asset-flat-circle-color: #ff8888;
+  --map-asset-flat-circle-radius: 12;
+  --map-asset-flat-stroke-width: 1;
+  --map-asset-flat-stroke-color: #fff;
+
+  /* Asset symbol layout */
+  --map-asset-text-offset-x: 0;
+  --map-asset-text-offset-y: 1.25;
+
+  /* Draw tool polygon styles */
+  --map-draw-color: #09549f;
+  --map-draw-fill-opacity: 0.1;
+  --map-draw-line-width: 2;
+  --map-draw-midpoint-radius: 3;
+  --map-draw-vertex-radius: 3;
+  --map-draw-vertex-stroke-radius: 5;
+  --map-draw-vertex-stroke-color: #fff;
+
+  /* Marker / icon colors */
+  --map-marker-color: #09549f;
+  --map-marker-icon-color: #ffffff;
+}
+
 html.govuk-template {
     background-color: inherit;
     max-width: 1140px;

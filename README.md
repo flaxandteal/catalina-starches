@@ -65,8 +65,13 @@ This will then have the correct structure in the markdown
 - **Hugo Extended** (v0.145+)
 - **Go** 1.21+ (for Hugo modules)
 - Pre-built data in `prebuild/` (heritage asset exports, graphs, reference data). This can be found in the blob storage
+- Set up a .env with `BLOB_BASE_URL`
 
 ## Getting Started
+
+```bash
+git checkout dev
+```
 
 ```bash
 npm install
@@ -89,7 +94,21 @@ npm install
 > cd quartz-starches
 > ```
 
-1. **Process the data** — you need to first process and index the data for starches and pagefind to use
+//TO DO - Need to add in adding the hugo modules (merge the theme into the original)
+Switch the npm run dev (this only works with parallel matching) to npm start
+Create a test prebuild
+Fix the tests
+
+1. **Fetch the data** - You can fetch the data from the blob storage using
+
+    ```bash
+    npm run fetch:prebuild
+    ```
+
+    You will need to have the environment variables set up in your project for the Azure blob storage
+
+
+2. **Process the data** — you need to first process and index the data for starches and pagefind to use
 
     ```bash
     npx --node-options=--inspect --node-options=--max-old-space-size=8192 \
@@ -100,13 +119,13 @@ npm install
 
     Change the file name after business data to change the processed data
 
-2. **Index the data**
+3. **Index the data**
 
     ```bash
     npx starches-builder index --site docs
     ```
 
-3. **Run the project locally**
+4. **Run the project locally**
 
     ```bash
     npm run dev

@@ -876,6 +876,11 @@
     display: none;
 }
 
+/* JS-driven visibility toggle — replaces inline style.display assignments */
+.js-hidden {
+    display: none !important;
+}
+
 /* ==========================================================================
    14. MAPLIBRE OVERRIDES
    ========================================================================== */
