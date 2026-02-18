@@ -192,6 +192,10 @@ div.govuk-header__container {
     display: none;
 }
 
+.hidden {
+    display: none;
+}
+
 #map-row {
   flex-direction: column-reverse;
 }

@@ -295,7 +295,7 @@ div.govuk-header__container {
 }
 
 .instructions-hidden {
-  display: none;
+  display: none !important;
 }
 
 .maplibregl-popup-content {

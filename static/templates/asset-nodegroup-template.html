@@ -1,106 +1,65 @@
 {{#if (equal sectionId "asset-related")}}
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading-{{id}}">
-    <button
-      class="accordion-button"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapse-{{id}}"
-      aria-expanded="true"
-      aria-controls="collapse-{{id}}"
-    >
-      {{title}}
-    </button>
-  </h2>
-  <div
-    id="collapse-{{id}}"
-    class="accordion-collapse collapse show"
-    aria-labelledby="heading-{{id}}"
-    role="region"
-  >
-    <div class="accordion-body">
-      <div class="d-flex align-items-start">
-        <div class="icon-background">
-            <span class="qld-icon qld-icon-lg qld-icon-{{ icon }} icon-left" aria-hidden="true"></span>
-        </div>
-        <div class="link-column ms-4">
-          <ul class="nav">
-          {{#if fields}} {{#each fields}}
-            <li class="nav-item">
-              <a class="nav-link" href="{{slug}}">{{{value}}}</a>
-            </li>
-          {{/each}} {{else}} {{{body}}} {{/if}}
-        </div>  
-      </div>
-    </div>
+<h2 id="heading-{{id}}">{{title}}</h2>
+<details class="govuk-details" {{#if initiallyExpanded}}open{{/if}}>
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">{{title}}</span>
+  </summary>
+  <div class="govuk-details__text">
+    {{#if fields}}
+    <ul class="govuk-list">
+      {{#each fields}}
+      <li>
+        <a class="govuk-link" href="{{slug}}">{{{value}}}</a>
+      </li>
+      {{/each}}
+    </ul>
+    {{else}}
+    {{{body}}}
+    {{/if}}
   </div>
-</div>
+</details>
 {{ else if (equal title "Real Property Description (Lot on Plan)") }}
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading-{{id}}">
-    <button
-      class="accordion-button"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapse-{{id}}"
-      aria-expanded="true"
-      aria-controls="collapse-{{id}}"
-    >
-      {{title}}
-    </button>
-  </h2>
-  <div
-    id="collapse-{{id}}"
-    class="accordion-collapse collapse show"
-    aria-labelledby="heading-{{id}}"
-    role="region"
-  >
-    <div class="accordion-body">
-      <div class="ms-md-4 w-md-50">
-        {{#if fields}}
-        <div class="d-flex flex-wrap flex-md-nowrap">
-          <strong class="col-md-2 mb-1">{{fields.0.label}}:</strong>
-          <div class="row flex-grow-1">
-            {{#each fields}}
-            <div class="col-6 col-md-4">{{{value}}}</div>
-            {{/each}}
-          </div>
-        </div>
-        {{else}} {{{body}}} {{/if}}
+<h2 id="heading-{{id}}">{{title}}</h2>
+<details class="govuk-details" open>
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">{{title}}</span>
+  </summary>
+  <div class="govuk-details__text">
+    {{#if fields}}
+    <dl class="govuk-summary-list govuk-summary-list--no-border">
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">{{fields.0.label}}</dt>
+        <dd class="govuk-summary-list__value">
+          {{#each fields}}
+          <span>{{{value}}}</span>{{#unless @last}}, {{/unless}}
+          {{/each}}
+        </dd>
       </div>
-    </div>
+    </dl>
+    {{else}}
+    {{{body}}}
+    {{/if}}
   </div>
-</div>
+</details>
 {{else}}
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading-{{id}}">
-    <button
-      class="accordion-button"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#collapse-{{id}}"
-      aria-expanded="{{!initiallyExpanded}}"
-      aria-controls="collapse-{{id}}"
-    >
-      {{title}}
-    </button>
-  </h2>
-  <div
-    id="collapse-{{id}}"
-    class="accordion-collapse collapse {{#if initiallyExpanded}}show{{/if}}"
-    aria-labelledby="heading-{{id}}"
-    role="region"
-  >
-    <div class="accordion-body">
-      <div class="ms-md-4 d-flex flex-column gap-3">
-        {{#if fields}} {{#each fields}}
-        <div class="d-md-flex">
-          <p class="me-md-2 mb-1"><strong>{{label}}:</strong></p>
-          <div>{{{value}}}</div>
-        </div>
-        {{/each}} {{else}} {{{body}}} {{/if}}
+<h2 id="heading-{{id}}">{{title}}</h2>
+<details class="govuk-details" {{#if initiallyExpanded}}open{{/if}}>
+  <summary class="govuk-details__summary">
+    <span class="govuk-details__summary-text">{{title}}</span>
+  </summary>
+  <div class="govuk-details__text">
+    {{#if fields}}
+    <dl class="govuk-summary-list govuk-summary-list--no-border">
+      {{#each fields}}
+      <div class="govuk-summary-list__row">
+        <dt class="govuk-summary-list__key">{{label}}</dt>
+        <dd class="govuk-summary-list__value">{{{value}}}</dd>
       </div>
-    </div>
+      {{/each}}
+    </dl>
+    {{else}}
+    {{{body}}}
+    {{/if}}
   </div>
-</div>
+</details>
 {{/if}}

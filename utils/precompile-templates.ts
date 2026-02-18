@@ -14,13 +14,13 @@ const LOCAL_HTML_TEMPLATES = [
   'result-card-template.html',
   'filter-list-template.html',
   'asset-nodegroup-template.html',
-  'map-dialog-template.html'
+  // 'map-dialog-template.html'
 ];
 
 const LOCAL_MD_TEMPLATES = [
   'heritage-asset-public-hb.md',
-  'activity.md',
-  'maritime-vessel-public-hb.md'
+  // 'activity.md',
+  // 'maritime-vessel-public-hb.md'
 ];
 
 async function fetchTemplate(name: string, dir: string): Promise<string> {

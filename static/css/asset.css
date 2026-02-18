@@ -14,7 +14,7 @@
 }
 
 #map {
-  height: 40vh
+  height: 40vh !important;
 }
 
 #demo-warning {

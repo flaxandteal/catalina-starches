@@ -20,7 +20,7 @@ markup:
 
 module:
   imports:
-    - path: 'github.com/flaxandteal/hugo-theme-qld-design-system'
+    - path: 'github.com/flaxandteal/govukhugo'
     - path: 'github.com/flaxandteal/starches'
     - path: 'github.com/flaxandteal/hugo-cookies'
   mounts:

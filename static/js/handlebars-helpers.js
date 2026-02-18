@@ -17,6 +17,7 @@
   Handlebars.registerHelper("plus", (a, b) => a + b);
   Handlebars.registerHelper("any", (a, b, c) => {
     // Did we get one positional argument or two (the rightmost is a context object).
+    if (!Array.isArray(a)) return false;
     if (c) {
       return a.some(x => x[b] && (!Array.isArray(x[b]) || x[b].length > 0));
     } else {

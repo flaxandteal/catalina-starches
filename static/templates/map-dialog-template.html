@@ -1,25 +1,10 @@
-<div class="col">
-    <div class="card card-default default card-multi-action border-0">
-        <div class="card-body result-card">
-            <h4 class="card-title">
-                <a href="{{url}}">{{title}}</a>
-            </h4>
-            <div class="card-text">
-                {{{ excerpt }}}
-            </div>
-        </div>
-        <div class="card-footer">
-            <ul class="link-list">
-                <li class="link-item"><a class="link open-button" href="{{url}}" target="_self" aria-label="Open {{title}}">
-                        <span class="qld-icon qld-icon-md qld-icon-arrow-right leading" aria-hidden="true"></span>
-                        Open
-                    </a></li>
-                <li class="link-item"><a class="link view-button" href="#" onclick="event.preventDefault(); window.map.flyTo({center: [{{location}}], zoom: 14})" data-location="{{location}}" aria-label="View {{title}} on map">
-                        <span class="qld-icon qld-icon-md qld-icon-location leading" aria-hidden="true"></span>
-                        Zoom
-                    </a></li>
-            </ul>
-        </div>
-    </div>
+<h3>{{title}}</h3>
+<div class="map-popup-body">
+    {{{ excerpt }}}
+    {{#if url}}
+    <a href="{{url}}" class="govuk-button" data-module="govuk-button" rel="noreferrer noopener">View</a>
+    <a href="{{url}}" class="govuk-button govuk-button--secondary" data-module="govuk-button" rel="noreferrer noopener" target="_blank">Open Tab</a>
+    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" onclick="map.flyTo({center: [{{location}}], zoom: 14})">Zoom</button>
+    {{/if}}
 </div>
 
