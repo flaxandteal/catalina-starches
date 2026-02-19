@@ -5,6 +5,7 @@ tabTitle: 'Search: Catalina Heritage Register'
 title: 'Catalina Heritage Register'
 text: 'Map page'
 type: '_default'
+url: /
 layout: 'map-search'
 includeSearch: true
 center: "[-6.6, 54.6]"
