@@ -1,4 +1,4 @@
-# Quartz Starches
+# Catalina Starches
 
 A reference implementation for [Starches](https://github.com/flaxandteal/starches) — publishing [Arches](https://www.archesproject.org/) cultural heritage data as a searchable, map-enabled static website. It demonstrates how to consume Starches as a Hugo module and customise it for a specific heritage dataset and brand.
 
@@ -7,17 +7,15 @@ A reference implementation for [Starches](https://github.com/flaxandteal/starche
 - **Full-text search** powered by [Pagefind](https://pagefind.app/) with faceted filtering
 - **Interactive maps** using [MapLibre GL](https://maplibre.org/) with spatial filtering via FlatGeobuf tiles
 - **Asset detail pages** with tabbed content (Overview, Location, Related Resources), image galleries, and PDF export
-- **Responsive design** following the QLD Design System
-- **WCAG 2A/2AA accessible** — validated by Cypress + axe-core E2E tests
 - **Static output** — deployable to any static hosting (Azure Static Web Apps, Nginx, etc.)
 
 ## Architecture
 
-Quartz Starches sits at the top of the Starches module stack:
+Catalina Starches sits at the top of the Starches module stack:
 
 ```mermaid
 flowchart TB
-    A["quartz-starches (consuming site — layouts, content, branding)"] --> B["starches (static site generator — base templates, Vite bundles)"]
+    A["catalina-starches (consuming site — layouts, content, branding)"] --> B["starches (static site generator — base templates, Vite bundles)"]
     B --> C["alizarin (ORM — parses Arches graph data, Rust/WASM)"]
 ```
 
@@ -25,7 +23,7 @@ Hugo's template lookup order lets this project override any layout or partial fr
 
 ### Theme/Components
 
-The frontend hugo theme and components are situated within a separate repo - [hugo-theme-qld-design-system](https://github.com/flaxandteal/hugo-theme-qld-design-system). This contains all the components and layouts for the site. 
+The frontend hugo theme and components are situated within a separate repo - [govukhugo](https://github.com/flaxandteal/govukhugo). This contains all the components and layouts for the site. 
 
 These can be overwritten by duplicating the file and its structure into `layouts/`
 
@@ -70,12 +68,27 @@ This will then have the correct structure in the markdown
 ## Getting Started
 
 ```bash
-git checkout dev
+git checkout dev (This needs updating to the correct branch)
 ```
 
 ```bash
 npm install
 ```
+
+Install the hugo mods (starches and theme)
+```bash
+hugo mod get -u
+```
+
+We need to install a particular branch from govukhugo as structure has changed from main which is in use on coral
+```bash
+hugo mod get github.com/flaxandteal/govukhugo@feat/catalina-integration
+```
+
+Make sure you have content files for `map.md` and `asset.md` as well as `config/_default/params.yaml`
+These control the configs for the site and the pages
+
+You will also need to have a prebuild folder containing the data for the project (this will be stored outside of the repo)
 
 ### Local development
 
@@ -88,41 +101,33 @@ npm install
 > ```bash
 > cd .. # so you are one level above the project
 >
-> git clone git@github.com:flaxandteal/hugo-theme-qld-design-system.git
+> git clone git@github.com:flaxandteal/govukhugo.git
 > git clone https://github.com/flaxandteal/starches
 >
-> cd quartz-starches
+> cd catalina-starches
 > ```
 
-//TO DO - Need to add in adding the hugo modules (merge the theme into the original)
-Switch the npm run dev (this only works with parallel matching) to npm start
-Create a test prebuild
-Fix the tests
-
-1. **Fetch the data** - You can fetch the data from the blob storage using
-
-    ```bash
-    npm run fetch:prebuild
-    ```
-
-    You will need to have the environment variables set up in your project for the Azure blob storage
-
-
-2. **Process the data** — you need to first process and index the data for starches and pagefind to use
+1. **Process the data** — you need to first process and index the data for starches and pagefind to use
 
     ```bash
     npx --node-options=--inspect --node-options=--max-old-space-size=8192 \
       starches-builder etl \
-      --file ./prebuild/business_data/t_output_df_all.json \
-      --prefix qld- --summary
+      --file ./prebuild/business_data/aai_merged.json \
+      --prefix aai- --summary
     ```
 
     Change the file name after business data to change the processed data
 
-3. **Index the data**
+2. **Index the data**
 
     ```bash
     npx starches-builder index --site docs
+    ```
+
+3. **Precompile Templates**
+
+    ```bash
+    npm run precompile:templates
     ```
 
 4. **Run the project locally**
@@ -147,7 +152,7 @@ The static site is output to `docs/`.
 ## Project Structure
 
 ```
-quartz-starches/
+catalina-starches/
 ├── assets/              # TypeScript entry points (bundled by Vite)
 │   ├── asset.ts         #   Asset detail page
 │   ├── map.ts           #   Interactive map
@@ -218,8 +223,8 @@ npm run vite-test
 Build and run the containerised site:
 
 ```bash
-docker build -t quartz-starches .
-docker run -p 8080:8080 quartz-starches
+docker build -t catalina-starches .
+docker run -p 8080:8080 catalina-starches
 ```
 
 The Dockerfile runs a multi-stage build: Node + Hugo for the build step, then serves the static output via Nginx.
