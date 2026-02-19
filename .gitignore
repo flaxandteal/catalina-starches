@@ -14,10 +14,11 @@ copilot-instructions.md
 assets/jsconfig.json
 assets/jsconfig.json
 .vscode
+prebuild
 # Config generated from site-config.yaml
-config/_default/params.yaml
+# config/_default/params.yaml
 
 # Content fetched from blob
-content/_index.md
-content/asset.md
-content/map.md
+# content/_index.md
+# content/asset.md
+# content/map.md

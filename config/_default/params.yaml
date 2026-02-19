@@ -1,0 +1,27 @@
+# Client-Specific Parameters
+# ==========================
+# THIS FILE IS AUTO-GENERATED from blob storage by fetch-site-config.ts
+# DO NOT EDIT MANUALLY - changes will be overwritten
+#
+# To modify, update site-config.yaml in blob storage and run:
+#   npm run fetch:config
+
+logotext: "CAT"
+product: "Catalina Public Asset Viewer"
+phase: "alpha"
+favicon: ""
+feedbackurl: "/feedback/"
+archesurl: "http://localhost:8000/"
+ga4token: "GTM-K3B6FBDS"
+ga4gtag: "G-HJZQETB39E"
+cookies: "/cookies/"
+sitename: "Catalina Public Asset Viewer"
+variantClass: "dark"
+
+feedback:
+  showInFooter: true
+  showFloatingButton: true
+  footer#: "Website feedback"
+  footerDescription: "Help us improve the content on our website or tell us what is working well."
+  footerLinkText: "Leave your feedback"
+  hasBorderColumn: true
