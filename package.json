@@ -38,7 +38,7 @@
     "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.31",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.32",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
@@ -81,7 +81,7 @@
     "test:cy:dev": "start-server-and-test start http://127.0.0.1:1313 cy:run",
     "test": "npm run test:lint:css && npm run test:cy:dev",
     "dev": "HUGO_MODULE_WORKSPACE=hugo.work dotenv -e .env -- hugo server -D --bind=127.0.0.1 --port=1313",
-    "precompile:templates": "npx ts-node utils/precompile-templates.ts",
+    "precompile:templates": "npx starches-builder precompileTemplates",
     "build": "npm run precompile:templates",
     "build:full": "npm run fetch:all && npm run build && hugo --minify",
     "preview": "dotenv vite preview",
