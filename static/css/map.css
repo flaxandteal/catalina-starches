@@ -84,8 +84,7 @@ time[pubdate=""]:before {
 }
 
 header.govuk-header {
-    margin: 3em 0 0;
-    background-color: white;
+    display: none;
 }
 
 a.govuk-footer__copyright-logo {
@@ -98,8 +97,11 @@ a.govuk-footer__copyright-logo {
 }
 
 div.govuk-header__container {
-    border-bottom: 0.4rem solid rgba(127, 86, 197);
-    padding: 0 0 1em;
+    background-color: var(--QLD-color-dark__background, #09549F);
+    color: #fff;
+    border-bottom: none;
+    padding: 0.6em 1rem;
+    margin: 0;
 }
 
 #dfc-registry {

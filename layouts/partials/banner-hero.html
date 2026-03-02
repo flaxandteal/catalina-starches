@@ -1,0 +1,28 @@
+<!-- Hero Banner - site-wide top banner -->
+{{ with site.Params.hero }}
+<div class="hero-banner loaded" id="hero-banner">
+  <div class="govuk-width-container" data-cy="hero-banner">
+    <div class="banner-inner">
+      <div class="banner-content banner-content-full">
+        <h1 class="banner-title-wrap">
+          <span class="banner-title">{{ .title }}</span>
+        </h1>
+        {{ with .abstract }}
+        <div class="banner-abstract banner-hero-abstract">
+          {{ . }}
+        </div>
+        {{ end }}
+        {{ with .buttonText }}
+        <div class="banner-cta" role="group" aria-label="Available options">
+          <div class="cta-buttons">
+            <a class="btn btn-primary govuk-button" href="{{ $.Site.Params.hero.buttonUrl | default "/" }}">
+              <span class="btn-label-default">{{ . }}</span>
+            </a>
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </div>
+</div>
+{{ end }}

@@ -249,11 +249,11 @@
 :: Construction Period ::
 {{#each ha.construction_phases}}
 {{#if construction_phase_timespan }}
-{{#if construction_phase_timespan.construction_phase_start_date }}
-{{{ construction_phase_timespan.construction_phase_start_date }}} - {{{ construction_phase_timespan.construction_phase_end_date }}}
+{{#if (and construction_phase_timespan.construction_phase_start_date (not construction_phase_timespan.construction_phase_start_date "nan")) }}
+{{{ construction_phase_timespan.construction_phase_start_date }}}{{#if construction_phase_timespan.construction_phase_end_date }} - {{{ construction_phase_timespan.construction_phase_end_date }}}{{/if}}
 {{else}}
-{{#if construction_phase_timespan.construction_phase_end_date }}
-{{{ construction_phase_timespan.construction_phase_start_date }}} - {{{ construction_phase_timespan.construction_phase_end_date }}}
+{{#if (and construction_phase_timespan.construction_phase_end_date (not construction_phase_timespan.construction_phase_end_date "nan")) }}
+{{{ construction_phase_timespan.construction_phase_end_date }}}
 {{/if}}
 {{/if}}
 {{/if}}
@@ -302,10 +302,18 @@
 
 ::Designation::
 {{#each ha.designation_and_protection_assignment }}
+{{#if designation_names.designation_name }}
 [Name] {{ designation_names.designation_name }}
-[Grade] {{{ default grade "N/A" }}}
-[Type] {{{ default designation_or_protection_type "N/A" }}}
+{{/if}}
+{{#if grade }}
+[Grade] {{{ grade }}}
+{{/if}}
+{{#if designation_or_protection_type }}
+[Type] {{{ designation_or_protection_type }}}
+{{/if}}
+{{#if scheduling_criteria }}
 [Criteria for Listing] {{{ join scheduling_criteria ", " }}}
+{{/if}}
 {{#if local_heritage_list_criteria_type }}
 [Criteria] {{ local_heritage_list_criteria_type }}
 {{/if}}
@@ -335,7 +343,9 @@
 {{#if ecrs}}
 ::External Cross References::
 {{#each ecrs }}
-[{{{ clean external_cross_reference_source }}}] {{ external_cross_reference }} — {{ external_cross_reference_notes.external_cross_reference_description_type }}: {{ external_cross_reference_notes.external_cross_reference_description }}
+{{#if (or external_cross_reference (clean external_cross_reference_source)) }}
+[{{{ default (clean external_cross_reference_source) "Source" }}}] {{ default external_cross_reference "(untitled)" }}{{#if external_cross_reference_notes.external_cross_reference_description_type }} — {{ external_cross_reference_notes.external_cross_reference_description_type }}{{/if}}{{#if external_cross_reference_notes.external_cross_reference_description }}: {{ external_cross_reference_notes.external_cross_reference_description }}{{/if}}
+{{/if}}
 {{/each}}
 ::end::
 {{/if}}

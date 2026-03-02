@@ -8,8 +8,8 @@ type: '_default'
 url: /
 layout: 'map-search'
 includeSearch: true
-center: "[-6.6, 54.6]"
-zoom: 8
+center: "[172.5, -41.5]"
+zoom: 5
 mobileZoom: 3
 map_config:
   defaultBasemap: "vector"
