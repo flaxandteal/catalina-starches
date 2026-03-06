@@ -9,6 +9,12 @@
             "resources": [
                 "registries.json"
             ]
+        },
+        "8d41e49e-a250-11e9-9eab-00224800b26d": {
+            "name": "Consultation",
+            "resources": [
+                "ca_arch_mon_output_df.json"
+            ]
         }
     }
 }

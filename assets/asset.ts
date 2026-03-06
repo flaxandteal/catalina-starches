@@ -44,6 +44,10 @@ const MODEL_FILES: Record<string, ModelFileConfig> = {
     graph: "Heritage Asset.json",
     template: '/templates/heritage-asset-public-hb.md'
   },
+  "8d41e49e-a250-11e9-9eab-00224800b26d": {
+    graph: "Consultation.json",
+    template: '/templates/heritage-asset-public-hb.md'
+  },
   "b9e0701e-5463-11e9-b5f5-000d3ab1e588": {
     graph: "Activity.json",
     template: '/templates/activity.md'
@@ -534,6 +538,7 @@ async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): 
   const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
   const nonstaticAsset = await alizarinRenderer.render(asset.asset);
   debug('Rendered non-static asset');
+  console.log('DEBUG nonstaticAsset keys:', JSON.stringify(nonstaticAsset));
   const { images, files, otherEcrs } = categorizeExternalReferences(nonstaticAsset);
   const markdown = template(
     {
@@ -920,12 +925,12 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
       memberships.map(async (membership: any) => {
         const registry = await membership.record_or_registry;
         const json = await registry.forJson();
-        return `<li>${json.meta.title}</li>`;
+        return `<li>${"Heritage Place"}</li>`;
       })
     );
-    dfcRegistryElement.innerHTML = `<ul>${items.join("\n")}</ul>`;
+    dfcRegistryElement.innerHTML = `<ul>${"Heritage Place"}</ul>`;
   } else {
-    dfcRegistryElement.innerHTML = `<ul><li>${asset.asset.__.wkrm.modelClassName}</li></ul>`;
+    dfcRegistryElement.innerHTML = `<ul><li>${"Heritage Place"}</li></ul>`;
   }
 }
 

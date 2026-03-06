@@ -6,7 +6,7 @@
     "filters": [
         {
             "name": "Category",
-            "graph": "HeritageItem",
+            "graph": "Consultation",
             "type": "array",
             "dynamic": true,
             "path": "construction_phases.*.phase_classification.monument_type.*.ancestors.0"
@@ -14,6 +14,7 @@
     ],
     "indexTemplates": {
         "HeritageItem": "heritage-asset-index-hb.md",
+        "Consultation": "heritage-asset-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
     "customDatatypes": {
@@ -35,11 +36,16 @@
                 "prebuild/business_data/owner_b.json",
                 "prebuild/business_data/occupier_b.json"
             ]
+        },
+        {
+            "resources": "prebuild/business_data/ca_arch_mon_output_df.json",
+            "public": true,
+            "slugPrefix": "ca_arch_"
         }
     ],
     "thumbnail": [
         {
-            "graph": "HeritageItem",
+            "graph": "Consultation",
             "path": "images"
         }
     ],
