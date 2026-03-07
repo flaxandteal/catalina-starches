@@ -38,16 +38,16 @@ class TreeGrid extends HTMLElement {
     <thead>
       <tr>
         <th scope="col">
-          Subject
+          Node Name
         </th>
         <th scope="col">
-          Summary
+          Value
         </th>
         <th scope="col">
-          Email
+          Node Alias
         </th>
         <th scope="col">
-          Email
+          Data Type
         </th>
       </tr>
     </thead>
