@@ -31,7 +31,12 @@
             ]
         },
         {
-            "resources": "prebuild/business_data/ca_arch_mon_output_df.json",
+            "resources": "prebuild/business_data/t_cabs_data.json",
+            "public": true,
+            "slugPrefix": "ca_bs_"
+        },
+        {
+            "resources": "prebuild/business_data/t_caar_data.json",
             "public": true,
             "slugPrefix": "ca_arch_"
         }
