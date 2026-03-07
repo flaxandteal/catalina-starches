@@ -4,13 +4,6 @@
         "location": "location_data.geometry.0.geospatial_coordinates"
     },
     "filters": [
-        {
-            "name": "Category",
-            "graph": "Consultation",
-            "type": "array",
-            "dynamic": true,
-            "path": "construction_phases.*.phase_classification.monument_type.*.ancestors.0"
-        }
     ],
     "indexTemplates": {
         "HeritageItem": "heritage-asset-index-hb.md",
@@ -44,10 +37,6 @@
         }
     ],
     "thumbnail": [
-        {
-            "graph": "Consultation",
-            "path": "images"
-        }
     ],
     "indexCharacters": 2000,
     "indexCharactersWarnOnly": true

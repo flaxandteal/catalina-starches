@@ -18,29 +18,6 @@
     {{/if}}
   </div>
 </details>
-{{ else if (equal title "Real Property Description (Lot on Plan)") }}
-<h2 id="heading-{{id}}">{{title}}</h2>
-<details class="govuk-details" open>
-  <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">{{title}}</span>
-  </summary>
-  <div class="govuk-details__text">
-    {{#if fields}}
-    <dl class="govuk-summary-list govuk-summary-list--no-border">
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">{{fields.0.label}}</dt>
-        <dd class="govuk-summary-list__value">
-          {{#each fields}}
-          <span>{{{value}}}</span>{{#unless @last}}, {{/unless}}
-          {{/each}}
-        </dd>
-      </div>
-    </dl>
-    {{else}}
-    {{{body}}}
-    {{/if}}
-  </div>
-</details>
 {{else}}
 <h2 id="heading-{{id}}">{{title}}</h2>
 <details class="govuk-details" {{#if initiallyExpanded}}open{{/if}}>

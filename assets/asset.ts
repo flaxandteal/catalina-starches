@@ -16,6 +16,7 @@ import {
 import { debug, debugError } from './debug';
 import { IAssetManager, AssetMetadata, resolveAssetManagerWith } from './managers';
 import { loadTemplate, getPrecompiledTemplate } from 'handlebar-utils';
+import { loadTreegrid } from './w3c-treegrid';
 
 // Types and interfaces
 interface AssetUrlParams {
@@ -511,22 +512,27 @@ function injectSections(sections: SectionedHtml): void {
 
 // Rendering functions
 async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>> {
-  const alizarinRenderer = new renderers.FlatMarkdownRenderer({
+  const alizarinRenderer = new renderers.MarkdownRenderer({
     ...RENDERER_OPTIONS,
     nodeToUrl: (node: staticTypes.StaticNode) => `@${node.alias}`
   });
 
   let markdown = await alizarinRenderer.render(asset.asset);
+
   if (Array.isArray(markdown)) {
     markdown = markdown.join("\n\n");
   }
 
+  const treegridElt = document.createElement('tree-grid');
+  document.getElementById('asset-overview').appendChild(treegridElt);
   const nodes = asset.asset.__.getNodeObjectsByAlias();
-  const sections = await renderToHtml(markdown, nodes, true);
 
-  injectSections(sections);
+  setupDialogLinks();
 
-  return {};
+  const nodeObjectsByAlias = asset.asset.__.getNodeObjectsByAlias();
+  loadTreegrid(markdown, treegridElt, nodeObjectsByAlias);
+
+  return buildImageDialogs([], asset.meta.title);
 }
 
 interface ImageRef {
@@ -919,6 +925,7 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
   const dfcRegistryElement = document.getElementById('dfc-registry');
   if (!dfcRegistryElement) return;
 
+  const name = asset.asset.__.wkrm.modelName;
   if (await asset.asset.__has('record_and_registry_membership')) {
     const memberships = await asset.asset.record_and_registry_membership;
     const items = await Promise.all(
@@ -928,9 +935,9 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
         return `<li>${"Heritage Place"}</li>`;
       })
     );
-    dfcRegistryElement.innerHTML = `<ul>${"Heritage Place"}</ul>`;
+    dfcRegistryElement.innerHTML = `<ul>${name}</ul>`;
   } else {
-    dfcRegistryElement.innerHTML = `<ul><li>${"Heritage Place"}</li></ul>`;
+    dfcRegistryElement.innerHTML = `<ul><li>${name}</li></ul>`;
   }
 }
 
