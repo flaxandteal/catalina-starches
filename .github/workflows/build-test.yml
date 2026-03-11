@@ -28,7 +28,7 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
         run: |
           aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/starches/prebuild/prebuild.tar prebuild.tar --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
-          tar -xzf prebuild.tar -C .
+          tar -xf prebuild.tar -C .
           rm prebuild.tar
           echo "Extracted files:"
           ls -la
