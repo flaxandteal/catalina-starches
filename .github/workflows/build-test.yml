@@ -1,14 +1,21 @@
 name: Build and Test
 
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 on:
   push:
     branches:
-      - '**' 
+      - '**'
 
 jobs:
   build_image_job:
     runs-on: self-hosted
     name: Build Docker Image
+    permissions:
+      contents: read
+      packages: write
     steps:
       - uses: actions/checkout@v3
         with:
@@ -16,8 +23,11 @@ jobs:
           lfs: false
 
       - name: Download and extract prebuild tarball
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
         run: |
-          curl -fsSL "${{ secrets.BLOB_BASE_URL }}/content/prebuild/${{ secrets.PREBUILD_TARBALL }}" -o prebuild.tar.gz
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/${{ secrets.PREBUILD_TARBALL }} prebuild.tar.gz --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
           tar -xzf prebuild.tar.gz -C .
           rm prebuild.tar.gz
           echo "Extracted files:"
@@ -32,38 +42,47 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Fetch site content from blob
-        env:
-          BLOB_BASE_URL: ${{ secrets.BLOB_BASE_URL }}
-        run: npx ts-node utils/fetch-content.ts
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Log in to Docker Registry
-        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      
       - name: Build and Push Docker Image
         run: |
-          docker build \
-            --build-arg BLOB_BASE_URL="${{ secrets.BLOB_BASE_URL }}" \
-            -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
-          docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker build . \
+            --file ./Dockerfile \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }} \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
+            --build-arg STARCHES_INCLUDE_PRIVATE=1
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
 
   test_job:
     needs: build_image_job
     runs-on: self-hosted
     name: Test Job
+    permissions:
+      contents: read
+      packages: read
     steps:
       - uses: actions/checkout@v3
       
-      - name: Log in to Docker Registry
-        run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Pull Docker Image
-        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
-      
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
+
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker create --name temp-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
           docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
       
