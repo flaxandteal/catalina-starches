@@ -16,7 +16,7 @@ jobs:
   deploy_job:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Deploy
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
@@ -29,9 +29,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Docker Image
-        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:${{ github.event.workflow_run.head_sha }}
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.event.workflow_run.head_sha }}
 
       - name: Push as latest
         run: |
-          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:${{ github.event.workflow_run.head_sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:latest
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-public:latest
+          docker tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.event.workflow_run.head_sha }} ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest
