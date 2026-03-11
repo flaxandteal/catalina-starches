@@ -27,9 +27,9 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.S3_ACCESS_KEY }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.S3_SECRET_KEY }}
         run: |
-          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/${{ secrets.PREBUILD_TARBALL }} prebuild.tar.gz --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
-          tar -xzf prebuild.tar.gz -C .
-          rm prebuild.tar.gz
+          aws s3 cp s3://${{ secrets.S3_BUCKET_NAME }}/${{ secrets.PREBUILD_TARBALL }} prebuild.tar --endpoint-url ${{ secrets.S3_ENDPOINT_URL }}
+          tar -xzf prebuild.tar -C .
+          rm prebuild.tar
           echo "Extracted files:"
           ls -la
 
