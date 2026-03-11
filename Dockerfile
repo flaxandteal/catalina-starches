@@ -1,6 +1,6 @@
 FROM node:23.10.0 AS build
 
-ARG DATA_FILE="ca_arch_mon_output_df.json"
+ARG DATA_FILE="t_cabs_data.json"
 
 ENV DATA_FILE=$DATA_FILE
 
