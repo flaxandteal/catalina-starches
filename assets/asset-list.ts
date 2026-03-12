@@ -20,7 +20,7 @@ import { loadTreegrid } from './w3c-treegrid';
 
 // Types and interfaces
 interface AssetUrlParams {
-  slug: string;
+  model: string;
   publicView: boolean;
 }
 
@@ -83,16 +83,16 @@ function initializeAlizarinConfig(): void {
 // URL parameter parsing (distinct from search context params)
 function parseAssetUrlParams(): AssetUrlParams {
   const urlParams = new URLSearchParams(window.location.search);
-  const slug = urlParams.get("slug");
+  const model = urlParams.get("model");
 
-  if (!slug) {
-    debug("No slug provided in URL");
-  } else if (slug !== slugify(slug)) {
-    debug("Slug does not match slugified form:", slug, "->", slugify(slug));
+  if (!model) {
+    debug("No model provided in URL");
+  } else if (model !== slugify(model)) {
+    debug("Slug does not match slugified form:", model, "->", slugify(model));
   }
 
   return {
-    slug: slug || '',
+    model: model || '',
     publicView: urlParams.get("full") !== "true"
   };
 }
@@ -105,6 +105,8 @@ async function initializeAlizarin(): Promise<typeof graphManager> {
     allGraphFile: () => "definitions/graphs/_all.json",
     graphToGraphFile: (graph: staticTypes.StaticGraphMeta) =>
       `definitions/graphs/resource_models/${graph.name.toString()}.json`,
+    graphIdToResourcesFiles: (graphId: staticTypes.StaticGraphMeta) =>
+      [`definitions/business_data/_${graphId.toString()}.json`],
     resourceIdToFile: (resourceId: string) =>
       `definitions/business_data/${resourceId}.json`,
     collectionIdToFile: (collectionId: string) =>
@@ -120,18 +122,12 @@ async function initializeAlizarin(): Promise<typeof graphManager> {
 }
 
 // Asset loading
-async function loadAsset(slug: string, gm: typeof graphManager): Promise<Asset> {
-  const asset = await gm.getResource(slug, false);
-  debug('Loaded asset from graph manager');
-  const meta = await getAssetMetadata(asset);
-  return { asset, meta };
-}
-
-async function loadMaritimeAsset(slug: string, gm: typeof graphManager): Promise<Asset> {
-  const MaritimeVessel = await gm.get("MaritimeVessel");
-  const asset = await MaritimeVessel.find(slug, false);
-  const meta = await getAssetMetadata(asset);
-  return { asset, meta };
+async function loadAssetList(model: string, gm: typeof graphManager): Promise<Asset> {
+  const rmvm = await gm.loadGraph(model);
+  console.log('Loaded rmvm');
+  const assets = await rmvm.allSummaries();
+  console.log('Loaded asset from graph manager');
+  return Promise.all(assets.map((asset) => getAssetMetadata(asset).then(meta => { return { asset, meta }; })));
 }
 
 async function fetchTemplate(asset: AlizarinModel<any>): Promise<HandlebarsTemplateDelegate | undefined> {
@@ -172,7 +168,7 @@ async function getAssetMetadata(asset: AlizarinModel<any>): Promise<AssetMetadat
     resourceinstanceid: `${await asset.id}`,
     geometry,
     location,
-    title: await asset.$.getName(true)
+    title: await asset.$.getName(true),
   };
 }
 
@@ -523,10 +519,6 @@ async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>
     markdown = markdown.join("\n\n");
   }
 
-  const returnElt = document.createElement('a');
-  returnElt.href = "../asset-list/?model=" + asset.asset.__.wkrm.graphId;
-  returnElt.innerText = "List all resources for this model";
-  document.getElementById('asset-overview').appendChild(returnElt);
   const treegridElt = document.createElement('tree-grid');
   document.getElementById('asset-overview').appendChild(treegridElt);
   const nodes = asset.asset.__.getNodeObjectsByAlias();
@@ -544,37 +536,31 @@ interface ImageRef {
   index: number;
 }
 
-async function renderAsset(asset: Asset, template: HandlebarsTemplateDelegate): Promise<Record<string, Dialog>> {
-  const alizarinRenderer = new renderers.MarkdownRenderer(RENDERER_OPTIONS);
-  const nonstaticAsset = await alizarinRenderer.render(asset.asset);
-  debug('Rendered non-static asset');
-  console.log('DEBUG nonstaticAsset keys:', JSON.stringify(nonstaticAsset));
-  const { images, files, otherEcrs } = categorizeExternalReferences(nonstaticAsset);
-  const markdown = template(
-    {
-      meta: asset.meta,
-      title: asset.meta.title,
-      ha: nonstaticAsset,
-      js: JSON.stringify(nonstaticAsset, null, 2),
-      images,
-      files,
-      ecrs: otherEcrs
-    },
-    {
-      allowProtoPropertiesByDefault: true,
-      allowProtoMethodsByDefault: true
+async function renderAssets(assetList: AssetList, template: HandlebarsTemplateDelegate): Promise<Record<string, Dialog>> {
+  const groups = new Map();
+  for (const { asset, meta } of assetList) {
+    const modelName = asset.__.wkrm.modelName;
+    if (!groups.has(modelName)) {
+      groups.set(modelName, []);
     }
-  );
 
-  const nodes = asset.asset.__.getNodeObjectsByAlias();
+    groups.get(modelName).push(
+      [
+        meta.title,
+        `<li><a href='../asset/?slug=cat-${meta.resourceinstanceid.substr(0, 20)}-${meta.resourceinstanceid.substr(0, 6)}&full=true'>${meta.title}</a></li>`
+      ]
+    );
+  }
 
-  const sections = await renderToHtml(markdown, nodes, false);
-
-  injectSections(sections);
-
-  setupDialogLinks();
-
-  return buildImageDialogs(images, asset.meta.title);
+  const assetElement = document.getElementById('asset-overview');
+  for (const [ modelName, rows ] of groups.entries()) {
+    assetElement.innerHTML += `
+    <h1>${modelName}</h1>
+    <ul>
+    ${rows.sort(([a, a2], [b, b2]) => a.localeCompare(b)).map(a => a[1]).join('\n')}
+    </ul>
+    `;
+  }
 }
 
 function categorizeExternalReferences(nonstaticAsset: any): {
@@ -763,9 +749,9 @@ function addAssetToMap(asset: Asset) {
 // Asset page manager
 class AssetManager implements IAssetManager {
   private graphManager: typeof graphManager | null = null;
-  private asset: Asset | null = null;
+  private assetList: Asset | null = null;
   private dialogs: Record<string, Dialog> = {};
-  private _slug: string = '';
+  private _model: string = '';
   private _publicView: boolean = true;
 
   async initialize(): Promise<void> {
@@ -774,47 +760,45 @@ class AssetManager implements IAssetManager {
     debug("Alizarin initialized");
   }
 
-  setUrlParams(slug: string, publicView: boolean): void {
-    this._slug = slug;
+  setUrlParams(model: string, publicView: boolean): void {
+    this._model = model;
     this._publicView = publicView;
   }
 
-  async loadAssetFromUrl(): Promise<Asset> {
-    const slug = this._slug;
-    debug("Loading asset:", slug, "publicView:", this._publicView);
+  async loadAssetsFromUrl(): Promise<Asset> {
+    const model = this._model;
+    debug("Loading asset:", model, "publicView:", this._publicView);
 
-    if (!slug) {
-      throw new Error("No slug provided - add ?slug=<resource-id> to the URL");
+    if (!model) {
+      throw new Error("No model provided - add ?model=<model-id> to the URL");
     }
 
     if (!this.graphManager) {
       throw new Error("AssetManager not initialized");
     }
 
-    const isMaritime = slug.startsWith('MAR') || slug.startsWith('MAL');
-    this.asset = isMaritime
-      ? await loadMaritimeAsset(slug, this.graphManager)
-      : await loadAsset(slug, this.graphManager);
+    this.assetList = await loadAssetList(model, this.graphManager);
 
-    window.alizarinAsset = this.asset;
-    debug("Asset loaded and attached to window.alizarinAsset");
+    debug("Assets loaded");
 
-    return this.asset;
+    return this.assetList;
   }
 
   async render(publicView: boolean): Promise<void> {
-    if (!this.asset) {
-      throw new Error("No asset loaded");
+    if (!this.assetList) {
+      throw new Error("No assets loaded");
     }
 
-    const template = await fetchTemplate(this.asset.asset);
+    renderAssets(this.assetList);
 
-    this.dialogs = (publicView && template)
-      ? await renderAsset(this.asset, template)
-      : await renderAssetForDebug(this.asset);
+    // const template = await fetchTemplate(this.asset.asset);
 
-    this.setupShowDialog();
-    debug("Dialogs configured:", Object.keys(this.dialogs));
+    // this.dialogs = (publicView && template)
+    //   ? await renderAsset(this.asset, template)
+    //   : await renderAssetForDebug(this.asset);
+
+    // this.setupShowDialog();
+    // debug("Dialogs configured:", Object.keys(this.dialogs));
   }
 
   private setupShowDialog(): void {
@@ -834,94 +818,8 @@ class AssetManager implements IAssetManager {
     };
   }
 
-  getAsset(): Asset | null {
-    return this.asset;
-  }
-}
-
-// Navigation setup
-async function setupAssetNavigation(currentId: string): Promise<void> {
-  debug("Setting up asset navigation for:", currentId);
-
-  const searchParams = await getSearchContextParams();
-  updateBreadcrumbs(searchParams);
-
-  if (!await hasSearchContext()) {
-    debug("No search context available");
-    hideNavigationCounters();
-    return;
-  }
-
-  debug("Search context found");
-  const { prev, next, position, total } = await getNavigation(currentId);
-  debug("Navigation:", { prev, next, position, total });
-
-  const sections = [
-    { location: 'top', prevId: 'prev-asset-top', nextId: 'next-asset-top', counterId: 'position-counter-top' },
-    { location: 'bottom', prevId: 'prev-asset-bottom', nextId: 'next-asset-bottom', counterId: 'position-counter-bottom' }
-  ];
-
-  for (const section of sections) {
-    const prevButton = document.getElementById(section.prevId) as HTMLAnchorElement | null;
-    const nextButton = document.getElementById(section.nextId) as HTMLAnchorElement | null;
-    const counter = document.getElementById(section.counterId);
-
-    if (counter) {
-      if (position && total) {
-        counter.innerHTML = `Result ${position} of ${total}`;
-        counter.classList.remove('js-hidden');
-      } else {
-        counter.classList.add('js-hidden');
-      }
-    }
-
-    if (prevButton) {
-      if (prev) {
-        prevButton.href = await getAssetUrlWithContext(prev);
-        prevButton.classList.remove('js-hidden');
-      } else {
-        prevButton.classList.add('js-hidden');
-      }
-    }
-
-    if (nextButton) {
-      if (next) {
-        nextButton.href = await getAssetUrlWithContext(next);
-        nextButton.classList.remove('js-hidden');
-      } else {
-        nextButton.classList.add('js-hidden');
-      }
-    }
-  }
-}
-
-function hideNavigationCounters(): void {
-  const topCounter = document.getElementById('position-counter-top');
-  const bottomCounter = document.getElementById('position-counter-bottom');
-  if (topCounter) topCounter.classList.add('js-hidden');
-  if (bottomCounter) bottomCounter.classList.add('js-hidden');
-}
-
-// UI setup functions
-function setupSwapLink(slug: string, publicView: boolean): void {
-  const swapLink = document.querySelector<HTMLAnchorElement>("a#swap-link");
-  if (swapLink) {
-    swapLink.href = `?slug=${slug}&full=${publicView}`;
-    swapLink.innerHTML = publicView ? "visit full view" : "visit public view";
-  }
-}
-
-async function setupBackLinks(): Promise<void> {
-  const backUrl = await getSearchUrlWithContext('');
-  document.querySelectorAll<HTMLAnchorElement>('a.back-link').forEach(elt => {
-    elt.href = backUrl;
-  });
-}
-
-function setupAssetTitle(title: string): void {
-  const titleEl = document.getElementById("asset-title");
-  if (titleEl) {
-    titleEl.innerText = title;
+  getAssetList(): Asset | null {
+    return this.assetList;
   }
 }
 
@@ -945,57 +843,6 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
   }
 }
 
-async function setupLegacyRecord(asset: Asset, publicView: boolean): Promise<any[] | null> {
-  if (publicView || !(await asset.asset.__has('_legacy_record'))) {
-    const container = document.getElementById("legacy-record-container");
-    if (container) container.classList.add('js-hidden');
-    return null;
-  }
-
-  let legacyData = await asset.asset._legacy_record;
-  if (legacyData === false) {
-    const container = document.getElementById("legacy-record-container");
-    if (container) container.classList.add('js-hidden');
-    return null;
-  }
-
-  if (!Array.isArray(legacyData)) {
-    legacyData = [legacyData];
-  }
-
-  const legacyRecord: any[] = [];
-  for (const record of legacyData) {
-    const dataString = await record;
-    const parsed = JSON.parse(dataString);
-    legacyRecord.push(
-      Object.fromEntries(
-        Object.entries(parsed).map(([key, block]) => {
-          try {
-            return [key, JSON.parse(block as string)];
-          } catch {
-            return [key, block];
-          }
-        })
-      )
-    );
-  }
-
-  const legacyEl = document.getElementById("legacy-record");
-  if (legacyEl) {
-    legacyEl.innerText = JSON.stringify(legacyRecord, null, 2);
-  }
-
-  return legacyRecord;
-}
-
-function setupDemoWarning(asset: Asset, publicView: boolean, hasLegacyRecord: boolean): void {
-  const warningEl = document.getElementById("demo-warning");
-  if (!warningEl) return;
-
-  const isPublicScope = Array.isArray(asset.asset.$.scopes) && asset.asset.$.scopes.includes('public');
-  warningEl.classList.toggle('js-hidden', isPublicScope && publicView && !hasLegacyRecord);
-}
-
 function formatTimeElements(): void {
   document.querySelectorAll<HTMLTimeElement>('time').forEach(elt => {
     const date = new Date(elt.dateTime);
@@ -1010,36 +857,22 @@ window.addEventListener('DOMContentLoaded', async () => {
   await assetManagerInstance.initialize();
   resolveAssetManagerWith(assetManagerInstance);
 
-  const { slug, publicView } = parseAssetUrlParams();
-  assetManagerInstance.setUrlParams(slug, publicView);
-  const asset = await assetManagerInstance.loadAssetFromUrl();
+  const { model, publicView } = parseAssetUrlParams();
+  assetManagerInstance.setUrlParams(model, publicView);
+  const assetList = await assetManagerInstance.loadAssetsFromUrl();
 
   // Run UI setup tasks concurrently where possible
   // Render content and set up map separately so a render error doesn't block the map
   const renderResult = Promise.all([
     assetManagerInstance.render(publicView),
-    setupRegistryInfo(asset),
-    setupBackLinks(),
   ]);
-
-  // Always attempt to show the map, even if rendering has issues
-  addAssetToMap(asset);
 
   await renderResult;
 
-  setupAssetTitle(asset.meta.title);
-  setupSwapLink(slug, publicView);
-
-  const legacyRecord = await setupLegacyRecord(asset, publicView);
-  setupDemoWarning(asset, publicView, !!legacyRecord);
-
   formatTimeElements();
 
-  // Navigation setup with slight delay for localStorage availability
-  setTimeout(() => setupAssetNavigation(slug), 100);
+  // Store current model for browser back button focus behavior
+  sessionStorage.setItem('lastViewedModel', model);
 
-  // Store current slug for browser back button focus behavior
-  sessionStorage.setItem('lastViewedAsset', slug);
-
-  history.pushState({}, "", `?slug=${slug}&full=${!publicView}`);
+  history.pushState({}, "", `?model=${model}&full=${!publicView}`);
 }, { once: true });
