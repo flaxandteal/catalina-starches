@@ -1,5 +1,4 @@
 {{ ha.system_reference_numbers.uuid.resourceid }}
-{{ ha.system_reference_numbers.legacyid.legacy_id }}
 
 {{#each ha.location_data.addresses }}
 {{ street.street_value }} , {{ town_or_city.town_or_city_value }} , {{ postcode.postcode_value }}

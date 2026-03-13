@@ -93,7 +93,7 @@ function parseAssetUrlParams(): AssetUrlParams {
 
   return {
     slug: slug || '',
-    publicView: urlParams.get("full") !== "true"
+    publicView: urlParams.get("full") === "false"
   };
 }
 

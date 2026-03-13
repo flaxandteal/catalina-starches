@@ -93,7 +93,7 @@ function parseAssetUrlParams(): AssetUrlParams {
 
   return {
     model: model || '',
-    publicView: urlParams.get("full") !== "true"
+    publicView: urlParams.get("full") === "true"
   };
 }
 
