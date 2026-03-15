@@ -15,22 +15,6 @@
     },
     "sources": [
         {
-            "resources": "prebuild/business_data/aai_merged.json",
-            "public": true,
-            "slugPrefix": "AAI_"
-        },
-        {
-            "resources": "prebuild/business_data/buildings_.*.json",
-            "public": true,
-            "slugPrefix": "BDG_",
-            "dependencies": [
-                "prebuild/business_data/persons_merged.json",
-                "prebuild/business_data/architects.json",
-                "prebuild/business_data/owner_b.json",
-                "prebuild/business_data/occupier_b.json"
-            ]
-        },
-        {
             "resources": "prebuild/business_data/t_cabs_data.json",
             "public": true,
             "slugPrefix": "ca_bs_"

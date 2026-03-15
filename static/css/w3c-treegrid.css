@@ -21,6 +21,9 @@
   cursor: default;
 }
 
+#treegrid tbody tr:nth-child(odd) { background-color: #eeeeee; }
+#treegrid tbody tr:nth-child(even) { background-color: #f4f4f4; }
+
 #treegrid-col1,
 #treegrid-col3 {
   width: 30%;

@@ -149,26 +149,11 @@ async function getAssetMetadata(asset: AlizarinModel<any>): Promise<AssetMetadat
   let location: [number, number] | null = null;
   let geometry: any = null;
 
-  if (await asset.__has('location_data') && await asset.location_data) {
-    const locationData = await asset.location_data;
-
-    if (await locationData.__has('statistical_output_areas') && await locationData.statistical_output_areas) {
-      for await (const outputArea of await locationData.statistical_output_areas) {
-        debug(outputArea);
-      }
-    }
-
-    if (await locationData.geometry && await locationData.geometry.geospatial_coordinates) {
-      geometry = await (await asset.location_data.geometry.geospatial_coordinates).forJson();
-      location = extractCentrePoint(geometry);
-    }
-  }
-
   return {
     resourceinstanceid: `${await asset.id}`,
     geometry,
     location,
-    title: await asset.$.getName(true),
+    title: await asset.getName(true),
   };
 }
 
@@ -547,7 +532,7 @@ async function renderAssets(assetList: AssetList, template: HandlebarsTemplateDe
     groups.get(modelName).push(
       [
         meta.title,
-        `<li><a href='../asset/?slug=cat-${meta.resourceinstanceid.substr(0, 20)}-${meta.resourceinstanceid.substr(0, 6)}&full=true'>${meta.title}</a></li>`
+        `<li><a href='../asset/?slug=${await asset.getSlug()}&full=true'>${await asset.getName()}</a></li>`
       ]
     );
   }
@@ -557,7 +542,7 @@ async function renderAssets(assetList: AssetList, template: HandlebarsTemplateDe
     assetElement.innerHTML += `
     <h1>${modelName}</h1>
     <ul>
-    ${rows.sort(([a, a2], [b, b2]) => a.localeCompare(b)).map(a => a[1]).join('\n')}
+    ${rows.sort(([a, a2], [b, b2]) => a && a.localeCompare(b)).map(a => a[1]).join('\n')}
     </ul>
     `;
   }
@@ -760,6 +745,10 @@ class AssetManager implements IAssetManager {
     debug("Alizarin initialized");
   }
 
+  getGraphManager(): typeof graphManager | null {
+    return this.graphManager;
+  }
+
   setUrlParams(model: string, publicView: boolean): void {
     this._model = model;
     this._publicView = publicView;
@@ -823,6 +812,17 @@ class AssetManager implements IAssetManager {
   }
 }
 
+async function setupResourceModelInfo(gm: typeof graphManager): Promise<void> {
+  const dfcRegistryElement = document.getElementById('resource-models');
+  if (!dfcRegistryElement) return;
+  let innerHtml = "<ul>";
+  for (const [modelClassName, wkrm] of gm.wkrms) {
+    innerHtml += `<li><a href="?model=${wkrm.graphId}">${modelClassName}</a></li>`;
+  }
+  innerHtml += "</ul>";
+  dfcRegistryElement.innerHTML = innerHtml;
+}
+
 async function setupRegistryInfo(asset: Asset): Promise<void> {
   const dfcRegistryElement = document.getElementById('dfc-registry');
   if (!dfcRegistryElement) return;
@@ -830,14 +830,16 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
   const name = asset.asset.__.wkrm.modelName;
   if (await asset.asset.__has('record_and_registry_membership')) {
     const memberships = await asset.asset.record_and_registry_membership;
-    const items = await Promise.all(
-      memberships.map(async (membership: any) => {
-        const registry = await membership.record_or_registry;
-        const json = await registry.forJson();
-        return `<li>${"Heritage Place"}</li>`;
-      })
-    );
-    dfcRegistryElement.innerHTML = `<ul>${name}</ul>`;
+    if (memberships) {
+      const items = await Promise.all(
+        memberships.map(async (membership: any) => {
+          const registry = await membership.record_or_registry;
+          const json = await registry.forJson();
+          return `<li>${"Heritage Place"}</li>`;
+        })
+      );
+    }
+    dfcRegistryElement.innerHTML = `<ul><li>${name}</li></ul>`;
   } else {
     dfcRegistryElement.innerHTML = `<ul><li>${name}</li></ul>`;
   }
@@ -865,6 +867,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   // Render content and set up map separately so a render error doesn't block the map
   const renderResult = Promise.all([
     assetManagerInstance.render(publicView),
+    setupResourceModelInfo(assetManagerInstance.getGraphManager())
   ]);
 
   await renderResult;

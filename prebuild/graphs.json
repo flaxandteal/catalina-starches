@@ -9,7 +9,19 @@
         "8d41e49e-a250-11e9-9eab-00224800b26d": {
             "name": "Consultation",
             "resources": [
-                "ca_arch_mon_output_df.json"
+                "t_cabs_data.json"
+            ]
+        },
+        "22477f01-1a44-11e9-b0a9-000d3ab1e588": {
+            "name": "Person",
+            "resources": [
+                "t_cabs_per_data.json"
+            ]
+        },
+        "076f9381-7b00-11e9-8d6b-80000b44d1d9": {
+            "name": "Heritage Place",
+            "resources": [
+                "t_cabs_mon_data.json"
             ]
         }
     }

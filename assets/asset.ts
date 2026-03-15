@@ -210,7 +210,7 @@ function extractCentrePoint(geometry: any): [number, number] | null {
 const RENDERER_OPTIONS = {
   conceptValueToUrl: async () => null,
   domainValueToUrl: async () => null,
-  resourceReferenceToUrl: async () => null
+  resourceReferenceToUrl: async (rr) => await rr.getSlug().then(s => s && `?slug=${s}`)
 };
 
 function createGovukMarkedRenderer(
@@ -534,7 +534,7 @@ async function renderAssetForDebug(asset: Asset): Promise<Record<string, Dialog>
   setupDialogLinks();
 
   const nodeObjectsByAlias = asset.asset.__.getNodeObjectsByAlias();
-  loadTreegrid(markdown, treegridElt, nodeObjectsByAlias);
+  await loadTreegrid(markdown, treegridElt, nodeObjectsByAlias);
 
   return buildImageDialogs([], asset.meta.title);
 }
@@ -932,14 +932,16 @@ async function setupRegistryInfo(asset: Asset): Promise<void> {
   const name = asset.asset.__.wkrm.modelName;
   if (await asset.asset.__has('record_and_registry_membership')) {
     const memberships = await asset.asset.record_and_registry_membership;
-    const items = await Promise.all(
-      memberships.map(async (membership: any) => {
-        const registry = await membership.record_or_registry;
-        const json = await registry.forJson();
-        return `<li>${"Heritage Place"}</li>`;
-      })
-    );
-    dfcRegistryElement.innerHTML = `<ul>${name}</ul>`;
+    if (memberships) {
+      const items = await Promise.all(
+        memberships.map(async (membership: any) => {
+          const registry = await membership.record_or_registry;
+          const json = await registry.forJson();
+          return `<li>${"Heritage Place"}</li>`;
+        })
+      );
+    }
+    dfcRegistryElement.innerHTML = `<ul><li>${name}</li></ul>`;
   } else {
     dfcRegistryElement.innerHTML = `<ul><li>${name}</li></ul>`;
   }

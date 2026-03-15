@@ -2,6 +2,7 @@
 // https://www.w3.org/WAI/ARIA/apg/patterns/treegrid/examples/treegrid-1/?cell=start
 //
 'use strict';
+import { marked } from 'marked';
 class TreeGrid extends HTMLElement {
   constructor() {
       // establish prototype chain
@@ -27,6 +28,7 @@ class TreeGrid extends HTMLElement {
 
       // creating the inner HTML of the editable list element
       editableListContainer.innerHTML = `
+  <a id="treegrid-expand-all" href="#">Expand All</a>
   <table id="treegrid-table"
          role="treegrid"
          aria-label="Inbox">
@@ -60,7 +62,7 @@ class TreeGrid extends HTMLElement {
       shadow.appendChild(editableListContainer);
   }
 
-  populate(
+  async populate(
     listItems,
     nodeObjectsByAlias
   ) {
@@ -70,12 +72,16 @@ class TreeGrid extends HTMLElement {
     var doAllowRowFocus = cellParam !== 'force';
     var doStartRowFocus = doAllowRowFocus && cellParam !== 'start';
     const rows = [];
-    function addLevel(listItems, lvl, hide=false) {
+    async function addLevel(listItems, lvl, hide=false) {
       const listEntries = Object.entries(listItems).sort((a, b) => a && a[0] && a[0].localeCompare(b[0]));
       for (const [n, item] of Object.entries(listEntries)) {
+        if (item[0].startsWith("__")) {
+          continue; // e.g. __clean
+        }
         const node = nodeObjectsByAlias.get(item[0]);
-        console.log(node, item, item[1], typeof item[1]);
+        console.log(node, item, item[1], typeof item[1], listItems);
         if (item[1] instanceof String || typeof item[1] !== 'object') {
+          const parsed = await marked.parse(`${item[1]}`);
           rows.push(`
         <tr role="row"
             aria-level="${lvl}"
@@ -85,7 +91,7 @@ class TreeGrid extends HTMLElement {
             ${node.name}
           </td>
           <td role="gridcell">
-            ${item[1]}
+            ${parsed}
           </td>
           <td role="gridcell">
             ${node.alias}
@@ -96,18 +102,20 @@ class TreeGrid extends HTMLElement {
         </tr>
         `);
         } else {
-          const expand = !(item[1] instanceof Array && Object.keys(item[1]).length > 5);
+          const empty = Object.keys(item[1]).length === 0;
+          const expand = !(item[1] instanceof Array && Object.keys(item[1]).length > 5) && !empty;
           const hideBelow = hide || !expand;
           rows.push(`
         <tr role="row"
             aria-level="${lvl}"
             aria-posinset="${parseInt(n) + 1}"
-            aria-setsize="${listEntries.length}"
-            aria-expanded="${expand}">
+            aria-setsize="${listEntries.length}" ${hide ? 'class="hidden"' : ''}
+            aria-expanded="${!hideBelow}">
           <td role="gridcell">
             ${node.name}
           </td>
           <td role="gridcell">
+            ${empty ? "<em>(empty)</em>" : ""}
           </td>
           <td role="gridcell">
             ${node.alias}
@@ -119,16 +127,18 @@ class TreeGrid extends HTMLElement {
         `);
           if (item[1] instanceof Array) {
             for (const [m, itemRow] of Object.entries(item[1])) {
+               const nested = !(itemRow instanceof String || typeof itemRow !== 'object');
                rows.push(`
               <tr role="row"
                   aria-level="${lvl + 1}"
                   aria-posinset="${parseInt(m) + 1}"
                   aria-setsize="${item[1].length}" ${hideBelow ? 'class="hidden"' : ''}
-                  aria-expanded="true">
+                  ${ nested ? `aria-expanded="${!hideBelow}"` : "" }>
                 <td role="gridcell">
                   [ ${parseInt(m) + 1} / ${item[1].length} ]
                 </td>
                 <td role="gridcell">
+                  ${ nested ? "" : await marked.parse(`${itemRow}`) }
                 </td>
                 <td role="gridcell">
                   ${node.alias}
@@ -138,15 +148,18 @@ class TreeGrid extends HTMLElement {
                 </td>
               </tr>
               `);
-              addLevel(itemRow, lvl + 2, hideBelow);
+              console.log('adding level', itemRow);
+              if (nested) {
+                await addLevel(itemRow, lvl + 2, hideBelow);
+              }
             }
           } else {
-            addLevel(item[1], lvl + 1, hideBelow);
+            await addLevel(item[1], lvl + 1, hideBelow);
           }
         }
       };
     }
-    addLevel(listItems, 1);
+    await addLevel(listItems, 1);
     treegridElem.innerHTML = rows.join("\n");
     function initAttributes() {
       // Make sure focusable elements are not in the tab order
@@ -505,6 +518,36 @@ class TreeGrid extends HTMLElement {
       }
     }
 
+    function expandAll(doExpand) {
+      var rows = getAllRows();
+      var didChange;
+
+      for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var rowLevel = getLevel(row);
+
+        if (isExpandable(row)) {
+          setAriaExpanded(row, doExpand);
+        }
+
+        if (rowLevel > 1) {
+          var willHideRow = !doExpand;
+          var isRowHidden = row.classList.contains('hidden');
+
+          if (willHideRow !== isRowHidden) {
+            if (willHideRow) {
+              row.classList.add('hidden');
+            } else {
+              row.classList.remove('hidden');
+            }
+            didChange = true;
+          }
+        }
+      }
+
+      return didChange;
+    }
+
     // Mirror aria-expanded from the row to the first cell in that row
     // (TBD is this a good idea? How else will screen reader user hear
     // that the cell represents the opportunity to collapse/expand rows?)
@@ -655,6 +698,14 @@ class TreeGrid extends HTMLElement {
     treegridElem.addEventListener('keydown', onKeyDown);
     treegridElem.addEventListener('click', onClick);
     treegridElem.addEventListener('dblclick', onDoubleClick);
+
+    var expandAllLink = shadow.querySelector('#treegrid-expand-all');
+    expandAllLink.addEventListener('click', function (event) {
+      event.preventDefault();
+      var allExpanded = expandAllLink.textContent === 'Collapse All';
+      expandAll(!allExpanded);
+      expandAllLink.textContent = allExpanded ? 'Expand All' : 'Collapse All';
+    });
     // Polyfill for focusin necessary for Firefox < 52
     window.addEventListener(
       window.onfocusin ? 'focusin' : 'focus',
@@ -680,10 +731,10 @@ function getQuery() {
   return getQuery.cached;
 }
 
-export function loadTreegrid(listItems, tg, nodeObjectsByAlias) {
+export async function loadTreegrid(listItems, tg, nodeObjectsByAlias) {
   // Supports url parameter ?cell=force or ?cell=start (or leave out parameter)
   console.log(tg, listItems);
-  tg.populate(
+  await tg.populate(
     listItems,
     nodeObjectsByAlias
   );
