@@ -26,9 +26,9 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
 RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_mon_data.json.pi --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_reg_data.json.pi --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_per_data.json.pi --prefix cat- --summary --include-private
+RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_mon_data.json --prefix cat- --summary --include-private
+RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_reg_data.json --prefix cat- --summary --include-private
+RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_per_data.json --prefix cat- --summary --include-private
 
 RUN npx starches-builder index --site docs --include-private
 
