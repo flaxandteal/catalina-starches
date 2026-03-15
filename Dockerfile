@@ -34,7 +34,7 @@ RUN npx starches-builder index --site docs --include-private
 
 RUN npm run precompile:templates
 
-RUN hugo mod get && hugo
+RUN GONOSUMCHECK=github.com/flaxandteal/starches hugo mod get && hugo
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
