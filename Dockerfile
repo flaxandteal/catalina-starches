@@ -1,9 +1,5 @@
 FROM node:23.10.0 AS build
 
-ARG DATA_FILE="t_cabs_data.json"
-
-ENV DATA_FILE=$DATA_FILE
-
 WORKDIR /app
 
 # Install dependencies first (better caching)
@@ -25,16 +21,13 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_mon_data.json --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_reg_data.json --prefix cat- --summary --include-private
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/t_cabs_per_data.json --prefix cat- --summary --include-private
+RUN (for DATA_FILE in $(ls -1 prebuild/business_data); do npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
 
 RUN npx starches-builder index --site docs --include-private
 
 RUN npm run precompile:templates
 
-RUN GONOSUMCHECK=github.com/flaxandteal/starches hugo mod get && hugo
+RUN hugo mod get && hugo
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine
