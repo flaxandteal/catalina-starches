@@ -38,7 +38,7 @@
     "marked": "^17.0.1",
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.46",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.47",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
