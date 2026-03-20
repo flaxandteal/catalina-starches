@@ -1,7 +1,7 @@
 {
     "paths": {
-        "geometry": "location_data.geometry.0.geospatial_coordinates",
-        "location": "location_data.geometry.0.geospatial_coordinates"
+        "geometry": "location_data.geometry.geospatial_coordinates",
+        "location": "location_data.geometry.geospatial_coordinates"
     },
     "filters": [
     ],
