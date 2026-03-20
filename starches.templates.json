@@ -1,7 +1,6 @@
 {
   "templateSources": [
     {
-      "module": "github.com/flaxandteal/govukhugo",
       "dir": "static/templates",
       "htmlTemplates": [
         "result-card-template.html",

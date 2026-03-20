@@ -4,16 +4,10 @@
         "location": "location_data.geometry.0.geospatial_coordinates"
     },
     "filters": [
-        {
-            "name": "Category",
-            "graph": "HeritageItem",
-            "type": "array",
-            "dynamic": true,
-            "path": "construction_phases.*.phase_classification.monument_type.*.ancestors.0"
-        }
     ],
     "indexTemplates": {
         "HeritageItem": "heritage-asset-index-hb.md",
+        "Consultation": "heritage-asset-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
     "customDatatypes": {
@@ -21,35 +15,17 @@
     },
     "sources": [
         {
-            "resources": "prebuild/business_data/registries.json",
+            "resources": "prebuild/business_data/t_cabs_data.json",
             "public": true,
-            "searchFor": [
-                "3a6ce8b9-0357-4a72-b9a9-d8fdced04360"
-            ],
-            "slugPrefix": "REG_"
+            "slugPrefix": "ca_bs_"
         },
         {
-            "resources": "prebuild/business_data/aai_merged.json",
+            "resources": "prebuild/business_data/t_caar_data.json",
             "public": true,
-            "slugPrefix": "AAI_"
-        },
-        {
-            "resources": "prebuild/business_data/buildings_.*.json",
-            "public": true,
-            "slugPrefix": "BDG_",
-            "dependencies": [
-                "prebuild/business_data/persons_merged.json",
-                "prebuild/business_data/architects.json",
-                "prebuild/business_data/owner_b.json",
-                "prebuild/business_data/occupier_b.json"
-            ]
+            "slugPrefix": "ca_arch_"
         }
     ],
     "thumbnail": [
-        {
-            "graph": "HeritageItem",
-            "path": "images"
-        }
     ],
     "indexCharacters": 2000,
     "indexCharactersWarnOnly": true

@@ -580,6 +580,10 @@
    9. PAGEFIND INTEGRATION
    ========================================================================== */
 
+.pagefind-modular-list-excerpt h1 {
+    display: none;
+}
+
 .filter-options-wrap .pagefind-modular-filter-pills {
     overflow-x: auto;
     flex-direction: column;
