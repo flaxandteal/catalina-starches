@@ -6,7 +6,7 @@ title: 'Catalina Heritage Register'
 theme: 'dark'
 type: '_default'
 layout: 'asset'
-location: '[54,-6]'
+location: '[-41.5, 172.5]'
 carousel:
   config: 'coverflow'
   includeButtons: true

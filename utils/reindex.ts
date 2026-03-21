@@ -17,7 +17,7 @@ import { fileURLToPath } from 'url';
 
 Handlebars.registerHelper("replace", (base, fm, to) => base ? base.replace(fm, to) : "");
 Handlebars.registerHelper("await", (val) => val);
-Handlebars.registerHelper("default", function (a, b) {return a === undefined || a === null ? b : a;});
+Handlebars.registerHelper("default", function (a, b) {return a === undefined || a === null || a === '' ? b : a;});
 
 const SCRIPT_DIR = dirname(fileURLToPath(import.meta.url));
 const FOR_ARCHES = process.argv.includes('--for-arches');

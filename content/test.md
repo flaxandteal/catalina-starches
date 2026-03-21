@@ -4,6 +4,6 @@ draft = false
 title = 'Test'
 type = '_default'
 layout = 'asset'
-location = '[54,-6]'
+location = '[-41.5, 172.5]'
 +++
 

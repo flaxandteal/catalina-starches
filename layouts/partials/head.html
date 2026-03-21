@@ -1,0 +1,55 @@
+<head>
+  <meta charset="utf-8">
+  {{ $title := print .Site.Title " | " .Title }}
+  {{ if .IsHome }}{{ $title = .Site.Title }}{{ end }}
+  {{ with .Params.tabTitle }}{{ $title = . }}{{ end }}
+  <title>{{ $title }}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0c0c">
+
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+  {{ with $.Site.Params.noindex }}
+  <meta name="robots" content="noindex">
+  {{ end }}
+
+  {{ with $.Site.Params.Govuk }}
+  <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="mask-icon" href="{{ "images/govuk-mask-icon.svg" | absURL }}" color="#0b0c0c">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ "images/govuk-apple-touch-icon-180x180.png" | absURL }}">
+  <link rel="apple-touch-icon" sizes="167x167" href="{{ "images/govuk-apple-touch-icon-167x167.png" | absURL }}">
+  <link rel="apple-touch-icon" sizes="152x152" href="{{ "images/govuk-apple-touch-icon-152x152.png" | absURL }}">
+  <link rel="apple-touch-icon" href="{{ "images/govuk-apple-touch-icon.png" | absURL }}">
+  {{ end }}
+
+  <!--[if !IE 8]><!-->
+  <link href="{{ "css/govuk-frontend-4.0.0.min.css" | absURL }}" rel="stylesheet">
+  <!--<![endif]-->
+
+  <!--[if IE 8]>
+    <link href="/stylesheets/govuk-frontend-ie8-4.0.0.min.css" rel="stylesheet">
+  <![endif]-->
+
+  <link href="{{ "css/dashboard-layout.css" | absURL }}" rel="stylesheet">
+
+  {{ with $.Site.Params.Govuk }}
+  <link href="{{ "css/font-govuk.css" | absURL}}" rel="stylesheet">
+  {{else }}
+  <link href="{{ "css/font-override.css" | absURL}}" rel="stylesheet">
+  {{ end }}
+
+  <!-- code syntax highlighting -->
+  <link href="{{ "css/syntax.css" | absURL }}" rel="stylesheet">
+  <link href="{{ "css/asset.css" | absURL }}" rel="stylesheet">
+  <link href="{{ "css/w3c-treegrid.css" | absURL }}" rel="stylesheet">
+
+  <script src="{{ "rmarkdown/jquery-3.6.0/jquery-3.6.0.min.js" | absURL }}"></script>
+
+  <!-- Handlebars runtime + precompiled templates (must load before ES modules) -->
+  {{ partial "starches/head" . }}
+
+  {{ with $.Site.Params.Govuk }}
+  <meta property="og:image" content="{{ "images/govuk-opengraph-image.png" | absURL }}">
+  {{ end }}
+
+</head>

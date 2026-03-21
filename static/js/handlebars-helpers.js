@@ -24,8 +24,8 @@
       return a.some(x => x && (!Array.isArray(x) || x.length > 0));
     }
   });
-  Handlebars.registerHelper("default", (a, b) => a === undefined || a === null ? b : a);
-  Handlebars.registerHelper("defaulty", (a, b) => a != undefined && a != null && a != false ? a : b);
+  Handlebars.registerHelper("default", (a, b) => a === undefined || a === null || a === '' ? b : a);
+  Handlebars.registerHelper("defaulty", (a, b) => a != undefined && a != null && a != false && a !== '' ? a : b);
   Handlebars.registerHelper("equal", (a, b) => a == b);
   Handlebars.registerHelper("or", (a, b) => a || b);
   Handlebars.registerHelper("join", (...args) => {

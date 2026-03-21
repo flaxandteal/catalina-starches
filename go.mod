@@ -1,4 +1,4 @@
-module github.com/flaxandteal/qld-quartz
+module github.com/flaxandteal/catalina-starches
 
 go 1.24.6
 

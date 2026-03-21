@@ -7,10 +7,7 @@
         "filter-list-template.html",
         "asset-nodegroup-template.html",
         "map-dialog-template.html"
-      ]
-    },
-    {
-      "dir": "static/templates",
+      ],
       "mdTemplates": [
         "heritage-asset-public-hb.md",
         "activity.md"

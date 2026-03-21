@@ -1,18 +1,12 @@
 FROM node:23.10.0 AS build
 
-ARG DATA_FILE="test_data.json"
-ARG BLOB_BASE_URL
-
-ENV DATA_FILE=$DATA_FILE
-ENV BLOB_BASE_URL=$BLOB_BASE_URL
-
 WORKDIR /app
 
 # Install dependencies first (better caching)
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy source
+# Copy source 
 COPY . .
 
 # Install Go (required for Hugo modules)
@@ -27,9 +21,9 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-RUN npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix qld- --summary
+RUN (for DATA_FILE in $(ls -1 prebuild/business_data); do npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
 
-RUN npx starches-builder index --site docs
+RUN npx starches-builder index --site docs --include-private
 
 RUN npm run precompile:templates
 
