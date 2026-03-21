@@ -1,7 +1,5 @@
 go 1.24.6
 
 use .
-use ../govukhugo
 use ../starches
 // use ../starches/debug
-use ../hugo-cookies

@@ -3,7 +3,7 @@ name: Build and Test
 on:
   push:
     branches:
-      - '**' 
+      - '**'
 
 jobs:
   build_image_job:
@@ -44,8 +44,8 @@ jobs:
         run: |
           docker build \
             --build-arg BLOB_BASE_URL="${{ secrets.BLOB_BASE_URL }}" \
-            -t ghcr.io/flaxandteal/quartz-starches:${{ github.sha }} .
-          docker push ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+            -t ghcr.io/flaxandteal/catalina-starches:${{ github.sha }} .
+          docker push ghcr.io/flaxandteal/catalina-starches:${{ github.sha }}
 
   test_job:
     needs: build_image_job
@@ -58,12 +58,12 @@ jobs:
         run: echo ${{ secrets.DOCKER_REGISTRY_TOKEN }} | docker login ghcr.io -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
       
       - name: Pull Docker Image
-        run: docker pull ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+        run: docker pull ghcr.io/flaxandteal/catalina-starches:${{ github.sha }}
       
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker create --name temp-container ghcr.io/flaxandteal/quartz-starches:${{ github.sha }}
+          docker create --name temp-container ghcr.io/flaxandteal/catalina-starches:${{ github.sha }}
           docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
       
