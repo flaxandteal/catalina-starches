@@ -49,15 +49,23 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker Image
+      - name: Build Docker Image
         run: |
           docker build . \
             --file ./Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }} \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=1
+
+      - name: Push Docker Image (SHA tag)
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
+
+      - name: Tag and Push latest (main only)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          docker tag \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
 
   test_job:
     needs: build_image_job
