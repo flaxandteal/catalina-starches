@@ -5,7 +5,7 @@
 # (generated from blob storage by fetch-site-config.ts)
 
 baseURL: '/'
-languageCode: 'en-gb'
+languageCode: 'en'
 title: 'Heritage Register'  # Fallback title
 publishDir: "docs"
 
@@ -35,3 +35,16 @@ security:
     getenv:
       - '^BLOB_'
       - '^HUGO_'
+
+defaultContentLanguage: "en"
+defaultContentLanguageInSubdir: true
+
+languages:
+  en:
+    languageName: "English"
+    contentDir: "content/en"
+    weight: 1
+  bg:
+    languageName: "Bulgarian"
+    contentDir: "content/bg"
+    weight: 2
