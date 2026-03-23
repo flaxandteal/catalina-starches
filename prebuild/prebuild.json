@@ -6,7 +6,7 @@
     "filters": [
     ],
     "indexTemplates": {
-        "HeritageItem": "heritage-asset-index-hb.md",
+        "Monument": "heritage-asset-index-hb.md",
         "Consultation": "heritage-asset-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
