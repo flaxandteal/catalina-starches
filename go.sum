@@ -4,3 +4,5 @@ github.com/flaxandteal/hugo-cookies v0.1.1 h1:EbL0sDwSxJZNLXFyBy6hfM7os65g4ruBPe
 github.com/flaxandteal/hugo-cookies v0.1.1/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
 github.com/flaxandteal/starches v0.2.1-alpha.53 h1:pF9BSsb2IB4I3zEEmVUF8llcGeQBuyhug0Xn3/W4l4k=
 github.com/flaxandteal/starches v0.2.1-alpha.53/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.55 h1:Gi/yvglpcB+Pq13rLQm+OS/DtY4EU8UDq11+rtc3mxg=
+github.com/flaxandteal/starches v0.2.1-alpha.55/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=

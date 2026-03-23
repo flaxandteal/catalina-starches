@@ -15,6 +15,7 @@ assets/jsconfig.json
 assets/jsconfig.json
 .vscode
 prebuild
+prebuild.*
 # Config generated from site-config.yaml
 # config/_default/params.yaml
 
