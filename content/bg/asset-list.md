@@ -1,8 +1,8 @@
 ---
 date: '2025-01-30T03:36:57-08:00'
 draft: false
-tabTitle: 'Resource: Catalina Heritage Register'
-title: 'Catalina Heritage Register'
+tabTitle: 'Ресурс: Регистър на наследството на Каталина'
+title: 'Регистър на наследството на Каталина'
 theme: 'dark'
 type: '_default'
 layout: 'asset-list'
@@ -12,10 +12,10 @@ carousel:
   includeButtons: true
   showModal: true
 breadcrumbs:
-  - name: 'Home'
+  - name: 'Дом'
     url: '/'
-  - name: 'Search'
+  - name: 'Търсене'
     url: '/map'
-  - name: 'Asset'
+  - name: 'Ресурс'
     active: true
 ---

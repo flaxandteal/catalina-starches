@@ -1,7 +1,7 @@
 +++
 date = '2025-06-14T15:30:00+01:00'
 draft = false
-title = 'Cookies'
+title = 'Бисквитки'
 +++
 
 When we provide services, we want to make them easy, useful and reliable. Where services are delivered on the internet, this sometimes involves placing small amounts of information on your computer, mobile phone or tablet. These are known as cookies. They cannot be used to identify you personally.

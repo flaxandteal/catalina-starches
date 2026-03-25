@@ -1,7 +1,7 @@
 ---
 date: '2025-07-05T03:36:57-08:00'
 draft: false
-title: 'Frequently Asked Questions'
+title: 'Често задавани въпроси'
 promoPanel:
   video:
     id: "pinewood-landing-video"
