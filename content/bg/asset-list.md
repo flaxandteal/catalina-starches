@@ -13,9 +13,9 @@ carousel:
   showModal: true
 breadcrumbs:
   - name: 'Дом'
-    url: '/'
+    url: '/bg'
   - name: 'Търсене'
-    url: '/map'
+    url: '/bg/map'
   - name: 'Ресурс'
     active: true
 ---

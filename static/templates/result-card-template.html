@@ -8,10 +8,10 @@
         </div>
         <p class="result-links">
             <div class="govuk-button-group">
-                <a href="{{url}}" role="button" draggable="false" class="govuk-button" data-module="govuk-button">{{ T "view" }}</a>
+                <a href="{{url}}" role="button" draggable="false" class="govuk-button" data-module="govuk-button">{{ i18n "view" }}</a>
                 <a href="{{url}}" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button" target="_blank">{{ T "open_tab" }}</a>
                 {{#if location}}
-                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-location="{{location}}" onclick="window.__starchesManagers.primaryMap.then(function(map) { map.flyTo({center: [{{location}}], zoom: {{zoomLevel}}) })">{{ T "zoom" }}</button>
+                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-location="{{location}}" onclick="window.__starchesManagers.primaryMap.then(function(map) { map.flyTo({center: [{{location}}], zoom: {{zoomLevel}}) })">{{ i18n "zoom" }}</button>
                 {{/if}}
             </div>
         </p>

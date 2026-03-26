@@ -15,6 +15,9 @@ import { groupByCounty } from './counties.ts';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+
+var helper = require("handlebars-helper-i18n");
+Handlebars.registerHelper("i18n", helper.i18n);
 Handlebars.registerHelper("replace", (base, fm, to) => base ? base.replace(fm, to) : "");
 Handlebars.registerHelper("await", (val) => val);
 Handlebars.registerHelper("default", function (a, b) {return a === undefined || a === null || a === '' ? b : a;});
