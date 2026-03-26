@@ -38,6 +38,7 @@ security:
 
 defaultContentLanguage: "en"
 defaultContentLanguageInSubdir: true
+defaultContentLanguageInSubdir: false
 
 languages:
   en:
