@@ -37,7 +37,6 @@ security:
       - '^HUGO_'
 
 defaultContentLanguage: "en"
-defaultContentLanguageInSubdir: true
 defaultContentLanguageInSubdir: false
 
 languages:
