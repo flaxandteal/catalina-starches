@@ -31,6 +31,18 @@
                 "t_ms_cd_data.json",
                 "t_cabs_mon_data.json"
             ]
+        },
+        "f9045867-8861-11ea-b06f-f875a44e0e11": {
+            "name": "Period",
+            "resources": []
+        },
+        "b07cfa6f-894d-11ea-82aa-f875a44e0e11": {
+            "name": "Archive Source",
+            "resources": []
+        },
+        "a535a235-8481-11ea-a6b9-f875a44e0e11": {
+            "name": "Digital Object",
+            "resources": []
         }
     }
 }
