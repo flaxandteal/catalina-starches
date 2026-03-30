@@ -2,21 +2,6 @@
 date: '2025-07-05T03:36:57-08:00'
 draft: false
 title: 'Frequently Asked Questions'
-promoPanel:
-  video:
-    id: "pinewood-landing-video"
-    showTranscript: false
-    duration: "2:46"
-    thumbnailURL: "https://stnonprodweb7zck.blob.core.windows.net/media/site_images/601175_north_pine_school_of_arts_and_tom_petrie_memorial.jpeg"
-    description: "Video demonstrating the usage of this website"
-    src: "https://stnonprodweb7zck.blob.core.windows.net/media/video/Placeholder video - QHR Website.mp4"
-    # type: "video/mp4"        # Optional, defaults to video/mp4
-    # poster: "img/poster.jpg" # Optional thumbnail before play
-    # autoplay: false          # Optional, autoplays muted if true
-    # loop: false              # Optional, loops video
-    # controls: true           # Optional, shows controls (default: true)
-  # image: "img/promo-image.jpg"   # Fallback if no video
-  # imageAlt: "Promotional Image"
 ---
 
 # Frequently Asked Questions
