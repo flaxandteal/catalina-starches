@@ -8,6 +8,7 @@
     "indexTemplates": {
         "Monument": "heritage-asset-index-hb.md",
         "Consultation": "heritage-asset-index-hb.md",
+        "Maritime_Vessel": "maritime-vessel-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
     "customDatatypes": {
