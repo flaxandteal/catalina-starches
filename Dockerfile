@@ -21,7 +21,13 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 *.json); do npx  --node-options=--inspect --node-options=--max-old-space-size=8192  starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
+# Heap ceiling kept at 4096 MiB deliberately. The CI runner nodes
+# (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
+# heap alongside dind + buildkit + containerd; raising it will cause
+# node-level OOM, not a clean "out of heap" failure. The previous
+# --node-options=--inspect flag was removed as it was debug leftover
+# and binds port 9229 for no benefit in CI.
+RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 *.json); do npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
 
 RUN npx starches-builder index --site docs --include-private
 
