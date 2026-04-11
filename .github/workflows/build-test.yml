@@ -46,12 +46,51 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # Diagnostic snapshot of runner pod state before the build.
+      # Lets us correlate build failures with real memory/disk numbers
+      # instead of guessing. `|| true` on each command so a missing tool
+      # never fails the job.
+      - name: Debug runner resources (pre-build)
+        run: |
+          echo "== uname =="
+          uname -a || true
+          echo "== memory (free -m) =="
+          free -m || true
+          echo "== memory (/proc/meminfo top) =="
+          head -n 5 /proc/meminfo || true
+          echo "== disk (df -h) =="
+          df -h || true
+          echo "== cgroup memory limit =="
+          cat /sys/fs/cgroup/memory.max 2>/dev/null || \
+            cat /sys/fs/cgroup/memory/memory.limit_in_bytes 2>/dev/null || \
+            echo "cgroup memory files not readable"
+          echo "== docker version =="
+          docker version || true
+          echo "== docker info (short) =="
+          docker info 2>/dev/null | grep -E "Server Version|Storage Driver|Runtimes|Kernel Version|Operating System|Total Memory|CPUs" || true
+          echo "== docker system df =="
+          docker system df || true
+
       - name: Build Docker Image
         run: |
           docker build . \
             --file ./Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=1
+
+      # Only runs if build failed. Captures post-mortem state — disk may
+      # have filled, dockerd may have been partially killed, etc.
+      - name: Debug runner resources (post-failure)
+        if: failure()
+        run: |
+          echo "== memory =="
+          free -m || true
+          echo "== disk =="
+          df -h || true
+          echo "== docker system df =="
+          docker system df || true
+          echo "== dmesg tail (if available) =="
+          dmesg 2>/dev/null | tail -n 50 || echo "dmesg not accessible from runner container"
 
       - name: Push Docker Image (SHA tag)
         run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
