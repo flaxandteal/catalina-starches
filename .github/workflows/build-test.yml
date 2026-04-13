@@ -111,8 +111,7 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest-${{ github.run_id }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest-${{ github.run_id }}
 
-      - name: Push to internal registry (main only)
-        if: github.ref == 'refs/heads/main'
+      - name: Push to internal registry
         run: |
           # INTERNAL_REGISTRY_PASSWORD is injected as a pod env var from
           # the registry-push-creds Kubernetes secret. Skip if not set

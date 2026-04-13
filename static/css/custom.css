@@ -275,7 +275,6 @@
 }
 
 @media (max-width: 991.98px) {
-
     .radius .banner-container-with-image-slide,
     .radius .banner-radius,
     .radius .swiper {
@@ -672,9 +671,11 @@
     .banner-container-with-image-slide .swiper {
         height: 200px;
     }
+
     .swiper-slide.hero img{
         height: 50%;
     }
+
     .slide-text {
         right: 0.5rem;
         top: 0.5rem;
@@ -926,6 +927,7 @@
     .sketchfab-embed-wrapper iframe {
         height: 300px;
     }
+
     .full-width-content {
         min-height: unset;
     }
