@@ -31,7 +31,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
 
 #RMV RUN npx starches-builder index --site docs
 
-RUN npm run pagefind:fallback
+#RMV RUN npm run pagefind:fallback
 
 RUN npm run precompile:templates
 
