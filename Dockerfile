@@ -1,4 +1,4 @@
-FROM node:23.10.0 AS build
+FROM node:22-bookworm AS build
 
 WORKDIR /app
 
@@ -10,9 +10,9 @@ RUN npm install
 COPY . .
 
 # Install Go (required for Hugo modules)
-RUN curl -O -L https://go.dev/dl/go1.23.4.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.23.4.linux-amd64.tar.gz && \
-    rm go1.23.4.linux-amd64.tar.gz
+RUN curl -O -L https://go.dev/dl/go1.24.6.linux-amd64.tar.gz && \
+    tar -C /usr/local -xzf go1.24.6.linux-amd64.tar.gz && \
+    rm go1.24.6.linux-amd64.tar.gz
 ENV PATH="/usr/local/go/bin:$PATH"
 
 # Install Hugo Extended (needed for SCSS)

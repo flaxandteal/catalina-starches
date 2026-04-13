@@ -75,7 +75,13 @@ jobs:
 
       - name: Build Docker Image
         run: |
+          # --network=host: BuildKit creates its own bridge with MTU 1500,
+          # ignoring dockerd's --mtu=1400. This causes large downloads
+          # (npm tarballs, Go modules) to hang on the NZ→Azure return path.
+          # --network=host makes RUN steps use the pod's network directly,
+          # inheriting the correct MTU from the Kubernetes overlay.
           docker build . \
+            --network=host \
             --file ./Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=1
