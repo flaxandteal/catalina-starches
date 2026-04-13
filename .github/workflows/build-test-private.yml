@@ -122,8 +122,8 @@ jobs:
             ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
           docker push ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
 
-  test_job:
-    needs: build_image_job
+  test_job_private:
+    needs: build_image_job_private
     runs-on: [new-zealand]
     name: Test Job
     permissions:
