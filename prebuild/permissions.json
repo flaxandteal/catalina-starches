@@ -45,7 +45,6 @@
         "national_grid_references": true,
         "localities_administrative_areas": true,
         "current_base_map": true,
-        "record_and_registry_membership": true,
         "location_data": true,
         "spatial_metadata_descriptions": true,
         "geometry": true
@@ -60,8 +59,7 @@
         "": true,
         "geometry": true,
         "activity_names": true,
-        "activity_descriptions": true,
-        "associated_license": true
+        "activity_descriptions": true
     },
     "Person": {},
     "Period": {},
