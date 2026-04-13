@@ -13,9 +13,9 @@ on:
       - '**'
 
 jobs:
-  build_image_job:
+  build_image_job_private:
     runs-on: [new-zealand]
-    name: Build Docker Image
+    name: "Build Docker Image (private)"
     permissions:
       contents: read
       packages: write
