@@ -3,6 +3,8 @@ name: Build and Test
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
+  INTERNAL_REGISTRY: registry.srv-registry.svc.cluster.local:5000
+  INTERNAL_IMAGE: catalina-starches-private
 
 on:
   workflow_dispatch:
@@ -102,6 +104,16 @@ jobs:
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
           docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
+
+      - name: Push to internal registry (main only)
+        if: github.ref == 'refs/heads/main' && env.INTERNAL_REGISTRY_PASSWORD != ''
+        run: |
+          echo "${INTERNAL_REGISTRY_PASSWORD}" | docker login "${INTERNAL_REGISTRY}" \
+            --username "${INTERNAL_REGISTRY_USER}" --password-stdin
+          docker tag \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
+            ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
+          docker push ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
 
   test_job:
     needs: build_image_job

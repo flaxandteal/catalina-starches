@@ -110,6 +110,20 @@ a.govuk-footer__copyright-logo {
   background-image: none !important;
 }
 
+/* This site is not a UK Crown Copyright / OGL-licensed property.
+   The footer licence statement and crown copyright link come from the
+   upstream govukhugo partial, which we consume via a Hugo module and do
+   not fork locally. Hiding them here keeps the override in one place
+   alongside the existing `header.govuk-header { display: none; }` rule
+   that strips the rest of the GOV.UK identity. If a local
+   layouts/partials/footer.html override is added later, remove these
+   rules and edit the partial directly. */
+.govuk-footer__licence-logo,
+.govuk-footer__licence-description,
+a.govuk-footer__copyright-logo {
+    display: none !important;
+}
+
 .govuk-footer__meta {
     margin-left: 0;
     margin-right: 0;

@@ -31,6 +31,8 @@ RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 *.json); do npx --node-
 
 RUN npx starches-builder index --site docs --include-private
 
+RUN npm run pagefind:fallback
+
 RUN npm run precompile:templates
 
 RUN hugo mod get && hugo

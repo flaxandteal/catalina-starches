@@ -29,6 +29,8 @@ module:
       target: static
     - source: node_modules/alizarin/dist/alizarin_bg.wasm
       target: static/wasm/alizarin_bg.wasm
+    - source: assets/alizarin-loader-inline.ts
+      target: assets/alizarin-loader.ts
 
 security:
   funcs:
