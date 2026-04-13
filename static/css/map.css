@@ -387,10 +387,12 @@ p.acknowledgement {
 }
 
 /* no useful filters currently */
+/* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
 #filterToggle {
-    visibility: hidden
+    visibility: hidden;
 }
 
+/* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
 #filterContent {
-    visibility: hidden
+    visibility: hidden;
 }
