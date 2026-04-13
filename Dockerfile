@@ -27,9 +27,9 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
 # node-level OOM, not a clean "out of heap" failure. The previous
 # --node-options=--inspect flag was removed as it was debug leftover
 # and binds port 9229 for no benefit in CI.
-RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_ms_cd_data.json); do npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary; done)
+#RMV RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_ms_cd_data.json); do npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary; done)
 
-RUN npx starches-builder index --site docs
+#RMV RUN npx starches-builder index --site docs
 
 RUN npm run pagefind:fallback
 
