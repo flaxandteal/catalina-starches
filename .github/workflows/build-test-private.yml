@@ -4,7 +4,7 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
   INTERNAL_REGISTRY: registry.srv-registry.svc.cluster.local:5000
-  INTERNAL_IMAGE: catalina-starches
+  INTERNAL_IMAGE: catalina-starches-private
 
 on:
   workflow_dispatch:
@@ -76,8 +76,8 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build . \
-            --file ./Dockerfile \
-            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
+            --file ./Dockerfile.private \
+            --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=1
 
       # Only runs if build failed. Captures post-mortem state — disk may
@@ -95,15 +95,15 @@ jobs:
           dmesg 2>/dev/null | tail -n 50 || echo "dmesg not accessible from runner container"
 
       - name: Push Docker Image (SHA tag)
-        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
+        run: docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
 
       - name: Tag and Push latest (main only)
         if: github.ref == 'refs/heads/main'
         run: |
           docker tag \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest-${{ github.run_id }}
-          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:latest-${{ github.run_id }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:latest-${{ github.run_id }}
 
       - name: Push to internal registry (main only)
         if: github.ref == 'refs/heads/main'
@@ -118,7 +118,7 @@ jobs:
           echo "${INTERNAL_REGISTRY_PASSWORD}" | docker login "${INTERNAL_REGISTRY}" \
             --username "${INTERNAL_REGISTRY_USER}" --password-stdin
           docker tag \
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
           docker push ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
 
@@ -140,12 +140,12 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull Docker Image
-        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
+        run: docker pull ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
 
       - name: Extract docs Directory
         run: |
           mkdir -p docs
-          docker create --name temp-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }}
+          docker create --name temp-container ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }}
           docker cp temp-container:/usr/share/nginx/html/. ./docs/
           docker rm temp-container
       
