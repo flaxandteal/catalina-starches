@@ -91,7 +91,7 @@
     "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.58/alizarin-0.2.1-alpha.58.tgz",
     "@alizarin/clm": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.58/alizarin-clm-0.2.1-alpha.58.tgz",
     "@alizarin/filelist": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.58/alizarin-filelist-0.2.1-alpha.58.tgz",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.61",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.62",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
