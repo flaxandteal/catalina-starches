@@ -3,7 +3,7 @@ name: Build and Test
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
-  INTERNAL_REGISTRY: registry.srv-registry.svc:5000
+  INTERNAL_REGISTRY: http://registry.srv-registry.svc:5000
   INTERNAL_IMAGE: catalina-starches
 
 on:
