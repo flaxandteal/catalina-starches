@@ -31,11 +31,14 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
 
 #RMV RUN npx starches-builder index --site docs
 
-#RMV RUN npm run pagefind:fallback
-
 RUN npm run precompile:templates
 
 RUN hugo mod get && hugo
+
+# Generate base64 .txt sidecars for all pagefind binary files.
+# Enterprise proxies (Zscaler) block gzip-compressed binaries;
+# the fetch interceptor in pagefind.ts falls back to these.
+RUN npm run pagefind:fallback
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine

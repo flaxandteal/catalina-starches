@@ -31,11 +31,14 @@ RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 *.json); do npx --node-
 
 RUN npx starches-builder index --site docs --include-private
 
-RUN npm run pagefind:fallback
-
 RUN npm run precompile:templates
 
 RUN hugo mod get && hugo
+
+# Generate base64 .txt sidecars for all pagefind binary files.
+# Enterprise proxies (Zscaler) block gzip-compressed binaries;
+# the fetch interceptor in pagefind.ts falls back to these.
+RUN npm run pagefind:fallback
 
 # ---- SERVE WITH NGINX ----
 FROM nginxinc/nginx-unprivileged:1.25-alpine

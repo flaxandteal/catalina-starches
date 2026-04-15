@@ -129,7 +129,7 @@
   "private": true,
   "scripts": {
     "build": "npm run precompile:templates",
-    "pagefind:fallback": "for f in docs/pagefind/wasm.*.pagefind; do [ -f \"$f\" ] && base64 -w0 \"$f\" > \"${f}.txt\" && echo \"Created ${f}.txt\"; done",
+    "pagefind:fallback": "find docs/pagefind -type f \\( -name '*.pagefind' -o -name '*.pf_meta' -o -name '*.pf_fragment' -o -name '*.pf_index' -o -name '*.pf_filter' \\) | while read f; do base64 -w0 \"$f\" > \"${f}.txt\" && echo \"Created ${f}.txt\"; done",
     "build:full": "npm run fetch:all && npm run build && hugo --minify",
     "cy:open": "cypress open",
     "cy:run": "cypress run --config baseUrl=http://127.0.0.1:1313",
