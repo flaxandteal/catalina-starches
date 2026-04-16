@@ -576,12 +576,10 @@
 
 
 /* ==========================================================================
-   9. PAGEFIND INTEGRATION
+   9. PAGEFIND INTEGRATION & SEARCH RESULTS
    ========================================================================== */
 
-.pagefind-modular-list-excerpt h1 {
-    display: none;
-}
+/* --- Filter pills --- */
 
 .filter-options-wrap .pagefind-modular-filter-pills {
     overflow-x: auto;
@@ -594,6 +592,113 @@
     overflow-x: unset;
     padding: 0;
     flex: 1;
+}
+
+/* --- Result card layout --- */
+
+.pagefind-modular-list-content {
+    width: 100%;
+}
+
+.pagefind-modular-list-result {
+    padding: 0.75rem 0;
+    gap: 0;
+    border-top-color: #b1b4b6;
+}
+
+.pagefind-modular-list-result:last-of-type {
+    border-bottom-color: #b1b4b6;
+}
+
+/* --- Result title --- */
+
+.pagefind-modular-list-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0rem 0.25rem;
+    padding: 0.3rem 0.1rem 0 0.2rem;
+    line-height: 1.35;
+    width: 100%;
+    display: inline-block;
+    background-color: #eee;
+}
+
+.pagefind-modular-list-title a {
+    color: #1d70b8;
+    text-decoration: none;
+}
+
+.pagefind-modular-list-title a:hover {
+    text-decoration: underline;
+    color: #003078;
+}
+
+.pagefind-modular-list-title a:visited {
+    color: #4c2c92;
+}
+
+/* --- Excerpt area --- */
+
+.pagefind-modular-list-excerpt {
+    font-size: 0.875rem;
+    color: #505a5f;
+    line-height: 1.5;
+    min-width: 0;
+}
+
+/* Type label (e.g. "Heritage Item", "DigitalObject") rendered from #### in rawContent */
+.pagefind-modular-list-excerpt h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #505a5f;
+    margin: 0 0 0.25rem;
+    padding: 0;
+    line-height: 1.4;
+}
+
+/* Any other headings that slip through */
+.pagefind-modular-list-excerpt h2,
+.pagefind-modular-list-excerpt h3,
+.pagefind-modular-list-excerpt h5,
+.pagefind-modular-list-excerpt h6 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #505a5f;
+    margin: 0 0 0.15rem;
+    line-height: 1.4;
+}
+
+/* Metadata paragraphs (pipe-delimited reference codes, counts) */
+.pagefind-modular-list-excerpt p {
+    font-size: 0.8rem;
+    color: #505a5f;
+    margin: 0 0 0.15rem;
+    line-height: 1.4;
+}
+
+/* --- Action buttons --- */
+
+.pagefind-modular-list-result .result-links {
+    margin: 0.35rem 0 0;
+}
+
+.pagefind-modular-list-result .govuk-button-group {
+    margin-bottom: 0;
+}
+
+.pagefind-modular-list-result .govuk-button {
+    font-size: 0.8rem;
+    padding: 6px 12px 5px;
+    margin-bottom: 0;
+    min-height: 0;
+}
+
+/* --- Thumbnails (already hidden in cleangov, reinforce here) --- */
+
+.pagefind-modular-list-thumb {
+    display: none;
 }
 
 
