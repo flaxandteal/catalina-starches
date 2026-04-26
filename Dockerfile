@@ -6,7 +6,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-# Copy source 
+# Copy source
 COPY . .
 
 # Install Go (required for Hugo modules)
@@ -21,15 +21,15 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     mv hugo /usr/local/bin/ && \
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
-# Heap ceiling kept at 4096 MiB deliberately. The CI runner nodes
-# (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
-# heap alongside dind + buildkit + containerd; raising it will cause
-# node-level OOM, not a clean "out of heap" failure. The previous
-# --node-options=--inspect flag was removed as it was debug leftover
-# and binds port 9229 for no benefit in CI.
-#RMV RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_ms_cd_data.json); do npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary; done)
+# Download pre-built Rós Madair indexer binary from release
+ARG ROS_MADAIR_VERSION=v0.1.0-alpha.3
+RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${ROS_MADAIR_VERSION}/ros-madair-build-linux-amd64" \
+      -o /usr/local/bin/ros-madair-build && \
+    chmod +x /usr/local/bin/ros-madair-build
 
-#RMV RUN npx starches-builder index --site docs
+# Build Rós Madair definitions index from prebuild data.
+# The base URI must match ros_madair.rdf_base_uri in hugo.yaml.
+RUN ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 https://doc.govt.nz/
 
 RUN npm run precompile:templates
 
