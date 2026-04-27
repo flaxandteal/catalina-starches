@@ -28,6 +28,11 @@
     ],
     "thumbnail": [
     ],
+    "files": [{
+        "graph": "Monument",
+        "node": ".images",
+        "prefix": "/media/"
+    }],
     "indexCharacters": 2000,
     "indexCharactersWarnOnly": true
 }
