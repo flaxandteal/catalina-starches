@@ -60,8 +60,8 @@
     }
   },
   "dependencies": {
-    "@alizarin/clm": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.70/alizarin-clm-0.2.1-alpha.70.tgz",
-    "@alizarin/filelist": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.70/alizarin-filelist-0.2.1-alpha.70.tgz",
+    "@alizarin/clm": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.71/alizarin-clm-0.2.1-alpha.71.tgz",
+    "@alizarin/filelist": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.71/alizarin-filelist-0.2.1-alpha.71.tgz",
     "@drustack/leaflet.resetview": "^1.9.2",
     "@esri/maplibre-arcgis": "^1.0.0",
     "@mapbox/mapbox-gl-draw": "^1.5.1",
@@ -74,7 +74,7 @@
     "@types/geojson": "^7946.0.16",
     "@types/leaflet": "^1.9.17",
     "@types/leaflet.markercluster": "^1.5.5",
-    "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.70/alizarin-0.2.1-alpha.70.tgz",
+    "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v0.2.1-alpha.71/alizarin-0.2.1-alpha.71.tgz",
     "dompurify": "^3.2.5",
     "flatbush": "^4.4.0",
     "flatgeobuf": "^4.0.1",
@@ -92,7 +92,7 @@
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
     "ros-madair": "https://github.com/flaxandteal/ros-madair/releases/download/v0.1.0-alpha.4/ros-madair-0.1.0-alpha.4.tgz",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.70",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.71",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
     "tsx": "^4.21.0"
