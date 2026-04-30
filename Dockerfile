@@ -1,10 +1,10 @@
-FROM node:22-bookworm AS build
+FROM node:22.14-bookworm AS build
 
 WORKDIR /app
 
 # Install dependencies first (better caching)
 COPY package.json package-lock.json ./
-RUN npm install
+RUN npm ci
 
 # Copy source
 COPY . .
@@ -30,6 +30,14 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
 # Build Rós Madair definitions index from prebuild data.
 # The base URI must match ros_madair.rdf_base_uri in hugo.yaml.
 RUN ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 https://doc.govt.nz/
+
+# Heap ceiling kept at 4096 MiB deliberately. The CI runner nodes
+# (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
+# heap alongside dind + buildkit + containerd; raising it will cause
+# node-level OOM, not a clean "out of heap" failure.
+RUN python3 utils/unify.py && npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
+
+RUN npx starches-builder index --site docs --include-private
 
 RUN npm run precompile:templates
 
