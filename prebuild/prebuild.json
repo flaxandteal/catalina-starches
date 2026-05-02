@@ -31,7 +31,13 @@
     "files": [{
         "graph": "Monument",
         "node": ".images",
-        "prefix": "/media/"
+        "matchUrlPrefix": "/media",
+        "prefix": "https://cat-starches.flaxandteal.co.nz/media"
+    }, {
+        "graph": "DigitalObject",
+        "node": ".file_content.file",
+        "matchUrlPrefix": "/media",
+        "prefix": "https://cat-starches.flaxandteal.co.nz/media"
     }],
     "indexCharacters": 2000,
     "indexCharactersWarnOnly": true

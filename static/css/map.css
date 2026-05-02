@@ -386,6 +386,23 @@ p.acknowledgement {
   box-shadow: none;
 }
 
+/* Resource model subtitle banner beneath asset title */
+#asset-title + .asset-model-subtitle {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #505a5f;
+    background-color: rgba(127, 86, 197, 0.08);
+    margin: 0 0 1em;
+    padding: 0.6rem 0.4rem;
+    line-height: 1.4;
+}
+
+#asset-title:has(+ .asset-model-subtitle) {
+    margin-bottom: 0;
+}
+
 /* no useful filters currently */
 /* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
 #filterToggle {
