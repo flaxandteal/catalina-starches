@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test (private)
 
 env:
   REGISTRY: ghcr.io
