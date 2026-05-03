@@ -36,7 +36,7 @@ RUN ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 https://doc.g
 # (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
 # heap alongside dind + buildkit + containerd; raising it will cause
 # node-level OOM, not a clean "out of heap" failure.
-RUN python3 utils/unify.py && npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private --build-ros-madair
+RUN python3 utils/unify.py && npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private --build-ros-madair --ros-madair-bin ros-madair-build --ros-madair-output static/definitions/ros-madair
 
 RUN npx starches-builder index --site docs --include-private
 
