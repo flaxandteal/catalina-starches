@@ -84,7 +84,7 @@ time[pubdate=""]:before {
 }
 
 header.govuk-header {
-    display: none;
+    display: block;
 }
 
 a.govuk-footer__copyright-logo {
@@ -108,7 +108,7 @@ div.govuk-header__container {
     border-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
-    background-color: rgba(127, 86, 197, 0.9);
+    background-color: #384246;
 }
 
 #dfc-registry ul {
@@ -325,8 +325,8 @@ div.maplibregl-popup-content {
 
 .maplibregl-popup-content h3 {
   margin: 0 0 0 0;
-  background-color: #f8f8f8;
-  border-top: 0.3rem solid rgba(0, 32, 92, 1.0);
+  background-color: #F5F4F2;
+  border-top: 0.3rem solid #194036;
   padding-left: 0.8rem;
   padding-right: 2.0rem;
   padding-top: 1.3rem;
@@ -392,8 +392,8 @@ p.acknowledgement {
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    color: #505a5f;
-    background-color: rgba(127, 86, 197, 0.08);
+    color: #595959;
+    background-color: rgba(56, 66, 70, 0.08);
     margin: 0 0 1em;
     padding: 0.6rem 0.4rem;
     line-height: 1.4;

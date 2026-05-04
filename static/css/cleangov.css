@@ -18,30 +18,30 @@ time[pubdate=""]:before {
 }
 
 h1, h1.govuk-heading-xl {
-    font-weight: normal;
+    font-weight: 500;
     font-size: 2rem;
     line-height: 3rem;
     margin: 3rem 0 1.5rem;
-    color: #19315a;
+    color: #1D1C1A;
 }
 
 h3, h3.govuk-heading-l {
-    font-weight: normal;
+    font-weight: 500;
     font-size: 1.6rem;
     line-height: 2.5rem;
     margin: 2rem 0 1.2rem;
-    color: #19315a;
+    color: #1D1C1A;
 }
 
 h2.govuk-heading-l {
-    font-weight: normal;
+    font-weight: 500;
     font-size: 1.7rem;
     line-height: 2rem;
     margin: 1.8rem 0 1rem;
 }
 
 h3.govuk-heading-m {
-    font-weight: normal;
+    font-weight: 500;
     font-size: 1.5rem;
     line-height: 1.5rem;
     margin: 1.5rem 0 0.8rem;
@@ -49,18 +49,20 @@ h3.govuk-heading-m {
 
 .govuk-hint p.govuk-body {
     font-size: 1.2rem;
-    color: #444;
+    color: #595959;
 }
 
 p.govuk-body {
-    font-size: 1.4rem;
-    line-height: 2.2rem;
+    font-size: 1.25rem;
+    line-height: 1.625em;
     margin: 0 0 2rem;
 }
 
-body {
+body,
+.govuk-template__body {
     width: calc(100vw - 0.1rem);
     padding: 0;
+    background-color: #F5F4F2;
 }
 
 .alizarin-domain-value {
@@ -102,7 +104,59 @@ body {
     font-weight: 400;
 }
 
+/* DOC gold accent strip */
+header.govuk-header::before {
+    content: "";
+    display: block;
+    min-height: 20px;
+    background-color: #FFC51D;
+}
+
 header.govuk-header {
+    margin: 0;
+    background: #194036;
+    background-color: #194036 !important;
+    border-bottom: none;
+}
+
+/* DOC branding - stacked above site name like doc.govt.nz */
+header.govuk-header .govuk-header__container {
+    display: flex;
+    flex-direction: column;
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    background-color: #194036 !important;
+    border-bottom: none;
+}
+
+header.govuk-header .govuk-header__container::before {
+    content: "Department of Conservation  |  Te Papa Atawhai";
+    display: block;
+    font-size: 1rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #fff;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    margin-bottom: 0.4rem;
+}
+
+/* Site name as secondary line */
+header.govuk-header .govuk-header__link--homepage {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+}
+
+header.govuk-header .govuk-header__link--homepage:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Hide the GOV.UK crown logo */
+header.govuk-header .govuk-header__logotype-crown,
+header.govuk-header .govuk-header__logotype-crown-fallback-image {
     display: none;
 }
 
@@ -129,19 +183,15 @@ a.govuk-footer__copyright-logo {
     margin-right: 0;
 }
 
-div.govuk-header__container {
-    background-color: var(--QLD-color-dark__background, #09549F);
-    color: #fff;
-    border-bottom: none;
-    padding: 0.6em 1rem;
-    margin: 0;
-}
+/* Header container colour/border now handled by
+   header.govuk-header .govuk-header__container above.
+   Horizontal alignment delegated to .govuk-width-container. */
 
 #dfc-registry {
     border-bottom: 0;
     padding-top: 0;
     padding-bottom: 0;
-    background-color: rgba(127, 86, 197, 0.9);
+    background-color: #384246;
 }
 
 #dfc-registry ul {
@@ -372,7 +422,7 @@ dialog#map-dialog {
   width: 100vw;
   height: 100vh;
   border: 0.3rem solid rgba(255, 255, 255, 1);
-  border-top: 0.3rem solid rgba(0, 32, 92, 1.0);
+  border-top: 0.3rem solid #194036;
   position: fixed;
   top: auto;
   bottom: 0;

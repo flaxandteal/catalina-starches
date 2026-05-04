@@ -1019,6 +1019,13 @@
    15. ASSET PAGE
    ========================================================================== */
 
+/* --- Treegrid link colours (inherited through Shadow DOM) --- */
+:root {
+    --treegrid-link-color: #0066A4;
+    --treegrid-link-visited-color: #004B7A;
+    --treegrid-link-hover-color: #004B7A;
+}
+
 .accordion-group:not(:has(.accordion-item)) .accordion-toggle {
     display: none;
 }
@@ -1036,4 +1043,170 @@
     .full-width-content {
         min-height: unset;
     }
+}
+
+/* --- Model subtitle with right-aligned resource ID --- */
+.asset-model-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.asset-model-resource-id {
+    float: right;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    opacity: 0.7;
+}
+
+/* --- Asset title bar --- */
+#asset-title {
+    background-color: #194036 !important;
+    padding: 1rem 0.4rem;
+    color: white;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/* --- Section headings and spacing --- */
+#asset,
+#resource-relations {
+    font-size: 1.25rem;
+    line-height: 1.625;
+    color: #1D1C1A;
+}
+
+#asset h2,
+#resource-relations h2 {
+    font-size: 130%;
+    font-weight: 500;
+    background-color: #F5F4F2;
+    border-top: 0.3rem solid #194036;
+    padding: 1.2rem 0.3rem 0.3rem;
+    margin-top: 2rem;
+}
+
+#asset h3, #asset h4,
+#resource-relations h3, #resource-relations h4 {
+    font-size: 100%;
+    font-weight: 500;
+}
+
+#asset ul,
+#resource-relations ul {
+    list-style: none;
+}
+
+/* --- Details/summary (expand/collapse) --- */
+#asset details.govuk-details,
+#resource-relations details.govuk-details {
+    font-size: 100%;
+    display: block;
+    margin-bottom: 0;
+}
+
+#asset details.govuk-details .govuk-details__text,
+#resource-relations details.govuk-details .govuk-details__text {
+    background-color: #F5F4F2;
+    border-left: 3px solid #E0DCCE;
+    border-right: none;
+    padding: 0.8rem 1rem;
+}
+
+/* --- Horizontal rules --- */
+#asset hr,
+#resource-relations hr {
+    border: 0;
+    border-top: 1px solid #E0DCCE;
+    color: transparent;
+}
+
+#asset hr:after,
+#resource-relations hr:after {
+    content: '';
+    display: block;
+    height: 0.5rem;
+}
+
+/* --- Node tree colours (DOC palette) --- */
+.node-alias {
+    color: #595959;
+}
+
+.node-value {
+    color: #507F39;
+}
+
+.node-empty {
+    color: #E11836;
+}
+
+.node-name {
+    line-height: 2.3rem;
+    color: #1D1C1A;
+}
+
+.node-name details {
+    margin-bottom: 0;
+}
+
+.node-type {
+    background-color: #efe;
+}
+
+.node-description {
+    background-color: #F5F4F2;
+    border-left: 3px solid #E0DCCE;
+    border-right: none;
+    padding: 0.5rem 1rem;
+}
+
+/* --- Modern navigation --- */
+#top-nav-container {
+    display: none;
+}
+
+.modern-navigation {
+    border-bottom-color: #E0DCCE;
+}
+
+.nav-position {
+    color: #595959;
+}
+
+/* --- Asset content links (override govuk-frontend .govuk-link) --- */
+#asset a,
+#asset .govuk-link,
+#resource-relations a,
+#resource-relations .govuk-link {
+    color: #0066A4 !important;
+}
+
+#asset a:visited,
+#asset .govuk-link:visited,
+#resource-relations a:visited,
+#resource-relations .govuk-link:visited {
+    color: #004B7A !important;
+}
+
+#asset a:hover,
+#asset .govuk-link:hover,
+#resource-relations a:hover,
+#resource-relations .govuk-link:hover {
+    color: #004B7A !important;
+}
+
+/* --- Tables --- */
+#asset table.govuk-table,
+#resource-relations table.govuk-table {
+    font-size: 90%;
+}
+
+/* --- Dialog images --- */
+dialog img {
+    max-height: 70vh;
+    max-width: 70vw;
+    display: block;
+    margin: auto;
 }

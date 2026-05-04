@@ -27,11 +27,6 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
       -o /usr/local/bin/ros-madair-build && \
     chmod +x /usr/local/bin/ros-madair-build
 
-# Extract rdf_base_uri from hugo.yaml so it stays in sync automatically.
-RUN RDF_BASE_URI=$(node -e "const fs=require('fs'); const m=fs.readFileSync('hugo.yaml','utf8').match(/rdf_base_uri:\s*[\"']?([^\"'\n]+)/); console.log(m?m[1].trim():'https://example.org/')") && \
-    echo "rdf_base_uri: ${RDF_BASE_URI}" && \
-    ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 "${RDF_BASE_URI}"
-
 # Heap ceiling kept at 4096 MiB deliberately. The CI runner nodes
 # (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
 # heap alongside dind + buildkit + containerd; raising it will cause
