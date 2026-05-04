@@ -27,21 +27,23 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
       -o /usr/local/bin/ros-madair-build && \
     chmod +x /usr/local/bin/ros-madair-build
 
-# Build Rós Madair definitions index from prebuild data.
-# The base URI must match ros_madair.rdf_base_uri in hugo.yaml.
-RUN ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 https://doc.govt.nz/
+# Extract rdf_base_uri from hugo.yaml so it stays in sync automatically.
+RUN RDF_BASE_URI=$(node -e "const fs=require('fs'); const m=fs.readFileSync('hugo.yaml','utf8').match(/rdf_base_uri:\s*[\"']?([^\"'\n]+)/); console.log(m?m[1].trim():'https://example.org/')") && \
+    echo "rdf_base_uri: ${RDF_BASE_URI}" && \
+    ros-madair-build prebuild/ static/definitions/ros-madair/ 2000 "${RDF_BASE_URI}"
 
 # Heap ceiling kept at 4096 MiB deliberately. The CI runner nodes
 # (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
 # heap alongside dind + buildkit + containerd; raising it will cause
 # node-level OOM, not a clean "out of heap" failure.
-RUN python3 utils/unify.py && npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
+RUN python3 utils/unify.py && ALIZARIN_BACKEND=wasm npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
 
 # Build Rós Madair index from filtered business data (separate step to
 # avoid OOM when ros-madair-build runs alongside the Node.js heap).
-RUN npx starches-builder build-ros-madair --output static/definitions/ros-madair --bin ros-madair-build
+RUN RDF_BASE_URI=$(node -e "const fs=require('fs'); const m=fs.readFileSync('hugo.yaml','utf8').match(/rdf_base_uri:\s*[\"']?([^\"'\n]+)/); console.log(m?m[1].trim():'https://example.org/')") && \
+    ALIZARIN_BACKEND=wasm npx starches-builder build-ros-madair --output static/definitions/ros-madair --bin ros-madair-build --base-uri "${RDF_BASE_URI}"
 
-RUN npx starches-builder index --site docs --include-private
+RUN ALIZARIN_BACKEND=wasm npx starches-builder index --site docs --include-private
 
 RUN npm run precompile:templates
 

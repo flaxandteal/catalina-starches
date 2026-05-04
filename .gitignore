@@ -12,7 +12,7 @@ starches-latest.tgz
 pagefind-bin
 
 # Rós Madair: raw RDF triples (build input, too large for git)
-static/definitions/ros-madair/all.nt
+static/definitions/ros-madair
 copilot-instructions.md
 assets/jsconfig.json
 assets/jsconfig.json
