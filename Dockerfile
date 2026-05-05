@@ -31,7 +31,9 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
 # (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
 # heap alongside dind + buildkit + containerd; raising it will cause
 # node-level OOM, not a clean "out of heap" failure.
-RUN python3 utils/unify.py && ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
+# RUN python3 utils/unify.py && ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
+RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_*.json); do ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
+# RUN python3 utils/unify.py && ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
 
 # Build Rós Madair index from filtered business data (separate step to
 # avoid OOM when ros-madair-build runs alongside the Node.js heap).
