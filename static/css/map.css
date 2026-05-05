@@ -96,13 +96,8 @@ a.govuk-footer__copyright-logo {
     margin-right: 0;
 }
 
-div.govuk-header__container {
-    background-color: var(--QLD-color-dark__background, #09549F);
-    color: #fff;
-    border-bottom: none;
-    padding: 0.6em 1rem;
-    margin: 0;
-}
+/* Header container colour/border handled by cleangov.css
+   DOC branding rules. Horizontal alignment from .govuk-width-container. */
 
 #dfc-registry {
     border-bottom: 0;

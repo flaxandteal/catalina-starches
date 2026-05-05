@@ -7,13 +7,13 @@
 #   npm run fetch:config
 
 logotext: "CAT"
-product: "Catalina Public Asset Viewer"
+product: "Heritage Record Viewer"
 phase: "alpha"
 favicon: ""
 feedbackurl: "/feedback/"
 archesurl: "http://localhost:8000/"
 cookies: ""
-sitename: "Catalina Public Asset Viewer"
+sitename: "Heritage Record Viewer"
 variantClass: "dark"
 
 feedback:

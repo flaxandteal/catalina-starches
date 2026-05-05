@@ -13,6 +13,8 @@ params:
   version: "0.3.8"
   environment: "uat"
   default_show_full_asset: "true"
+  starches:
+    use_card_rendering: true
   ros_madair:
     wasm_module: "/wasm/ros-madair/ros_madair.js"
     index_base_url: "/definitions/ros-madair/"

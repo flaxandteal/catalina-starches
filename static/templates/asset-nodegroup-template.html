@@ -1,42 +1,84 @@
 {{#if (equal sectionId "asset-related")}}
 <h2 id="heading-{{id}}">{{title}}</h2>
-<details class="govuk-details" {{#if initiallyExpanded}}open{{/if}}>
+{{#if (or description widgets)}}
+<details class="govuk-details card-description">
   <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">{{title}}</span>
+    <span class="govuk-details__summary-text">More info</span>
   </summary>
   <div class="govuk-details__text">
-    {{#if fields}}
-    <ul class="govuk-list">
-      {{#each fields}}
-      <li>
-        <a class="govuk-link" href="{{slug}}">{{{value}}}</a>
-      </li>
-      {{/each}}
-    </ul>
-    {{else}}
-    {{{body}}}
+    {{#if description}}<p>{{description}}</p>{{/if}}
+    {{#if widgets}}
+    <table class="govuk-table govuk-table--small-text-until-tablet">
+      <thead class="govuk-table__head"><tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col">Field</th>
+        <th class="govuk-table__header" scope="col">Description</th>
+      </tr></thead>
+      <tbody class="govuk-table__body">
+        {{#each widgets}}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">{{name}}</td>
+          <td class="govuk-table__cell">{{description}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
     {{/if}}
   </div>
 </details>
+{{/if}}
+<div class="govuk-details__text">
+  {{#if fields}}
+  <ul class="govuk-list">
+    {{#each fields}}
+    <li>
+      <a class="govuk-link" href="{{slug}}">{{{value}}}</a>
+    </li>
+    {{/each}}
+  </ul>
+  {{else}}
+  {{{body}}}
+  {{/if}}
+</div>
 {{else}}
 <h2 id="heading-{{id}}">{{title}}</h2>
-<details class="govuk-details" {{#if initiallyExpanded}}open{{/if}}>
+{{#if (or description widgets)}}
+<details class="govuk-details card-description">
   <summary class="govuk-details__summary">
-    <span class="govuk-details__summary-text">{{title}}</span>
+    <span class="govuk-details__summary-text">More info</span>
   </summary>
   <div class="govuk-details__text">
-    {{#if fields}}
-    <dl class="govuk-summary-list govuk-summary-list--no-border">
-      {{#each fields}}
-      <div class="govuk-summary-list__row">
-        <dt class="govuk-summary-list__key">{{label}}</dt>
-        <dd class="govuk-summary-list__value">{{{value}}}</dd>
-      </div>
-      {{/each}}
-    </dl>
-    {{else}}
-    {{{body}}}
+    {{#if description}}<p>{{description}}</p>{{/if}}
+    {{#if widgets}}
+    <table class="govuk-table govuk-table--small-text-until-tablet">
+      <thead class="govuk-table__head"><tr class="govuk-table__row">
+        <th class="govuk-table__header" scope="col">Field</th>
+        <th class="govuk-table__header" scope="col">Description</th>
+      </tr></thead>
+      <tbody class="govuk-table__body">
+        {{#each widgets}}
+        <tr class="govuk-table__row">
+          <td class="govuk-table__cell">{{name}}</td>
+          <td class="govuk-table__cell">{{description}}</td>
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
     {{/if}}
   </div>
 </details>
+{{/if}}
+<div class="govuk-details__text">
+  {{#if fields}}
+  <dl class="govuk-summary-list govuk-summary-list--no-border">
+    {{#each fields}}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">{{label}}</dt>
+      <dd class="govuk-summary-list__value">{{{value}}}</dd>
+    </div>
+    {{/each}}
+  </dl>
+  {{else}}
+  {{{body}}}
+  {{/if}}
+</div>
 {{/if}}
