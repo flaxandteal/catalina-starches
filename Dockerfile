@@ -44,6 +44,9 @@ RUN ALIZARIN_BACKEND=napi npx starches-builder index --site docs --include-priva
 
 RUN npm run precompile:templates
 
+ARG DEFAULT_SHOW_FULL_ASSET=true
+RUN sed -i "s/default_show_full_asset: .*/default_show_full_asset: \"${DEFAULT_SHOW_FULL_ASSET}\"/" hugo.yaml
+
 RUN hugo mod get && hugo
 
 # Generate base64 .txt sidecars for all pagefind binary files.

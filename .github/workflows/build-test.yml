@@ -84,7 +84,8 @@ jobs:
             --network=host \
             --file ./Dockerfile \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches:${{ github.sha }} \
-            --build-arg STARCHES_INCLUDE_PRIVATE=1
+            --build-arg STARCHES_INCLUDE_PRIVATE=1 \
+            --build-arg DEFAULT_SHOW_FULL_ASSET=false
 
       # Only runs if build failed. Captures post-mortem state — disk may
       # have filled, dockerd may have been partially killed, etc.

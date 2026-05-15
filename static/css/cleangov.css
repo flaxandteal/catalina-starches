@@ -104,18 +104,10 @@ body,
     font-weight: 400;
 }
 
-/* DOC gold accent strip */
-header.govuk-header::before {
-    content: "";
-    display: block;
-    min-height: 20px;
-    background-color: #FFC51D;
-}
-
 header.govuk-header {
     margin: 0;
-    background: #194036;
-    background-color: #194036 !important;
+    background: #004B7A;
+    background-color: #004B7A !important;
     border-bottom: none;
 }
 
@@ -125,7 +117,7 @@ header.govuk-header .govuk-header__container {
     flex-direction: column;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
-    background-color: #194036 !important;
+    background-color: #004B7A !important;
     border-bottom: none;
 }
 
@@ -422,7 +414,7 @@ dialog#map-dialog {
   width: 100vw;
   height: 100vh;
   border: 0.3rem solid rgba(255, 255, 255, 1);
-  border-top: 0.3rem solid #194036;
+  border-top: 0.3rem solid #004B7A;
   position: fixed;
   top: auto;
   bottom: 0;
