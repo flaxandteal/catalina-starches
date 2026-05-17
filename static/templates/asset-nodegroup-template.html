@@ -27,7 +27,17 @@
 </details>
 {{/if}}
 <div class="govuk-details__text">
-  {{#if fields}}
+  {{#if fieldGroups}}
+  {{#each fieldGroups}}
+  <ul class="govuk-list nodegroup-instance{{#if (isOdd @index)}} nodegroup-instance--shaded{{/if}}">
+    {{#each this}}
+    <li>
+      <a class="govuk-link" href="{{slug}}">{{{value}}}</a>
+    </li>
+    {{/each}}
+  </ul>
+  {{/each}}
+  {{else if fields}}
   <ul class="govuk-list">
     {{#each fields}}
     <li>
@@ -68,7 +78,18 @@
 </details>
 {{/if}}
 <div class="govuk-details__text">
-  {{#if fields}}
+  {{#if fieldGroups}}
+  {{#each fieldGroups}}
+  <dl class="govuk-summary-list govuk-summary-list--no-border nodegroup-instance{{#if (isOdd @index)}} nodegroup-instance--shaded{{/if}}">
+    {{#each this}}
+    <div class="govuk-summary-list__row">
+      <dt class="govuk-summary-list__key">{{label}}</dt>
+      <dd class="govuk-summary-list__value">{{{value}}}</dd>
+    </div>
+    {{/each}}
+  </dl>
+  {{/each}}
+  {{else if fields}}
   <dl class="govuk-summary-list govuk-summary-list--no-border">
     {{#each fields}}
     <div class="govuk-summary-list__row">
