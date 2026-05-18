@@ -9,8 +9,6 @@
 
 {{ title }}
 
-{{ title }}
-
 {{#each ha.monument_names }}
 - {{ monument_name }}
 {{/each}}
@@ -37,21 +35,14 @@
 
 $$$
 
-|                     |                                                                                                                                                                |
-| ---------------     | -------------------------------------------------                                                                                                              |
-| **ID:**             | {{ ha.system_reference_numbers.uuid.resourceid }}                                                                                                              |
-{{#each ha.location_data.addresses }}
-{{#if county.county_value }}
-| **LGA:** | {{ county.county_value }} |
+#### Heritage Item
+
+{{#if ha.system_reference_numbers.legacyid.legacy_id }}
+{{ ha.system_reference_numbers.legacyid.legacy_id }}
 {{/if}}
-{{/each}}
-{{#each ha.designation_and_protection_assignments }}
-{{#if designation_names.designation_name_use_type._ }}
-| **Classification:** | {{ designation_names.designation_name_use_type._ }} |
+{{#if ha.system_reference_numbers.uuid.resourceid }}
+| {{ ha.system_reference_numbers.uuid.resourceid }}
 {{/if}}
-{{/each}}
-{{#each ha.location_data.addresses }}
-{{#if street.street_value }}
-| **Location:**       | {{ street.street_value }}, {{#if town_or_city.town_or_city_value }}{{ town_or_city.town_or_city_value }}{{/if}} |
+{{#if ha.system_reference_numbers.primaryreferencenumber.primary_reference_number }}
+| {{ ha.system_reference_numbers.primaryreferencenumber.primary_reference_number }}
 {{/if}}
-{{/each}}

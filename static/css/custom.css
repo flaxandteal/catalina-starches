@@ -1,90 +1,24 @@
 /* ==========================================================================
    CUSTOM STYLES
    Table of Contents:
-   1. Custom Icons
-   2. QLD Design System Overrides
-   3. Card Components
-   4. Index Page - Hero Banner
-   5. Index Page - Border Radius Utilities
-   6. Index Page - Banner Containers
-   7. Background Image Slideshow
-   8. Search & Filter Components
-   9. Pagefind Integration
-   10. Full Width Content
-   11. Swiper Carousel
-   12. Image Modal
-   13. Utilities
-   14. MapLibre Overrides
-   15. Asset Page
+   1. Card Components
+   2. Index Page - Hero Banner
+   3. Index Page - Border Radius Utilities
+   4. Index Page - Banner Containers
+   5. Background Image Slideshow
+   6. Search & Filter Components
+   7. Pagefind Integration
+   8. Full Width Content
+   9. Swiper Carousel
+   10. Image Modal
+   11. Utilities
+   12. MapLibre Overrides
+   13. Asset Page
    ========================================================================== */
 
 
 /* ==========================================================================
-   1. CUSTOM ICONS
-   ========================================================================== */
-
-.qld-icon-archive {
-    --qgds-icon-archive: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><rect width='20' height='5' x='2' y='3' rx='1'/><path d='M4 8v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8'/><path d='M10 12h4'/></svg>");
-
-    mask-image: var(--qgds-icon-archive);
-    -webkit-mask-image: var(--qgds-icon-archive)
-}
-
-.qld-icon-building {
-  mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
-  -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9ImN1cnJlbnRDb2xvciIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIGNsYXNzPSJsdWNpZGUgbHVjaWRlLWJ1aWxkaW5nLWljb24gbHVjaWRlLWJ1aWxkaW5nIj48cGF0aCBkPSJNMTIgMTBoLjAxIi8+PHBhdGggZD0iTTEyIDE0aC4wMSIvPjxwYXRoIGQ9Ik0xMiA2aC4wMSIvPjxwYXRoIGQ9Ik0xNiAxMGguMDEiLz48cGF0aCBkPSJNMTYgMTRoLjAxIi8+PHBhdGggZD0iTTE2IDZoLjAxIi8+PHBhdGggZD0iTTggMTBoLjAxIi8+PHBhdGggZD0iTTggMTRoLjAxIi8+PHBhdGggZD0iTTggNmguMDEiLz48cGF0aCBkPSJNOSAyMnYtM2ExIDEgMCAwIDEgMS0xaDRhMSAxIDAgMCAxIDEgMXYzIi8+PHJlY3QgeD0iNCIgeT0iMiIgd2lkdGg9IjE2IiBoZWlnaHQ9IjIwIiByeD0iMiIvPjwvc3ZnPg==");
-}
-
-.icon-background {
-    width: 4rem;
-    height: 4rem;
-    mask-size: 4rem;
-    background-size: 4rem;
-    background-color: var(--qld-default-background-shade);
-    margin-left: 1.5rem;
-    border-radius: 400px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-/* ==========================================================================
-   2. QLD DESIGN SYSTEM OVERRIDES
-   ========================================================================== */
-
-.qld-tabs .tabs-area{
-    z-index: 5;
-}
-
-.qld-search-input .form-control {
-    border-radius: 0.25rem;
-    border-right-width: 0.125rem;
-}
-
-.qld-search-input #search-clear {
-    display: none;
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    height: 1.5rem;
-    width: 1.5rem;
-    transform: translateY(-50%);
-    border: none;
-    cursor: pointer;
-    background-color: var(--qld-icon-color);
-}
-
-.qld-search-input input:not(:placeholder-shown) + #search-clear {
-    display: block;
-}
-
-.qld-search-input input:not(:placeholder-shown) + #search-clear:hover {
-    background-color: var(--qld-light-action-primary-hover)
-}
-
-/* ==========================================================================
-   3. CARD COMPONENTS
+   1. CARD COMPONENTS
    ========================================================================== */
 
 .result-focused {
@@ -101,22 +35,6 @@
         outline: 3px solid transparent;
         outline-offset: 2px;
     }
-}
-
-/* Equal-height card helpers (apply by adding `equal-height` to the .row) */
-.qld-card-grid .row.equal-height > [class*="col-"] {
-    display: flex;
-}
-
-.qld-card-grid .row.equal-height > [class*="col-"] .card {
-    /* Make each card take the full height of the column */
-    display: flex;
-    flex: 1 1 auto;
-}
-
-.qld-card-grid .row.equal-height .card-body {
-    /* Let the body grow so footers/actions can sit at bottom if needed */
-    flex: 1 1 auto;
 }
 
 /* Multi-action card image - fill container without distortion */
@@ -186,7 +104,7 @@
 }
 
 /* ==========================================================================
-   4. INDEX PAGE - HERO BANNER
+   2. INDEX PAGE - HERO BANNER
    ========================================================================== */
 
 .hero-banner {
@@ -240,7 +158,7 @@
 
 
 /* ==========================================================================
-   5. INDEX PAGE - BORDER RADIUS UTILITIES
+   3. INDEX PAGE - BORDER RADIUS UTILITIES
    ========================================================================== */
 
 .radius .hero-banner {
@@ -275,7 +193,6 @@
 }
 
 @media (max-width: 991.98px) {
-
     .radius .banner-container-with-image-slide,
     .radius .banner-radius,
     .radius .swiper {
@@ -297,7 +214,7 @@
 
 
 /* ==========================================================================
-   6. INDEX PAGE - BANNER CONTAINERS
+   4. INDEX PAGE - BANNER CONTAINERS
    ========================================================================== */
 
 .banner-container-with-image-slide {
@@ -348,7 +265,7 @@
 }
 
 /* ==========================================================================
-   7. BACKGROUND IMAGE SLIDESHOW
+   5. BACKGROUND IMAGE SLIDESHOW
    ========================================================================== */
 
 @media (max-width: 699) {
@@ -454,18 +371,8 @@
 
 
 /* ==========================================================================
-   8. SEARCH & FILTER COMPONENTS
+   6. SEARCH & FILTER COMPONENTS
    ========================================================================== */
-
-.search-filter {
-    background-color: var(--qld-color-default-color-dark-background-default);
-    border-radius: 1rem 1rem 2rem 1rem;
-}
-
-.search-filter-title {
-    color: white;
-    margin: 0;
-}
 
 #active-filters {
     display: flex;
@@ -494,41 +401,6 @@
     flex-shrink: 0;
 }
 
-.search-filter .dropdown-toggle {
-    padding-inline: .5rem;
-    color: white;
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    height: var(--qld-header-preheader-height);
-    background-color: var(--dropdown-bg);
-}
-
-.search-filter .dropdown-toggle::after {
-    --_icon-size: 1.5rem;
-
-    display: inline-block;
-    width: var(--_icon-size);
-    height: var(--_icon-size);
-    background-position: center center;
-    background-repeat: no-repeat;
-    mask-position: center center;
-    mask-repeat: no-repeat;
-    mask-size: contain;
-    background-size: contain;
-    vertical-align: middle;
-    color: var(--qld-icon-color, var(--qld-action-icon-color, inherit));
-    background-color: currentcolor;
-    mask-image: var(--qgds-icon-chevron-down);
-    -webkit-mask-image: var(--qgds-icon-chevron-down);
-    margin-left: .5rem;
-    transition: transform 0.3s ease;
-}
-
-.search-filter .dropdown-toggle[aria-expanded="true"]::after {
-    transform: rotate(180deg);
-}
-
 .filter-content {
     overflow: hidden;
     max-height: 0;
@@ -552,19 +424,6 @@
     display: block;
 }
 
-/* Persistent selected state for tag-link */
-.tag-link.selected {
-    background-color: var(--qld-dark-action-primary-hover) !important;
-    color: var(--QLD-color-dark__link--on-action) !important;
-    outline: 3px solid var(--qld-dark-action-primary-hover) !important;
-    outline-offset: 2px !important;
-    text-decoration: underline;
-}
-
-.tag-link.selected a {
-    color: var(--QLD-color-dark__link--on-action) !important;
-}
-
 #help-toggle {
     min-height: 0;
     min-width: 0;
@@ -577,12 +436,10 @@
 
 
 /* ==========================================================================
-   9. PAGEFIND INTEGRATION
+   7. PAGEFIND INTEGRATION & SEARCH RESULTS
    ========================================================================== */
 
-.pagefind-modular-list-excerpt h1 {
-    display: none;
-}
+/* --- Filter pills --- */
 
 .filter-options-wrap .pagefind-modular-filter-pills {
     overflow-x: auto;
@@ -597,9 +454,116 @@
     flex: 1;
 }
 
+/* --- Result card layout --- */
+
+.pagefind-modular-list-content {
+    width: 100%;
+}
+
+.pagefind-modular-list-result {
+    padding: 0.75rem 0;
+    gap: 0;
+    border-top-color: #b1b4b6;
+}
+
+.pagefind-modular-list-result:last-of-type {
+    border-bottom-color: #b1b4b6;
+}
+
+/* --- Result title --- */
+
+.pagefind-modular-list-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0 0rem 0.25rem;
+    padding: 0.3rem 0.1rem 0 0.2rem;
+    line-height: 1.35;
+    width: 100%;
+    display: inline-block;
+    background-color: #eee;
+}
+
+.pagefind-modular-list-title a {
+    color: #1d70b8;
+    text-decoration: none;
+}
+
+.pagefind-modular-list-title a:hover {
+    text-decoration: underline;
+    color: #003078;
+}
+
+.pagefind-modular-list-title a:visited {
+    color: #4c2c92;
+}
+
+/* --- Excerpt area --- */
+
+.pagefind-modular-list-excerpt {
+    font-size: 0.875rem;
+    color: #505a5f;
+    line-height: 1.5;
+    min-width: 0;
+}
+
+/* Type label (e.g. "Heritage Item", "DigitalObject") rendered from #### in rawContent */
+.pagefind-modular-list-excerpt h4 {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #505a5f;
+    margin: 0 0 0.25rem;
+    padding: 0;
+    line-height: 1.4;
+}
+
+/* Any other headings that slip through */
+.pagefind-modular-list-excerpt h2,
+.pagefind-modular-list-excerpt h3,
+.pagefind-modular-list-excerpt h5,
+.pagefind-modular-list-excerpt h6 {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #505a5f;
+    margin: 0 0 0.15rem;
+    line-height: 1.4;
+}
+
+/* Metadata paragraphs (pipe-delimited reference codes, counts) */
+.pagefind-modular-list-excerpt p {
+    font-size: 0.8rem;
+    color: #505a5f;
+    margin: 0 0 0.15rem;
+    line-height: 1.4;
+}
+
+/* --- Action buttons --- */
+
+.pagefind-modular-list-result .result-links {
+    margin: 0.35rem 0 0;
+}
+
+.pagefind-modular-list-result .govuk-button-group {
+    margin-bottom: 0;
+}
+
+.pagefind-modular-list-result .govuk-button {
+    font-size: 0.8rem;
+    padding: 6px 12px 5px;
+    margin-bottom: 0;
+    min-height: 0;
+}
+
+/* --- Thumbnails (already hidden in cleangov, reinforce here) --- */
+
+.pagefind-modular-list-thumb {
+    display: none;
+}
+
 
 /* ==========================================================================
-   10. FULL WIDTH CONTENT
+   8. FULL WIDTH CONTENT
    ========================================================================== */
 
 .full-width-content {
@@ -630,7 +594,7 @@
 
 
 /* ==========================================================================
-   11. SWIPER CAROUSEL
+   9. SWIPER CAROUSEL
    ========================================================================== */
 
 /* Base swiper styles */
@@ -672,9 +636,11 @@
     .banner-container-with-image-slide .swiper {
         height: 200px;
     }
+
     .swiper-slide.hero img{
         height: 50%;
     }
+
     .slide-text {
         right: 0.5rem;
         top: 0.5rem;
@@ -728,7 +694,7 @@
 
 
 /* ==========================================================================
-   12. IMAGE MODAL
+   10. IMAGE MODAL
    ========================================================================== */
 
 .modal-container {
@@ -840,17 +806,6 @@
     padding: 0 1rem;
 }
 
-.dropdown.dark {
-    background-color: unset;
-}
-
-.dropwdown-item {
-    color: var(--qld-btn-color) !important;
-    background: none;
-    border-color: transparent;
-    box-shadow: none;
-}
-
 .dropdown-item:hover,
 .dropdown-item:focus {
     text-decoration: underline;
@@ -873,7 +828,7 @@
 
 
 /* ==========================================================================
-   13. UTILITIES
+   11. UTILITIES
    ========================================================================== */
 
 .hidden {
@@ -886,7 +841,7 @@
 }
 
 /* ==========================================================================
-   14. MAPLIBRE OVERRIDES
+   12. MAPLIBRE OVERRIDES
    ========================================================================== */
 
 .div.maplibregl-popup-content {
@@ -910,8 +865,15 @@
 }
 
 /* ==========================================================================
-   15. ASSET PAGE
+   13. ASSET PAGE
    ========================================================================== */
+
+/* --- Treegrid link colours (inherited through Shadow DOM) --- */
+:root {
+    --treegrid-link-color: #0066A4;
+    --treegrid-link-visited-color: #004B7A;
+    --treegrid-link-hover-color: #004B7A;
+}
 
 .accordion-group:not(:has(.accordion-item)) .accordion-toggle {
     display: none;
@@ -926,6 +888,351 @@
     .sketchfab-embed-wrapper iframe {
         height: 300px;
     }
+
     .full-width-content {
         min-height: unset;
     }
+}
+
+/* --- Model subtitle with right-aligned resource ID --- */
+.asset-model-subtitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.asset-model-resource-id {
+    float: right;
+    font-weight: inherit;
+    font-size: inherit;
+    color: inherit;
+    opacity: 0.7;
+}
+
+/* --- Asset title bar --- */
+#asset-title {
+    background-color: #004B7A !important;
+    padding: 1rem 0.4rem;
+    color: white;
+    font-size: 2rem;
+    font-weight: 500;
+}
+
+/* --- Section headings and spacing --- */
+#asset,
+#resource-relations {
+    font-size: 1.25rem;
+    line-height: 1.625;
+    color: #1D1C1A;
+    overflow-wrap: break-word;
+}
+
+#asset img,
+#resource-relations img {
+    max-width: 100%;
+    height: auto;
+}
+
+#asset h2,
+#resource-relations h2 {
+    font-size: 130%;
+    font-weight: 500;
+    background-color: #F5F4F2;
+    border-top: 0.3rem solid #004B7A;
+    padding: 1.2rem 0.3rem 0.3rem;
+    margin-top: 2rem;
+}
+
+#asset h3, #asset h4,
+#resource-relations h3, #resource-relations h4 {
+    font-size: 100%;
+    font-weight: 500;
+}
+
+#asset ul,
+#resource-relations ul {
+    list-style: none;
+}
+
+/* --- Details/summary (expand/collapse) --- */
+#asset details.govuk-details,
+#resource-relations details.govuk-details {
+    font-size: 100%;
+    display: block;
+    margin-bottom: 0;
+}
+
+#asset details.govuk-details .govuk-details__text,
+#resource-relations details.govuk-details .govuk-details__text {
+    background-color: #F5F4F2;
+    border-left: 3px solid #C8D8E5;
+    border-right: none;
+    padding: 0.8rem 1rem;
+}
+
+#asset .card-description .govuk-details__text,
+#resource-relations .card-description .govuk-details__text {
+    background-color: #EDF2F8;
+    border-left: 3px solid #5A9BBF;
+}
+
+/* --- Horizontal rules --- */
+#asset hr,
+#resource-relations hr {
+    border: 0;
+    border-top: 1px solid #C8D8E5;
+    color: transparent;
+}
+
+#asset hr:after,
+#resource-relations hr:after {
+    content: '';
+    display: block;
+    height: 0.5rem;
+}
+
+/* --- Alternating instance shading (cardinality-n blocks) --- */
+.nodegroup-instance {
+    padding: 0.4rem 0.6rem;
+    border-radius: 2px;
+    max-width: 100%;
+}
+
+.nodegroup-instance--shaded {
+    background-color: #F0F0F0;
+}
+
+.nodegroup-instance + .nodegroup-instance {
+    border-top: 1px solid #C8D8E5;
+}
+
+/* --- Node tree colours --- */
+.node-alias {
+    color: #595959;
+}
+
+.node-value {
+    color: #0066A4;
+}
+
+.node-empty {
+    color: #E11836;
+}
+
+.node-name {
+    line-height: 2.3rem;
+    color: #1D1C1A;
+}
+
+.node-name details {
+    margin-bottom: 0;
+}
+
+.node-type {
+    background-color: #eef;
+}
+
+.node-description {
+    background-color: #F5F4F2;
+    border-left: 3px solid #C8D8E5;
+    border-right: none;
+    padding: 0.5rem 1rem;
+}
+
+/* --- Modern navigation --- */
+#top-nav-container {
+    display: none;
+}
+
+.modern-navigation {
+    border-bottom-color: #C8D8E5;
+}
+
+.nav-position {
+    color: #595959;
+}
+
+/* --- Asset content links (override govuk-frontend .govuk-link) --- */
+#asset a,
+#asset .govuk-link,
+#resource-relations a,
+#resource-relations .govuk-link {
+    color: #0066A4 !important;
+}
+
+#asset a:visited,
+#asset .govuk-link:visited,
+#resource-relations a:visited,
+#resource-relations .govuk-link:visited {
+    color: #004B7A !important;
+}
+
+#asset a:hover,
+#asset .govuk-link:hover,
+#resource-relations a:hover,
+#resource-relations .govuk-link:hover {
+    color: #004B7A !important;
+}
+
+/* --- Tables --- */
+#asset table.govuk-table,
+#resource-relations table.govuk-table {
+    font-size: 90%;
+}
+
+/* --- Dialog images --- */
+dialog img {
+    max-height: 70vh;
+    max-width: 70vw;
+    display: block;
+    margin: auto;
+}
+
+/* --- GeoJSON modal map --- */
+#geojson-dialog {
+    width: min(90vw, 800px);
+    height: min(80vh, 600px);
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+}
+
+#geojson-dialog[open] {
+    display: flex;
+    flex-direction: column;
+}
+
+#geojson-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.5);
+}
+
+#geojson-dialog .geojson-dialog__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    border-bottom: 1px solid #b1b4b6;
+}
+
+#geojson-dialog .geojson-dialog__header h2 {
+    margin: 0;
+}
+
+#geojson-dialog #geojson-dialog__map {
+    flex: 1;
+    min-height: 0;
+}
+
+/* --- Related resources banner --- */
+.related-resources-banner {
+    background-color: #F5F4F2;
+    border-top: 0.3rem solid #004B7A;
+    margin-bottom: 0.75rem;
+}
+
+.related-resources-banner__toggle {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0.6rem 1rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #1D1C1A;
+    gap: 0.5rem;
+}
+
+.related-resources-banner__toggle:hover {
+    background-color: #EDF2F8;
+}
+
+.related-resources-banner__count {
+    color: #505a5f;
+    font-weight: 400;
+}
+
+.related-resources-banner__chevron {
+    margin-left: auto;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 6px solid #505a5f;
+    transition: transform 0.2s;
+}
+
+.related-resources-banner__toggle[aria-expanded="true"] .related-resources-banner__chevron {
+    transform: rotate(180deg);
+}
+
+.related-resources-banner__content {
+    padding: 0 1rem 0.75rem;
+    max-height: 300px;
+    overflow-y: auto;
+    border-top: 1px solid #C8D8E5;
+}
+
+.related-resources-banner__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.related-resources-banner__list {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.related-resources-banner__list li {
+    display: table-row;
+    font-size: 0.9rem;
+}
+
+.related-resources-banner__list li + li {
+    border-top: 1px solid #C8D8E5;
+}
+
+.related-resources-banner__dir,
+.related-resources-banner__name,
+.related-resources-banner__predicate,
+.related-resources-banner__model {
+    display: table-cell;
+    padding: 0.3rem 0.5rem;
+    overflow-wrap: break-word;
+    vertical-align: top;
+}
+
+.related-resources-banner__dir {
+    width: 3ch;
+    color: #505a5f;
+    text-align: center;
+}
+
+.related-resources-banner__name {
+    width: 45%;
+}
+
+.related-resources-banner__name a {
+    color: #0066A4;
+    text-decoration: underline;
+}
+
+.related-resources-banner__name a:hover {
+    color: #004B7A;
+}
+
+.related-resources-banner__predicate {
+    width: 30%;
+    color: #595959;
+    font-size: 0.85rem;
+}
+
+.related-resources-banner__model {
+    width: 25%;
+    color: #595959;
+    font-size: 0.85rem;
+}

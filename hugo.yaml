@@ -12,7 +12,16 @@ publishDir: "docs"
 params:
   version: "0.3.8"
   environment: "uat"
-  default_show_full_asset: "true"
+  default_show_full_asset: "false"
+  starches_config:
+    minSearchLength: 2
+  starches:
+    use_card_rendering: true
+  ros_madair:
+    wasm_module: "/wasm/ros-madair/ros_madair.js"
+    index_base_url: "/definitions/ros-madair/"
+    rdf_base_uri: "https://doc.govt.nz/"
+
 
 markup:
   goldmark:
@@ -29,6 +38,12 @@ module:
       target: static
     - source: node_modules/alizarin/dist/alizarin_bg.wasm
       target: static/wasm/alizarin_bg.wasm
+    - source: assets/alizarin-loader-inline.ts
+      target: assets/alizarin-loader.ts
+    - source: node_modules/ros-madair/pkg/ros_madair.js
+      target: static/wasm/ros-madair/ros_madair.js
+    - source: node_modules/ros-madair/pkg/ros_madair_bg.wasm
+      target: static/wasm/ros-madair/ros_madair_bg.wasm
 
 security:
   funcs:

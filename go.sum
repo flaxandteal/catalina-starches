@@ -2,9 +2,11 @@ github.com/flaxandteal/govukhugo v0.0.0-20260219155507-25bbaf71deb8 h1:mAVMFk/ux
 github.com/flaxandteal/govukhugo v0.0.0-20260219155507-25bbaf71deb8/go.mod h1:bFk/uvSh+oWzrQeoniHec8xDJymnWZqtgqgteKLi8yE=
 github.com/flaxandteal/hugo-cookies v0.1.1 h1:EbL0sDwSxJZNLXFyBy6hfM7os65g4ruBPedRqNe+Rmk=
 github.com/flaxandteal/hugo-cookies v0.1.1/go.mod h1:yXeybjve5gdOaLp2i1NKmDVGiFTgJXL6WLjyJMISLvU=
-github.com/flaxandteal/starches v0.2.1-alpha.53 h1:pF9BSsb2IB4I3zEEmVUF8llcGeQBuyhug0Xn3/W4l4k=
-github.com/flaxandteal/starches v0.2.1-alpha.53/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
-github.com/flaxandteal/starches v0.2.1-alpha.55 h1:Gi/yvglpcB+Pq13rLQm+OS/DtY4EU8UDq11+rtc3mxg=
-github.com/flaxandteal/starches v0.2.1-alpha.55/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
-github.com/flaxandteal/starches v0.2.1-alpha.56 h1:Y8RurZhoPVfC//GxcuY6gi0IJx1YDlFhngkxQhj4k44=
-github.com/flaxandteal/starches v0.2.1-alpha.56/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.74 h1:mhX9QYT59v76Qptl5PdTNzlgUPk3Tne55NFxHNTUNGs=
+github.com/flaxandteal/starches v0.2.1-alpha.74/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.93 h1:OB7C/LFVP9YIaErsZDvsLUXyLq+WDbDIWiLKwH4aHH0=
+github.com/flaxandteal/starches v0.2.1-alpha.93/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.97 h1:8a1QD0EWPsIVK7j9bd263PY875hKZ9dSEIRfRMyGmPk=
+github.com/flaxandteal/starches v0.2.1-alpha.97/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=
+github.com/flaxandteal/starches v0.2.1-alpha.100 h1:w4LzIq0ir39ebaDTXTAl4xtPclapRhkeMYS340oV24I=
+github.com/flaxandteal/starches v0.2.1-alpha.100/go.mod h1:rEUnSSn3/j3eLoP0ux6I2eDY2TaNK942BuRuJhjANa0=

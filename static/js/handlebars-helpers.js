@@ -55,6 +55,7 @@
   Handlebars.registerHelper("includes", (arr, prop, val) =>
     Array.isArray(arr) && arr.some(item => item[prop] === val)
   );
+  Handlebars.registerHelper("isOdd", (index) => index % 2 !== 0);
 
   const translations = {
     en: {
