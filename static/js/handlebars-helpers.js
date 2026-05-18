@@ -57,6 +57,36 @@
   );
   Handlebars.registerHelper("isOdd", (index) => index % 2 !== 0);
 
+  const translations = {
+    en: {
+      view: "View",
+      open_tab: "Open In A New Tab",
+    },
+    bg: {
+      view: "Преглед",
+      open_tab: "Отвори в нов прозорец",
+    }
+};
+
+  Handlebars.registerHelper("T", function (key) {
+    const currentLang = document.getElementById('currentLanguage') ? document.getElementById('currentLanguage').textContent : 'en';
+    return (
+      (translations[currentLang] && translations[currentLang][key]) ||
+      translations['en'][key] ||
+      key
+    );
+  });
+
+  Handlebars.registerHelper("i18n", function (key) {
+    const currentLang = document.getElementById('currentLanguage') ? document.getElementById('currentLanguage').textContent : 'en';
+
+    return (
+      (translations[currentLang] && translations[currentLang][key]) ||
+      translations['en'][key] ||
+      key
+    );
+  });
+
   Handlebars.registerHelper("clean", (a) => {
     // If the value has a __clean property, return it (for Cleanable objects)
     if (a && typeof a === 'object' && a.__clean !== undefined) {
@@ -65,6 +95,5 @@
     // Otherwise return the value as-is
     return a;
   });
-
   console.log('Handlebars helpers registered');
 })();

@@ -233,6 +233,52 @@ The Dockerfile runs a multi-stage build: Node + Hugo for the build step, then se
 
 The CI/CD pipeline (`.github/workflows/`) builds a Docker image on push, extracts the static output, and deploys to Azure Static Web Apps. Routing is configured in `staticwebapp.config.json`.
 
+## Translations
+
+### String Translations
+
+Translated strings used in templates follow this format:
+
+```
+{{ i18n "cancel" }}
+```
+
+Here, `"cancel"` is the key used to look up the corresponding translation.
+
+All translation files are located in the [`i18n`](https://github.com/flaxandteal/govukhugo/tree/main/i18n) directory of the theme. To add or update a translation, simply edit the appropriate language file in that folder.
+
+### Handlebars Templates
+
+Handlebars partials and templates do not have direct access to the standard translation files. To work around this, translations for Handlebars are defined in:
+
+```
+/static/js/handlebars-helpers.js
+```
+
+Specifically, look for the `translations` constant.
+
+At the moment, only a small number of strings are handled this way. If you need to add more, include them in this object following the existing structure.
+
+### Adding a New Language
+
+To add support for a new language, follow these steps:
+
+1. **Register the language**
+   Add the language to the `languages` section in `hugo.yaml`.
+2. **Create content directory**
+   In the `content` folder, create a new directory using the language shortcode (e.g. `fr`, `de`).
+   Copy content from an existing language folder and update all URLs to match the new shortcode.
+3. **Add translation file**
+   Create a new translation file in the theme’s [`i18n`](https://github.com/flaxandteal/govukhugo/tree/main/i18n) directory, named after the language shortcode.
+4. **Update Handlebars translations**
+   Add the new language and its corresponding strings to the `translations` object in:
+   ```
+   /static/js/handlebars-helpers.js
+   ```
+
+Once these steps are complete, the new language will automatically appear in the language switcher.
+
+
 ## Customisation
 
 This project demonstrates the main extension points for building a Starches-based site:
