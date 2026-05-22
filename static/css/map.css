@@ -398,13 +398,115 @@ p.acknowledgement {
     margin-bottom: 0;
 }
 
-/* no useful filters currently */
-/* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
-#filterToggle {
-    visibility: hidden;
+/* Filter toggle + content: hidden until renderFilters() reveals the toggle.
+   Content expands when toggle is clicked (.expanded added via JS). */
+.starches-filter-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    background: #004B7A;
+    border: 1px solid #004B7A;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 0;
+    min-width: 0;
+    text-decoration: none;
+    transition: background-color 0.15s;
+}
+
+.starches-filter-toggle:hover {
+    background: #003A5E;
+    border-color: #003A5E;
+}
+
+.starches-filter-toggle:focus {
+    outline: 3px solid #0066A4;
+    outline-offset: 2px;
+}
+
+.starches-filter-toggle::after {
+    content: "\25BC";
+    font-size: 0.55rem;
+    transition: transform 0.2s;
+}
+
+.starches-filter-toggle[aria-expanded="true"]::after {
+    transform: rotate(180deg);
 }
 
 /* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
 #filterContent {
     visibility: hidden;
+}
+
+/* stylelint-disable-next-line selector-id-pattern -- IDs from external component */
+#filterContent.expanded {
+    visibility: visible;
+}
+
+/* Help section — expanded by default, auto-hides via JS on search results */
+.starches-help-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    margin: 0.5rem 0;
+    background: #F5F4F2;
+    border: 1px solid #C8D8E5;
+    border-radius: 4px;
+    color: #004B7A;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    min-height: 0;
+    min-width: 0;
+}
+
+.starches-help-toggle:hover {
+    background: #EDF2F8;
+}
+
+.starches-help-toggle::after {
+    content: "\25B2";
+    font-size: 0.6rem;
+    transition: transform 0.2s;
+}
+
+.starches-help-toggle[aria-expanded="false"]::after {
+    transform: rotate(180deg);
+}
+
+.starches-help-content {
+    background: #F5F4F2;
+    border: 1px solid #C8D8E5;
+    border-top: 3px solid #004B7A;
+    border-radius: 0 0 4px 4px;
+    padding: 0.8rem 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: #1D1C1A;
+}
+
+.starches-help-content h3 {
+    font-size: 0.95rem;
+    margin: 0.8rem 0 0.3rem;
+    color: #004B7A;
+}
+
+.starches-help-content h3:first-child {
+    margin-top: 0;
+}
+
+.starches-help-content p {
+    margin: 0 0 0.5rem;
+}
+
+.starches-help-content.hidden {
+    display: none;
 }

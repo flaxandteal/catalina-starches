@@ -22,7 +22,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
 # Download pre-built Rós Madair indexer binary from release
-ARG ROS_MADAIR_VERSION=v0.1.0-alpha.8
+ARG ROS_MADAIR_VERSION=v0.1.0-alpha.12
 RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${ROS_MADAIR_VERSION}/ros-madair-build-linux-amd64" \
       -o /usr/local/bin/ros-madair-build && \
     chmod +x /usr/local/bin/ros-madair-build
@@ -31,16 +31,14 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
 # (Catalyst Cloud c1.c4r8: 8 GB total RAM) cannot sustain an 8 GB V8
 # heap alongside dind + buildkit + containerd; raising it will cause
 # node-level OOM, not a clean "out of heap" failure.
-# RUN python3 utils/unify.py && ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
 RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_*.json); do ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
-# RUN python3 utils/unify.py && ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/a_all.json --prefix cat- --summary --include-private
-
-# Build Rós Madair index from filtered business data (separate step to
-# avoid OOM when ros-madair-build runs alongside the Node.js heap).
-# RUN RDF_BASE_URI=$(node -e "const fs=require('fs'); const m=fs.readFileSync('hugo.yaml','utf8').match(/rdf_base_uri:\s*[\"']?([^\"'\n]+)/); console.log(m?m[1].trim():'https://example.org/')") && \
-#     ALIZARIN_BACKEND=napi npx starches-builder build-ros-madair --output static/definitions/ros-madair --bin ros-madair-build --base-uri "${RDF_BASE_URI}"
 
 RUN ALIZARIN_BACKEND=napi npx starches-builder index --site docs --include-private
+
+# Build Rós Madair index from the definitions output (separate step to
+# avoid OOM when ros-madair-build runs alongside the Node.js heap).
+RUN RDF_BASE_URI=$(node -e "const fs=require('fs'); const m=fs.readFileSync('hugo.yaml','utf8').match(/rdf_base_uri:\s*[\"']?([^\"'\n]+)/); console.log(m?m[1].trim():'https://example.org/')") && \
+    npx starches-builder build-ros-madair --prebuild-dir docs/definitions --output docs/definitions/ros-madair --bin ros-madair-build --base-uri "${RDF_BASE_URI}"
 
 RUN npm run precompile:templates
 

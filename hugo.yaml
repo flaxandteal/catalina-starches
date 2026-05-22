@@ -17,6 +17,8 @@ params:
     minSearchLength: 2
   starches:
     use_card_rendering: true
+    filter_labels:
+      tags: "Category"
   ros_madair:
     wasm_module: "/wasm/ros-madair/ros_madair.js"
     index_base_url: "/definitions/ros-madair/"

@@ -374,6 +374,56 @@
    6. SEARCH & FILTER COMPONENTS
    ========================================================================== */
 
+/* Filter section */
+.search-filter {
+    margin: 0.25rem 0;
+}
+
+/* Filter tab buttons */
+#filter-tabs-container {
+    display: flex;
+    gap: 0.25rem;
+    list-style: none;
+    padding: 0.5rem 0 0 !important;
+    margin: 0;
+    border-bottom: 2px solid #C8D8E5;
+}
+
+#filter-tabs-container .tag {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+#filter-tabs-container .tag a {
+    display: block;
+    padding: 0.35rem 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #004B7A;
+    text-decoration: none;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    background: transparent;
+    transition: background-color 0.15s;
+}
+
+#filter-tabs-container .tag a:hover {
+    background: #EDF2F8;
+    color: #003A5E;
+}
+
+#filter-tabs-container .tag.selected a {
+    background: #fff;
+    border-color: #C8D8E5;
+    color: #1D1C1A;
+    position: relative;
+    top: 2px;
+    padding-bottom: calc(0.35rem + 2px);
+}
+
+/* Active filters strip */
 #active-filters {
     display: flex;
     flex-wrap: nowrap;
@@ -432,6 +482,7 @@
 .filter-options-wrap {
     max-height: 300px;
     overflow: auto;
+    padding-top: 0.5rem;
 }
 
 
