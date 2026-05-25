@@ -92,7 +92,7 @@
     "marked-plaintify": "^1.1.1",
     "pdfmake": "^0.2.20",
     "ros-madair": "https://github.com/flaxandteal/ros-madair/releases/download/v0.1.0-alpha.14/ros-madair-0.1.0-alpha.14.tgz",
-    "starches": "github:flaxandteal/starches#v0.2.1-alpha.109",
+    "starches": "github:flaxandteal/starches#v0.2.1-alpha.110",
     "starches-builder": "https://github.com/flaxandteal/starches-builder/releases/download/v2.0.0-alpha.109/starches-builder-v2.0.0-alpha.109.tar.gz",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
