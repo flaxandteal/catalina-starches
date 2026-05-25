@@ -22,7 +22,7 @@ RUN curl -O -L https://github.com/gohugoio/hugo/releases/download/v0.152.2/hugo_
     rm hugo_extended_0.152.2_linux-amd64.tar.gz
 
 # Download pre-built Rós Madair indexer binary from release
-ARG ROS_MADAIR_VERSION=v0.1.0-alpha.12
+ARG ROS_MADAIR_VERSION=v0.1.0-alpha.14
 RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${ROS_MADAIR_VERSION}/ros-madair-build-linux-amd64" \
       -o /usr/local/bin/ros-madair-build && \
     chmod +x /usr/local/bin/ros-madair-build

@@ -32,6 +32,7 @@ markup:
 
 module:
   imports:
+    - path: 'github.com/flaxandteal/hugo-starches-fira'
     - path: 'github.com/flaxandteal/govukhugo'
     - path: 'github.com/flaxandteal/starches'
     - path: 'github.com/flaxandteal/hugo-cookies'
