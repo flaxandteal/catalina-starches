@@ -26,5 +26,11 @@ map_config:
         type: "raster"
         tiles: "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution: ""
+    - id: "satellite"
+      label: "Satellite"
+      config:
+        type: "raster"
+        tiles: "https://basemaps.linz.govt.nz/v1/tiles/aerial/3857/{z}/{x}/{y}.webp?api={linz_api_key}"
+        attribution: "&copy; <a href='https://www.linz.govt.nz' target='_blank'>LINZ</a> CC-BY 4.0"
 
 ---

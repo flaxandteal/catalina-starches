@@ -79,7 +79,8 @@ jobs:
             --file ./Dockerfile.private \
             --tag ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}/catalina-starches-private:${{ github.sha }} \
             --build-arg STARCHES_INCLUDE_PRIVATE=1 \
-            --build-arg DEFAULT_SHOW_FULL_ASSET=true
+            --build-arg DEFAULT_SHOW_FULL_ASSET=true \
+            --build-arg LINZ_API_KEY=${{ secrets.LINZ_API_KEY }}
 
       # Only runs if build failed. Captures post-mortem state — disk may
       # have filled, dockerd may have been partially killed, etc.
