@@ -5,6 +5,7 @@
     },
     "filters": [
     ],
+    "maxGeometryStringLength": 1000,
     "indexTemplates": {
         "Monument": "heritage-asset-index-hb.md",
         "Consultation": "heritage-asset-index-hb.md",
