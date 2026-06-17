@@ -2,7 +2,7 @@ module github.com/flaxandteal/catalina-starches
 
 go 1.24.6
 
-require github.com/flaxandteal/hugo-starches-fira v0.0.1
+require github.com/flaxandteal/hugo-starches-fira v0.0.2
 
 require (
 	github.com/flaxandteal/govukhugo v0.0.0-20260219155507-25bbaf71deb8 // indirect
