@@ -7,9 +7,9 @@
     ],
     "maxGeometryStringLength": 1000,
     "indexTemplates": {
-        "Monument": "heritage-asset-index-hb.md",
+        "Heritage Place": "heritage-asset-index-hb.md",
         "Consultation": "heritage-asset-index-hb.md",
-        "Maritime_Vessel": "maritime-vessel-index-hb.md",
+        "Maritime Vessel": "maritime-vessel-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
     "customDatatypes": {
@@ -30,12 +30,12 @@
     "thumbnail": [
     ],
     "files": [{
-        "graph": "Monument",
+        "graph": "Heritage Place",
         "node": ".images",
         "matchUrlPrefix": "/media",
         "prefix": "https://cat-starches.flaxandteal.co.nz/media"
     }, {
-        "graph": "DigitalObject",
+        "graph": "Digital Object",
         "node": ".file_content.file",
         "matchUrlPrefix": "/media",
         "prefix": "https://cat-starches.flaxandteal.co.nz/media"

@@ -5,11 +5,11 @@
             "resources": []
         },
         "42ce82f6-83bf-11ea-b1e8-f875a44e0e11": {
-            "name": "Application_Area",
+            "name": "Application Area",
             "resources": []
         },
         "b07cfa6f-894d-11ea-82aa-f875a44e0e11": {
-            "name": "Archive_Source",
+            "name": "Archive Source",
             "resources": []
         },
         "979aaf0b-7042-11ea-9674-287fcf6a5e72": {
@@ -23,7 +23,7 @@
             "resources": []
         },
         "24d7b54f-5464-11e9-a86b-000d3ab1e588": {
-            "name": "Bibliographic_Source",
+            "name": "Bibliographic Source",
             "resources": []
         },
         "8d41e49e-a250-11e9-9eab-00224800b26d": {
@@ -33,27 +33,27 @@
             ]
         },
         "a535a235-8481-11ea-a6b9-f875a44e0e11": {
-            "name": "Digital_Object",
+            "name": "Digital Object",
             "resources": []
         },
         "0add0e11-99aa-11ea-9ab8-f875a44e0e11": {
-            "name": "Heritage_Story",
+            "name": "Heritage Story",
             "resources": []
         },
         "b8032b00-594d-11e9-9cf0-18cf5eb368c4": {
-            "name": "Historic_Aircraft",
+            "name": "Historic Aircraft",
             "resources": []
         },
         "934cd7f0-480a-11ea-9240-c4d9877d154e": {
-            "name": "Historic_Landscape_Characterization",
+            "name": "Historic Landscape Characterization",
             "resources": []
         },
         "49bac32e-5464-11e9-a6e2-000d3ab1e588": {
-            "name": "Maritime_Vessel",
+            "name": "Maritime Vessel",
             "resources": []
         },
         "076f9381-7b00-11e9-8d6b-80000b44d1d9": {
-            "name": "heritage_place",
+            "name": "Heritage Place",
             "resources": [
                 "t_ms_cd_data.json",
                 "t_cabs_mon_data.json"
