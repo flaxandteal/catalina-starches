@@ -14,7 +14,7 @@ on:
 
 jobs:
   build_image_job_private:
-    runs-on: [new-zealand]
+    runs-on: [new-zealand-starches]
     name: "Build Docker Image (private)"
     permissions:
       contents: read
@@ -115,7 +115,7 @@ jobs:
 
   test_job_private:
     needs: build_image_job_private
-    runs-on: [new-zealand]
+    runs-on: [new-zealand-starches]
     name: Test Job
     permissions:
       contents: read

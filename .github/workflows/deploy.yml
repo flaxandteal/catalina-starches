@@ -16,7 +16,7 @@ jobs:
   deploy_job:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Deploy
-    runs-on: [new-zealand]
+    runs-on: [new-zealand-starches]
     permissions:
       contents: read
       packages: write
