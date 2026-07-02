@@ -76,7 +76,7 @@
     "@types/leaflet.markercluster": "^1.5.5",
     "alizarin": "https://github.com/flaxandteal/alizarin/releases/download/v2.0.0-alpha.113/alizarin-2.0.0-alpha.113.tgz",
     "dompurify": "^3.2.5",
-    "flatbush": "^4.4.0",
+    "flatbush": "^4.6.2",
     "flatgeobuf": "^4.0.1",
     "fs": "^0.0.1-security",
     "geojson": "^0.5.0",
