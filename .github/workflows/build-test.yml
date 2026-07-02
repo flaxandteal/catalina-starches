@@ -14,7 +14,7 @@ on:
 
 jobs:
   build_image_job:
-    runs-on: [new-zealand]
+    runs-on: [new-zealand-starches]
     name: Build Docker Image
     permissions:
       contents: read
@@ -129,9 +129,15 @@ jobs:
             ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
           docker push ${INTERNAL_REGISTRY}/${{ env.INTERNAL_IMAGE }}:latest-${{ github.run_id }}
 
+  scan_image:
+    needs: build_image_job
+    uses: flaxandteal/arches/.github/workflows/trivy-image-scan.yml@main
+    with:
+      image-ref: ghcr.io/${{ github.repository }}/catalina-starches:${{ github.sha }}
+
   test_job:
     needs: build_image_job
-    runs-on: [new-zealand]
+    runs-on: [new-zealand-starches]
     name: Test Job
     permissions:
       contents: read
