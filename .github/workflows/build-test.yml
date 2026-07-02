@@ -131,7 +131,7 @@ jobs:
 
   scan_image:
     needs: build_image_job
-    uses: flaxandteal/arches/.github/workflows/trivy-image-scan.yml@main
+    uses: flaxandteal/catalina-starches/.github/workflows/trivy-image-scan.yml@main
     with:
       image-ref: ghcr.io/${{ github.repository }}/catalina-starches:${{ github.sha }}
 
