@@ -96,7 +96,7 @@
     "starches-builder": "https://github.com/flaxandteal/starches-builder/releases/download/v2.0.0-alpha.114/starches-builder-v2.0.0-alpha.114.tar.gz",
     "swiper": "^12.0.3",
     "toml": "^3.0.0",
-    "tsx": "^4.21.0"
+    "tsx": "^4.22.5"
   },
   "description": "Static Asset Viewer",
   "devDependencies": {
