@@ -1,0 +1,7 @@
+[submodule "hugo-theme-qld-design-system"]
+	path = themes/hugo-theme-qld-design-system
+	url = git@github.com:flaxandteal/hugo-theme-qld-design-system.git
+
+[submodule "pagefind"]
+	path = pagefind
+	url = git@github.com:flaxandteal/pagefind.git

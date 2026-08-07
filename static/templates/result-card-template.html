@@ -1,0 +1,19 @@
+<div class="pagefind-modular-list-result" data-slug="{{slug}}">
+    <div class="pagefind-modular-list-content">
+        <p class="pagefind-modular-list-title">
+            <a href="{{url}}">{{title}}</a>
+        </p>
+        <div class="pagefind-modular-list-excerpt">
+            {{{excerpt}}}
+        </div>
+        <p class="result-links">
+            <div class="govuk-button-group">
+                <a href="{{url}}" role="button" draggable="false" class="govuk-button" data-module="govuk-button">{{ i18n "view" }}</a>
+                <a href="{{url}}" role="button" draggable="false" class="govuk-button govuk-button--secondary" data-module="govuk-button" target="_blank">{{ i18n "open_tab" }}</a>
+                {{#if location}}
+                <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" data-location="{{location}}" data-zoom="{{zoomLevel}}" onclick="var b=this;window.__starchesManagers.primaryMap.then(function(map){map.flyTo({center:[Number(b.dataset.location.split(',')[0]),Number(b.dataset.location.split(',')[1])],zoom:Number(b.dataset.zoom)})})">{{ i18n "zoom" }}</button>
+                {{/if}}
+            </div>
+        </p>
+    </div>
+</div>

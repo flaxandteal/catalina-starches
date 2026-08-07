@@ -1,0 +1,5 @@
+go 1.24.6
+
+use .
+use ../starches
+use ../hugo-starches-fira
