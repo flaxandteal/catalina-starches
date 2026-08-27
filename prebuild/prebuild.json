@@ -8,7 +8,6 @@
     "maxGeometryStringLength": 1000,
     "indexTemplates": {
         "Heritage Place": "heritage-asset-index-hb.md",
-        "Consultation": "heritage-asset-index-hb.md",
         "Maritime Vessel": "maritime-vessel-index-hb.md",
         "_unknown": "_unknown-index-hb.md"
     },
