@@ -33,6 +33,7 @@ RUN curl -fsSL "https://github.com/flaxandteal/ros-madair/releases/download/${RO
 # node-level OOM, not a clean "out of heap" failure.
 RUN (for DATA_FILE in $(cd prebuild/business_data; ls -1 t_*.json); do ALIZARIN_BACKEND=napi npx --node-options=--max-old-space-size=4096 starches-builder etl --file ./prebuild/business_data/$DATA_FILE --prefix cat- --summary --include-private; done)
 
+RUN cp -R prebuild/reference_data/controlled_lists prebuild/reference_data/collections
 RUN ALIZARIN_BACKEND=napi npx starches-builder index --site docs --include-private
 
 # Build Rós Madair index from the definitions output (separate step to
