@@ -54,7 +54,9 @@
       if (comp.container) {
         const el = document.getElementById(comp.container);
         console.log("Element", el)
-        if (el) el.innerHTML = html;
+        if (el) {
+          el.innerHTML = window.DOMPurify ? window.DOMPurify.sanitize(html) : html;
+        }
       }
     }
 
