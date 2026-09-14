@@ -1,0 +1,10 @@
+<h3>{{title}}</h3>
+<div class="map-popup-body">
+    {{{ excerpt }}}
+    {{#if url}}
+    <a href="{{url}}" class="govuk-button" data-module="govuk-button" rel="noreferrer noopener">{{ i18n "view" }}</a>
+    <a href="{{url}}" class="govuk-button govuk-button--secondary" data-module="govuk-button" rel="noreferrer noopener" target="_blank">{{ i18n "open_tab" }}</a>
+    <button type="submit" class="govuk-button govuk-button--secondary" data-module="govuk-button" onclick="map.flyTo({center: [{{location}}], zoom: 14})">{{ i18n "zoom" }}</button>
+    {{/if}}
+</div>
+
