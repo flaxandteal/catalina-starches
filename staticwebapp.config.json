@@ -1,0 +1,10 @@
+{
+  "trailingSlash": "auto",
+  "navigationFallback": {
+    "rewrite": "/index.html",
+    "exclude": ["/img/*", "/css/*", "/js/*", "/assets/*", "pagefind/*", "*.{png,jpg,gif,svg,css,js,ico,json,xml}"]
+  },
+  "mimeTypes": {
+    ".json": "application/json"
+  }
+}

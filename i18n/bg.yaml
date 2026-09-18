@@ -1,0 +1,40 @@
+# Catalina Heritage Register — Bulgarian translations
+# Stub file for the bg language added in PR #22
+
+starches_search_prompt:
+  other: "Търсете по-горе, за да намерите активи."
+starches_filter_label:
+  other: "Филтър"
+starches_filter_active_label:
+  other: "Филтриране:"
+starches_return_to_search:
+  other: "Обратно към търсенето"
+starches_copy_link:
+  other: "Копирай линк"
+starches_related_resources:
+  other: "Свързани ресурси"
+starches_previous:
+  other: "Предишен"
+starches_next:
+  other: "Следващ"
+starches_cancel:
+  other: "Отказ"
+starches_close:
+  other: "Затвори"
+starches_filter_label_tags:
+  other: "Категория"
+starches_view:
+  other: "Преглед"
+starches_open_tab:
+  other: "Отвори в нов прозорец"
+starches_zoom:
+  other: "Увеличаване"
+starches_help_toggle_label:
+  other: "Помощ"
+starches_help_content:
+  other: |
+    ### Търсене на обекти на наследството
+
+    Въведете поне **2 символа** в полето за търсене, за да намерите обекти. Резултатите се актуализират автоматично.
+
+    Използвайте бутона **Филтър**, за да стесните резултатите по регистър или категория.

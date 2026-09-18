@@ -1,0 +1,19 @@
+{
+  "templateSources": [
+    {
+      "dir": "static/templates",
+      "htmlTemplates": [
+        "result-card-template.html",
+        "filter-list-template.html",
+        "asset-nodegroup-template.html",
+        "map-dialog-template.html"
+      ],
+      "mdTemplates": [
+        "heritage-asset-public-hb.md",
+        "activity.md"
+      ]
+    }
+  ],
+  "outputDir": "static/js",
+  "outputFile": "precompiled-templates.js"
+}

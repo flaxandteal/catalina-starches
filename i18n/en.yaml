@@ -1,0 +1,11 @@
+# Catalina Heritage Register — English string overrides
+# These override the defaults in the starches module i18n/en.yaml
+
+starches_help_content:
+  other: "### Searching for Heritage Assets\n\nType at least **2 characters** in the search box above to find heritage assets. Results update automatically as you type.\n\nUse the **Filter** button to narrow results by registry or category.\n\n### Using the Map\n\nYou can **zoom in** to a small area to see all assets in that region. Use the polygon tool to **draw a selection area** and filter results geographically.\n\nClick **View** on a result to see full asset details, or **Open Tab** to open it in a new tab."
+
+starches_filter_label_tags:
+  other: "Category"
+
+starches_map_instructions:
+  other: "Search by typing into the <strong>searchbox</strong>, or <strong>zoom</strong> in to a small area to see nearby heritage assets."
